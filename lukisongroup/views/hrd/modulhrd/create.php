@@ -10,12 +10,9 @@ use yii\helpers\Html;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employe'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="panel panel-default" style="margin-top: 0px">
-     <div class="panel-body">
-		<h1><?= Html::encode($this->title) ?></h1>
 
-		<?= $this->render('_form', [
-			'model' => $model,
-		]) ?>
-	</div>
-</div>
+<h1><?= Html::encode($this->title) ?></h1>
+
+<?= $this->render('_form', [
+	'model' => $model,
+]) ?>

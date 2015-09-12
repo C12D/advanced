@@ -4,30 +4,18 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\esm\ro\RodetailSearch */
+/* @var $searchModel lukisongroup\models\esm\ro\RodetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Rodetails';
 $this->params['breadcrumbs'][] = $this->title;
-?>
 
-<aside class="main-sidebar">
-    <?php
-		/*variable Dropdown*/
-		use lukisongroup\models\system\side_menu\M1000;
-		use kartik\sidenav\SideNav;
-		$side_menu=\yii\helpers\Json::decode(M1000::find()->findMenu('esm')->one()->jval);		
-		if (!Yii::$app->user->isGuest) {
-			echo SideNav::widget([
-				'items' => $side_menu,
-				'encodeLabels' => false,
-				//'heading' => $heading,
-				'type' => SideNav::TYPE_DEFAULT,
-				'options' => ['class' => 'sidebar-nav'],
-			]);
-		};
-    ?>
-</aside>
+$this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+
+?>
 
 <div class="rodetail-index">
 

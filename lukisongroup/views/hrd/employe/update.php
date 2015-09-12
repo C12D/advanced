@@ -13,12 +13,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Maxiprodaks'), 'url'
 $this->params['breadcrumbs'][] = ['label' => $model->EMP_ID, 'url' => ['view', 'id' => $model->BRG_ID]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="maxiprodak-update">
-
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
-</div>

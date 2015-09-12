@@ -1,85 +1,53 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
-use app\models\esm\Barang;
+use kartik\grid\GridView;
+use lukisongroup\models\esm\Barang;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\esm\BarangSearch */
+/* @var $searchModel lukisongroup\models\esm\BarangSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Barang';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+
 ?>
 
-<aside class="main-sidebar">
-    <?php
-		/*variable Dropdown*/
-		use lukisongroup\models\system\side_menu\M1000;
-		use kartik\sidenav\SideNav;
-		$side_menu=\yii\helpers\Json::decode(M1000::find()->findMenu('esm')->one()->jval);		
-		if (!Yii::$app->user->isGuest) {
-			echo SideNav::widget([
-				'items' => $side_menu,
-				'encodeLabels' => false,
-				//'heading' => $heading,
-				'type' => SideNav::TYPE_DEFAULT,
-				'options' => ['class' => 'sidebar-nav'],
-			]);
-		};
-    ?>
-</aside>
 
 <div class="barang-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Barang', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-	
-	<?php  
-		print_r($querys); 
-		echo $querys[0]['HARGA'];
-		
-	?>
-	
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
+    <?php
+	$gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'ID',
             'KD_BARANG',
+			'nmdbtr',
+			'unitbrg',
+			
 			[
-				'attribute' => 'Nama Prodak',
-				'value' => 'brg.NM_BARANG',
-			],
-//            'NM_BARANG',
-			[
-				'attribute' => 'Nama DIstributor',
-				'value' => 'dbtr.NM_DISTRIBUTOR',
-			],
-			[
-				'attribute' => 'STATUS Barang',
-				'value' => 'unitb.NM_UNIT',
-			],
-		
-            // 'HPP',
-            // 'HARGA',
-            // 'NOTE',
-            // 'STATUS',
-            // 'createdBy',
-            // 'createdAt',
-            // 'updateAt',
-            // 'DATA_ALL',
-
+				'format' => 'raw',
+				'value' => function ($model) {
+					if ($model->STATUS == 1) {
+						return '<i class="fa fa-check fa-lg ya" style="color:blue;" title="Aktif"></i>';
+					} else if ($model->STATUS == 0) {
+						return '<i class="fa fa-times fa-lg no" style="color:red;" title="Tidak Aktif" ></i>';
+					} 
+				},
+			], 
             ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
+        ]; 
+	
+	
+	echo Yii::$app->gv->grview($gridColumns,$dataProvider,$searchModel, 'Barang ESM', 'barang-esm',$this->title);
+	
+	?>
 </div>
+
+<p>
+<i class="fa fa-check fa-sm" style="color:blue;" title="Aktif"></i> Aktif  &nbsp;&nbsp;&nbsp;&nbsp;
+<i class="fa fa-times fa-sm" style="color:red;" title="Tidak Aktif" ></i> Tidak Aktif
+</p>

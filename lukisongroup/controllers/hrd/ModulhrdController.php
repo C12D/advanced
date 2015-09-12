@@ -14,8 +14,9 @@ namespace lukisongroup\controllers\hrd;
 	use yii\web\NotFoundHttpException;
 	use yii\filters\VerbFilter;
 /* VARIABLE PRIMARY JOIN/SEARCH/FILTER/SORT Author: -ptr.nov- */
-	use app\models\hrd\Modulhrd;			/* TABLE CLASS JOIN */
-	use app\models\hrd\ModulhrdSearch;		/* TABLE CLASS SEARCH */
+	use lukisongroup\models\hrd\Modulhrd;			/* TABLE CLASS JOIN */
+	//use lukisongroup\models\hrd\Dept;
+   use lukisongroup\models\hrd\ModulhrdSearch;	/* TABLE CLASS SEARCH */
 	
 /**
  * HRD | CONTROLLER MODUL HRD .

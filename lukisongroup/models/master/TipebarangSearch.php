@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\master\Tipebarang;
+use lukisongroup\models\master\Tipebarang;
 
 /**
  * TipebarangSearch represents the model behind the search form about `app\models\master\Tipebarang`.
@@ -41,7 +41,7 @@ class TipebarangSearch extends Tipebarang
      */
     public function search($params)
     {
-        $query = Tipebarang::find();
+        $query = Tipebarang::find()->where('STATUS <> 3');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

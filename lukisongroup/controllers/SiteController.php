@@ -6,7 +6,9 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
-
+use lukisongroup\models\hrd\Employe;
+use lukisongroup\models\hrd\EmployeSearch;
+use app\models\system\user\UserloginSearch;
 /**
  * Site controller
  */
@@ -53,7 +55,7 @@ class SiteController extends Controller
             ],
         ];
     }
-
+    public $corpOne;
     public function actionIndex()
     {
         /* Author: -ptr.nov- : Split Index Before/After Login */
@@ -63,7 +65,16 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         } else {
-            return $this->render('index');
+            $ModelUser = UserloginSearch::findUserAttr(Yii::$app->user->id)->one();
+            $model = $this->findModel1($ModelUser->emp->EMP_ID);
+            $searchModel1 = new EmployeSearch();
+            $dataProvider = $searchModel1->search_empid($ModelUser->emp->EMP_ID);
+            // echo  \yii\helpers\Json::encode($dataProvider);
+            //print_r($dataProvider->getModels());
+            return $this->render('index', [
+                'model' => $model,
+                'dataProvider'=>$dataProvider->getModels(),
+            ]);
         }
     }
 
@@ -77,9 +88,12 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            //return $this->render('login', [
+            //    'model' => $model,
+           // ]);
+            $js='$("#modal_login").modal("show")';
+            $this->getView()->registerJs($js);
+            return $this->render('login',['model' => $model]);
         }
     }
 
@@ -88,5 +102,14 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+	
+	protected function findModel1($id)
+    {
+        if (($model = Employe::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }

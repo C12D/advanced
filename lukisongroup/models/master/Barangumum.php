@@ -1,14 +1,16 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 
-use app\models\master\Kategori;
-use app\models\master\Unitbarang;
-use app\models\master\Suplier;
-use app\models\master\Perusahaan;
-use app\models\master\Tipebarang;
+use lukisongroup\models\master\Kategori;
+use lukisongroup\models\master\Unitbarang;
+use lukisongroup\models\master\Suplier;
+use lukisongroup\models\master\Perusahaan;
+use lukisongroup\models\master\Tipebarang;
+
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "b1000".
@@ -37,11 +39,17 @@ use app\models\master\Tipebarang;
  * @property string $updated_at
  * @property string $data_all
  */
+
+Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/upload/barangumum/';
+Yii::$app->params['uploadUrl'] = Yii::$app->urlManager->baseUrl . '/web/upload/barangumum/';
+ 
 class Barangumum extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
+	public $image;
+
     public static function tableName()
     {
         return 'b1000';
@@ -59,10 +67,18 @@ class Barangumum extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tipebarang::className(), ['KD_TYPE' => 'KD_TYPE']);
     }
+	public function getNmtype()
+    {
+        return $this->type->NM_TYPE;
+    }
 
 	public function getKategori()
     {
         return $this->hasOne(Kategori::className(), ['KD_KATEGORI' => 'KD_KATEGORI']);
+    }
+	public function getNmktegori()
+    {
+        return $this->kategori->NM_KATEGORI;
     }
 
 	public function getUnit()
@@ -92,15 +108,50 @@ class Barangumum extends \yii\db\ActiveRecord
             [['NOTE', 'DATA_ALL'], 'string'],
             [['STATUS'], 'integer'],
             [['CREATED_AT', 'UPDATED_AT'], 'safe'],
-            [['KD_BARANG', 'PARENT'], 'string', 'max' => 20],
+            [['KD_BARANG', 'PARENT'], 'string', 'max' => 50],
             [['NM_BARANG', 'IMAGE'], 'string', 'max' => 200],
-            [['KD_TYPE', 'KD_KATEGORI', 'KD_UNIT', 'KD_SUPPLIER', 'KD_DISTRIBUTOR', 'KD_CORP', 'KD_CAB', 'KD_DEP'], 'string', 'max' => 5],
-            [['BARCODE'], 'string', 'max' => 15],
-            [['CREATED_BY', 'UPDATED_BY'], 'string', 'max' => 100]
-        ];
+            [['KD_TYPE', 'KD_KATEGORI', 'KD_UNIT', 'KD_SUPPLIER', 'KD_DISTRIBUTOR', 'KD_CORP', 'KD_CAB', 'KD_DEP'], 'string', 'max' => 50],
+            [['BARCODE'], 'string', 'max' => 50],
+            [['CREATED_BY', 'UPDATED_BY'], 'string', 'max' => 100],
+			[['image'], 'file', 'extensions'=>'jpg, gif, png'],
+		];
     }
 
-    /**
+    public function getImageFile() 
+    {
+        return isset($this->IMAGE) ? Yii::$app->params['uploadPath'] . $this->IMAGE : null;
+    }
+	
+    public function getImageUrl() 
+    {
+        // return a default image placeholder if your source IMAGE is not found
+        $IMAGE = isset($this->IMAGE) ? $this->IMAGE : 'default_user.jpg';
+        return Yii::$app->params['uploadUrl'] . $IMAGE;
+    }
+	
+	public function uploadImage() {
+        // get the uploaded file instance. for multiple file uploads
+        // the following data will return an array (you may need to use
+        // getInstances method)
+        $image = UploadedFile::getInstance($this, 'image');
+ 
+        // if no image was uploaded abort the upload
+        if (empty($image)) {
+            return false;
+        }
+ 
+        // store the source file name
+        //$this->filename = $image->name;
+        $ext = end((explode(".", $image->name)));
+ 
+        // generate a unique file name
+        $this->IMAGE = 'lukison-'.date('ymdHis').".{$ext}"; //$image->name;//Yii::$app->security->generateRandomString().".{$ext}";
+ 
+        // the uploaded image instance
+        return $image;
+    }
+ 
+	/**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -114,21 +165,24 @@ class Barangumum extends \yii\db\ActiveRecord
             'KD_UNIT' => 'Kode Unit',
             'KD_SUPPLIER' => 'Kode Supplier',
             'KD_DISTRIBUTOR' => 'Kode Distributor',
-            'PARENT' => 'PARENT',
-            'HPP' => 'HPP',
-            'HARGA' => 'HARGA',
-            'BARODE' => 'BARCODE',
-            'IMAGE' => 'IMAGE',
-            'NOTE' => 'NOTE',
+            'PARENT' => 'Parent',
+            'HPP' => 'Hpp',
+            'HARGA' => 'Harga',
+            'BARODE' => 'Barcode',
+            'IMAGE' => 'Image',
+            'NOTE' => 'Catatan',
             'KD_CORP' => 'Kd Corp',
-            'KD_CAB' => 'Kd Cab',
-            'KD_DEP' => 'Kd Dep',
-            'STATUS' => 'STATUS',
+            'KD_CAB' => 'Kd Cabang',
+            'KD_DEP' => 'Kd Departemen',
+            'STATUS' => 'Status',
             'CREATED_BY' => 'Created By',
             'CREATED_AT' => 'Created At',
             'UPDATED_BY' => 'Updated By',
             'UPDATED_AT' => 'Updated At',
             'DATA_ALL' => 'Data All',
+			'nmtype' => Yii::t('app', 'Type'),
+			'nmktegori' => Yii::t('app', 'Kategori')
         ];
     }
+	
 }

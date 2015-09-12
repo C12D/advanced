@@ -15,8 +15,8 @@ namespace lukisongroup\controllers\hrd;
 	use yii\filters\VerbFilter;
 
 /* VARIABLE PRIMARY JOIN/SEARCH/FILTER/SORT Author: -ptr.nov- */
-	use app\models\hrd\Jabatan;			/* TABLE CLASS JOIN */
-	use app\models\hrd\JabatanSearch;	/* TABLE CLASS SEARCH */
+	use lukisongroup\models\hrd\Jabatan;			/* TABLE CLASS JOIN */
+	use lukisongroup\models\hrd\JabatanSearch;	/* TABLE CLASS SEARCH */
 	
 /**
  * HRD | CONTROLLER EMPLOYE .

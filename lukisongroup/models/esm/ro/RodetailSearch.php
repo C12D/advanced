@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models\esm\ro;
+namespace lukisongroup\models\esm\ro;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\esm\ro\Rodetail;
+use lukisongroup\models\esm\ro\Rodetail;
 
 /**
  * RodetailSearch represents the model behind the search form about `app\models\esm\ro\Rodetail`.

@@ -6,7 +6,7 @@
  * Author: -ptr.nov-
 */
 
-namespace app\models\hrd;
+namespace lukisongroup\models\hrd;
 use kartik\builder\Form;
 use Yii;
 

@@ -1,35 +1,16 @@
 <?php 
 use yii\helpers\Html;
-use app\models\hrd\Dept;
+use lukisongroup\models\hrd\Dept;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\builder\FormGrid;
 use kartik\widgets\FileInput;
 use yii\helpers\ArrayHelper;
+$this->sideMenu = 'hrd_employee';
 
 $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]);
 $nlDigit= (Dept::find()->count())+1;
 $nl='LG'.$nlDigit;
-?>
-<aside class="main-sidebar">
-    <?php
-		/*variable Dropdown*/
-		use lukisongroup\models\system\side_menu\M1000;
-		use kartik\sidenav\SideNav;
-		$side_menu=\yii\helpers\Json::decode(M1000::find()->findMenu('hrd')->one()->jval);		
-		if (!Yii::$app->user->isGuest) {
-			echo SideNav::widget([
-				'items' => $side_menu,
-				'encodeLabels' => false,
-				//'heading' => $heading,
-				'type' => SideNav::TYPE_DEFAULT,
-				'options' => ['class' => 'sidebar-nav'],
-			]);
-		};
-    ?>
-</aside>
-
-<?php
 echo FormGrid::widget([
 	'model'=>$model,
 	'form'=>$form,

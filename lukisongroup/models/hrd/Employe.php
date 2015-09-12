@@ -6,7 +6,7 @@
  * Author: -ptr.nov-
 */
 
-namespace app\models\hrd;
+namespace lukisongroup\models\hrd;
 use Yii;
 use yii\web\UploadedFile;
 
@@ -27,7 +27,7 @@ class Employe extends \yii\db\ActiveRecord
 	/* [2] TABLE SELECT */
 	public static function tableName()
     {
-        return '{{%a0001}}';
+        return '{{dbm002.a0001}}';
     }   
     
 	/* [3] RULE SCENARIO -> DetailView */
@@ -35,13 +35,14 @@ class Employe extends \yii\db\ActiveRecord
     {
         return [
             [['EMP_ID'], 'required'],
-            [['EMP_ID','EMP_ZIP','EMP_CORP_ID'], 'string', 'max' => 10],
+            [['EMP_ID','EMP_ZIP','EMP_CORP_ID'], 'string', 'max' => 15],
             [['EMP_NM','EMP_NM_BLK','EMP_IMG','EMP_KTP','GRP_NM'], 'string', 'max' => 20], 
 			[['DEP_ID','JAB_ID'], 'string', 'max' => 5], 
 			[['EMP_STS'], 'integer'],
 			[['EMP_JOIN_DATE','EMP_TGL_LAHIR','EMP_RESIGN_DATE'], 'safe'],
 			[['EMP_JOIN_DATE','EMP_TGL_LAHIR','EMP_RESIGN_DATE'], 'date','format' => 'yyyy-mm-dd'], 
-			[['EMP_ALAMAT'], 'string'], 
+			[['EMP_ALAMAT'],  'filter', 'filter' => function($value) {
+                    return trim(htmlentities(strip_tags($value), ENT_QUOTES, 'UTF-8'));}],
 			[['EMP_TLP','EMP_HP'], 'string', 'max' => 15], 
 			[['EMP_GENDER'], 'string', 'max' => 6], 
 			[['EMP_EMAIL'], 'string', 'max' => 30],  			
@@ -75,7 +76,7 @@ class Employe extends \yii\db\ActiveRecord
 			//Employe Profile - Author: -ptr.nov-
             'EMP_KTP' => Yii::t('app', 'No.KTP'),
             'EMP_ALAMAT' => Yii::t('app', 'Alamat'),
-			'EMP_ZIP' => Yii::t('app', 'Telphone'),
+			'EMP_ZIP' => Yii::t('app', 'Postal Code'),
             'EMP_TLP' => Yii::t('app', 'Telphone'),
             'EMP_HP' => Yii::t('app', 'Handphone'),
 			'EMP_TGL_LAHIR' => Yii::t('app', ' BridthDay'),
@@ -154,6 +155,11 @@ class Employe extends \yii\db\ActiveRecord
 			$pic = isset($this->EMP_IMG) ? $this->EMP_IMG : 'default.jpg';
 			return Yii::$app->params['HRD_EMP_UploadUrl'].$pic;
 		}
+
+    //public static function primaryKey()
+   // {
+    //    return ['EMP_ID'];
+   // }
 
 }
 

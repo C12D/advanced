@@ -6,7 +6,7 @@
  * Author: -ptr.nov-
 */
 
-namespace app\models\hrd;
+namespace lukisongroup\models\hrd;
 use kartik\builder\Form;
 use Yii;
 
@@ -32,7 +32,7 @@ class Modulset extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['MDL_ID','DEP_NM'], 'required'],
+            [['MDL_ID','MDL_NM'], 'required'],
             [['MDL_ID','MDL_STS'], 'integer'],
             [['MDL_NM'], 'string', 'max' => 50],
 			[['MDL_DCRP'], 'string'],
@@ -44,7 +44,7 @@ class Modulset extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'MDL_ID' => Yii::t('app', 'Dept.ID'),
+            'MDL_ID' => Yii::t('app', 'Mdl.ID'),
             'DEP_NM' => Yii::t('app', 'Name'),
             'MDL_STS' => Yii::t('app', 'Status'),
             'MDL_DCRP' => Yii::t('app', 'Description'),

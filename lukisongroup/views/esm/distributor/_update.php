@@ -1,18 +1,19 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\Distributor */
+/* @var $model lukisongroup\models\esm\Distributor */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="distributor-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'KD_DISTRIBUTOR')->textInput(['maxlength' => true]) ?>
+    <?php $form = ActiveForm::begin([
+			'type' => ActiveForm::TYPE_HORIZONTAL,
+		]);
+	?>
 
     <?= $form->field($model, 'NM_DISTRIBUTOR')->textInput(['maxlength' => true]) ?>
 
@@ -49,8 +50,10 @@ use yii\widgets\ActiveForm;
     < ?= $form->field($model, 'DATA_ALL')->textInput(['maxlength' => true]) ?>
 -->
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<?= Html::submitButton($model->isNewRecord ? 'Create' : '<i class="fa fa-pencil"></i>&nbsp;&nbsp;Ubah Distributor', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		</div>
     </div>
 
     <?php ActiveForm::end(); ?>

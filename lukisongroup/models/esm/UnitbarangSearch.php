@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models\esm;
+namespace lukisongroup\models\esm;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\esm\Unitbarang;
+use lukisongroup\models\esm\Unitbarang;
 
 /**
  * UnitbarangSearch represents the model behind the search form about `app\models\esm\Unitbarang`.
@@ -19,7 +19,7 @@ class UnitbarangSearch extends Unitbarang
     {
         return [
             [['ID', 'QTY', 'SIZE', 'WEIGHT', 'STATUS'], 'integer'],
-            [['KD_UNIT', 'NM_UNIT', 'COLOR', 'NOTE', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT'], 'safe'],
+            [['KD_UNIT', 'UPDATED_BY', 'NM_UNIT', 'COLOR', 'NOTE', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT'], 'safe'],
         ];
     }
 

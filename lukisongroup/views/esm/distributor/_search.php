@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\DistributorSearch */
+/* @var $model lukisongroup\models\esm\DistributorSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'ID_DISTRIBUTOR') ?>
+    <?= $form->field($model, 'ID') ?>
 
     <?= $form->field($model, 'KD_DISTRIBUTOR') ?>
 

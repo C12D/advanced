@@ -1,26 +1,27 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 
-use app\models\master\Kategori;
-use app\models\master\Unitbarang;
-use app\models\master\Suplier;
-use app\models\master\Perusahaan;
-use app\models\master\Tipebarang;
+use lukisongroup\models\master\Kategori;
+use lukisongroup\models\master\Unitbarang;
+use lukisongroup\models\master\Suplier;
+use lukisongroup\models\master\Perusahaan;
+use lukisongroup\models\master\Tipebarang;
 
+use kartik\widgets\FileInput;
 /* @var $this yii\web\View */
-/* @var $model app\models\master\Barangumum */
+/* @var $model lukisongroup\models\master\Barangumum */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="barangumum-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL,'options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'KD_BARANG')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'KD_BARANG')->textInput(['maxlength' => true, 'readonly'=>true]) ?>
 
     <?= $form->field($model, 'NM_BARANG')->textInput(['maxlength' => true]) ?>
 
@@ -55,14 +56,18 @@ use app\models\master\Tipebarang;
 
     <?= $form->field($model, 'BARCODE')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'IMAGE')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'image')->widget(FileInput::classname(), [
+    'options'=>['accept'=>'image/*'],
+    'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']]
+	]);
+	?>
 
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
 	<?php
 		$drop = ArrayHelper::map(Perusahaan::find()->all(), 'KD_CORP', 'NM_CORP');
 	?>
-    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
+    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --','disabled'=>true])->label('Group Perusahaan') ?>
 	
 	
     <?= $form->field($model, 'KD_CAB')->textInput(['maxlength' => true]) ?>
@@ -83,9 +88,12 @@ use app\models\master\Tipebarang;
 
     <?php //= $form->field($model, 'DATA_ALL')->textarea(['rows' => 6]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		</div>
     </div>
+
 
     <?php ActiveForm::end(); ?>
 

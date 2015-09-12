@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\esm\ro;
+namespace lukisongroup\models\esm\ro;
 
 use Yii;
 

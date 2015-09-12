@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\master\Kategori;
+use lukisongroup\models\master\Kategori;
 
 /**
  * KategoriSearch represents the model behind the search form about `app\models\master\Kategori`.
@@ -41,7 +41,7 @@ class KategoriSearch extends Kategori
      */
     public function search($params)
     {
-        $query = Kategori::find();
+        $query = Kategori::find()->where('STATUS <> 3');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

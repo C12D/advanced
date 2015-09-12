@@ -2,19 +2,25 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\esm\ro\Requestorder;
-use app\models\esm\ro\RequestorderSearch;
+use lukisongroup\models\esm\ro\Requestorder;
+use lukisongroup\models\esm\ro\RequestorderSearch;
 
 
 use yii\helpers\ArrayHelper;
-use app\models\master\Perusahaan;
+use lukisongroup\models\master\Perusahaan;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\ro\Requestorder */
+/* @var $model lukisongroup\models\esm\ro\Requestorder */
 /* @var $form yii\widgets\ActiveForm */
 
 
-        $model = new Requestorder();
+
+$this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+
+	$model = new Requestorder();
 
 ?>
 
@@ -42,18 +48,6 @@ use app\models\master\Perusahaan;
 	<div class="col-md-6 col-sm-6"><?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Perusahaan') ?></div>
 </div>
 
-	
-    
-
-    
-
-    
-
-    
-
-    <?php //= $form->field($model, 'KD_DEP')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'STATUS')->textInput() ?>
 
     <?= $form->field($model, 'CREATED_AT')->textInput() ?>
 

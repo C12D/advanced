@@ -1,13 +1,16 @@
 <?php
 
-use yii\helpers\Html;
+use kartik\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\ActiveForm;
 use kartik\tabs\TabsX;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\system\Dashboard */
+$this->sideCorp = 'PT. Efenbi Sukses Makmur';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = '';                                    /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Reporting - PT.  Efembi Sukses Makmur');           /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
 ?>
+
 <div class="panel panel-default">
     
 			<?php
