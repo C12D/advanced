@@ -1,9 +1,9 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
-use app\models\master\Perusahaan;
+use lukisongroup\models\master\Perusahaan;
 
 /**
  * This is the model class for table "s1000".
@@ -53,6 +53,10 @@ class Suplier extends \yii\db\ActiveRecord
         return $this->hasOne(Perusahaan::className(), ['KD_CORP' => 'KD_CORP']);
     }
 	
+	public function getNmgroup() {
+		return $this->perusahaan->NM_CORP;
+	}
+	
 	
     /**
      * @inheritdoc
@@ -60,11 +64,11 @@ class Suplier extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['KD_SUPPLIER', 'NM_SUPPLIER','KD_CORP', 'ALAMAT'], 'required'],
+            [['KD_SUPPLIER', 'NM_SUPPLIER','KD_CORP', 'ALAMAT','STATUS'], 'required'],
             [['ALAMAT', 'NOTE', 'DATA_ALL'], 'string'],
             [['STATUS'], 'integer'],
             [['CREATED_AT', 'UPDATED_AT'], 'safe'],
-            [['KD_SUPPLIER', 'KD_CORP', 'KD_CAB', 'KD_DEP'], 'string', 'max' => 5],
+            [['KD_SUPPLIER', 'KD_CORP', 'KD_CAB', 'KD_DEP'], 'string', 'max' => 50],
             [['NM_SUPPLIER', 'WEBSITE', 'IMAGE'], 'string', 'max' => 200],
             [['KOTA', 'TLP', 'MOBILE', 'FAX', 'EMAIL', 'CREATED_BY', 'UPDATED_BY'], 'string', 'max' => 100]
         ];
@@ -86,17 +90,18 @@ class Suplier extends \yii\db\ActiveRecord
             'FAX' => 'Fax',
             'EMAIL' => 'Email',
             'WEBSITE' => 'Website',
-            'IMAGE' => 'IMAGE',
-            'NOTE' => 'NOTE',
+            'IMAGE' => 'Gambar',
+            'NOTE' => 'Catatan',
             'KD_CORP' => 'Kode Corporasi',
             'KD_CAB' => 'Kode Cab',
             'KD_DEP' => 'Kode Dep',
-            'STATUS' => 'STATUS',
+            'STATUS' => 'Status',
             'CREATED_BY' => 'Created By',
             'CREATED_AT' => 'Created At',
             'UPDATED_BY' => 'Updated By',
             'UPDATED_AT' => 'Updated At',
             'DATA_ALL' => 'Data All',
+			'nmgroup' => Yii::t('app', 'Group Perusahaan')
         ];
     }
 }

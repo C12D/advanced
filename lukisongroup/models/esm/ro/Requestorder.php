@@ -1,10 +1,11 @@
 <?php
 
-namespace app\models\esm\ro;
+namespace lukisongroup\models\esm\ro;
 
 use Yii;
-use app\models\esm\ro\Rodetail;
-use app\models\hrd\Employe;
+use lukisongroup\models\esm\ro\Rodetail;
+use lukisongroup\models\esm\ro\Tes;
+use lukisongroup\models\hrd\Employe;
 
 /**
  * This is the model class for table "r0001".
@@ -39,18 +40,25 @@ class Requestorder extends \yii\db\ActiveRecord
         return Yii::$app->get('db_esm');
     }
 	
-    public function getRodet()
+    public function getDetro()
     {
-        return $this->hasOne(Rodetail::className(), ['KD_RO' => 'KD_RO']);
+        return $this->hasMany(Rodetail::className(), ['KD_RO' => 'KD_RO']);
     }
 	
-	/*
-	public function getEmploy()
-	{
-		return $this->hasOne(Employe::className(), ['EMP_ID' => 'EMP_ID']);
-		//return $this->hasMany(Pendidikan::className(), ['EMP_ID' => 'EMP_ID']);
-	}
-	*/
+    public function getEmploye()
+    {
+        return $this->hasOne(Employe::className(), ['EMP_ID' => 'ID_USER']);
+    }
+	
+    public function getNmemp()
+    {
+        return $this->employe->EMP_NM;
+    }
+	
+    public function getTess()
+    {
+        return $this->hasOne(Tes::className(), ['KD_RO' => 'KD_RO']);
+    }
 	
 	
     /**
@@ -63,8 +71,9 @@ class Requestorder extends \yii\db\ActiveRecord
             [['NOTE', 'DATA_ALL'], 'string'],
             [['STATUS'], 'integer'],
             [['CREATED_AT'], 'safe'],
-            [['KD_RO', 'ID_USER', 'KD_CORP', 'KD_CAB', 'KD_DEP'], 'string', 'max' => 50],
-            [['UPDATED_ALL'], 'string', 'max' => 255]
+            [['KD_RO'], 'safe'],
+            [['KD_RO', 'KD_CORP', 'KD_CAB', 'KD_DEP'], 'string', 'max' => 50],
+            [['UPDATED_ALL', 'ID_USER'], 'string', 'max' => 255]
         ];
     }
 
@@ -85,6 +94,7 @@ class Requestorder extends \yii\db\ActiveRecord
             'CREATED_AT' => 'Created  At',
             'UPDATED_ALL' => 'Updated  All',
             'DATA_ALL' => 'Data  All',
+			'nmemp' => Yii::t('app', 'Pembuat'),
         ];
     }
 }

@@ -1,17 +1,18 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\master\Suplier;
+use lukisongroup\models\master\Suplier;
 
 /**
  * SuplierSearch represents the model behind the search form about `app\models\esm\Suplier`.
  */
 class SuplierSearch extends Suplier
 {
+	public $nmgroup;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class SuplierSearch extends Suplier
     {
         return [
             [['ID', 'STATUS'], 'integer'],
-            [['KD_SUPPLIER', 'NM_SUPPLIER', 'ALAMAT', 'KOTA', 'TLP', 'MOBILE', 'FAX', 'EMAIL', 'WEBSITE', 'IMAGE', 'NOTE', 'KD_CORP', 'KD_CAB', 'KD_DEP', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', 'DATA_ALL'], 'safe'],
+            [['nmgroup', 'KD_SUPPLIER', 'NM_SUPPLIER', 'ALAMAT', 'KOTA', 'TLP', 'MOBILE', 'FAX', 'EMAIL', 'WEBSITE', 'IMAGE', 'NOTE', 'KD_CORP', 'KD_CAB', 'KD_DEP', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', 'DATA_ALL'], 'safe'],
         ];
     }
 
@@ -41,45 +42,43 @@ class SuplierSearch extends Suplier
      */
     public function search($params)
     {
-        $query = Suplier::find();
-
+        $query = Suplier::find()->where('STATUS <> 3');
+		$query->joinWith(['perusahaan' => function ($q) {
+			$q->where('c1000.NM_CORP LIKE "%' . $this->nmgroup . '%"');
+		}]);
+		
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        $query->andFilterWhere([
-            'ID' => $this->ID,
-            'STATUS' => $this->STATUS,
-            'CREATED_AT' => $this->CREATED_AT,
-            'UPDATED_AT' => $this->UPDATED_AT,
-        ]);
-
+		 $dataProvider->setSort([
+			'attributes' => [
+				'KD_SUPPLIER',
+				'NM_SUPPLIER',
+				'ALAMAT',
+				'KOTA',
+				'nmgroup' => [
+					'asc' => ['c1000.NM_CORP' => SORT_ASC],
+					'desc' => ['c1000.NM_CORP' => SORT_DESC],
+					'label' => 'Group Perusahaan'
+				]
+			]
+		]);
+		
+    if (!($this->load($params) && $this->validate())) {
+        /**
+         * The following line will allow eager loading with country data 
+         * to enable sorting by country on initial loading of the grid.
+         */ 
+        $query->joinWith(['perusahaan']);
+        return $dataProvider;
+    }
+ 
         $query->andFilterWhere(['like', 'KD_SUPPLIER', $this->KD_SUPPLIER])
             ->andFilterWhere(['like', 'NM_SUPPLIER', $this->NM_SUPPLIER])
             ->andFilterWhere(['like', 'ALAMAT', $this->ALAMAT])
-            ->andFilterWhere(['like', 'KOTA', $this->KOTA])
-            ->andFilterWhere(['like', 'TLP', $this->TLP])
-            ->andFilterWhere(['like', 'MOBILE', $this->MOBILE])
-            ->andFilterWhere(['like', 'FAX', $this->FAX])
-            ->andFilterWhere(['like', 'EMAIL', $this->EMAIL])
-            ->andFilterWhere(['like', 'WEBSITE', $this->WEBSITE])
-            ->andFilterWhere(['like', 'IMAGE', $this->IMAGE])
-            ->andFilterWhere(['like', 'NOTE', $this->NOTE])
-            ->andFilterWhere(['like', 'KD_CORP', $this->KD_CORP])
-            ->andFilterWhere(['like', 'KD_CAB', $this->KD_CAB])
-            ->andFilterWhere(['like', 'KD_DEP', $this->KD_DEP])
-            ->andFilterWhere(['like', 'CREATED_BY', $this->CREATED_BY])
-            ->andFilterWhere(['like', 'UPDATED_BY', $this->UPDATED_BY])
-            ->andFilterWhere(['like', 'DATA_ALL', $this->DATA_ALL]);
-
+            ->andFilterWhere(['like', 'KOTA', $this->KOTA]);
+			
         return $dataProvider;
     }
 }

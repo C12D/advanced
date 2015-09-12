@@ -3,18 +3,23 @@
 namespace lukisongroup\controllers\esm;
 
 use Yii;
-use app\models\esm\ro\Requestorder;
-use app\models\esm\ro\RequestorderSearch;
-use app\models\esm\ro\Roatribute;
+use lukisongroup\models\esm\ro\Requestorder;
+use lukisongroup\models\esm\ro\RequestorderSearch;
+use lukisongroup\models\esm\ro\Roatribute;
+use lukisongroup\models\esm\ro\Requestorderstatus;
 
-use app\models\esm\ro\Rodetail;
-use app\models\esm\ro\RodetailSearch;
+use lukisongroup\models\esm\ro\Rodetail;
+use lukisongroup\models\esm\ro\RodetailSearch;
 
-use app\models\hrd\Employe;
+use lukisongroup\models\hrd\Employe;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+
+use yii\db\Query;
+use mPDF;
 
 /**
  * RequestorderController implements the CRUD actions for Requestorder model.
@@ -41,7 +46,6 @@ class RequestorderController extends Controller
     {
         $searchModel = new RequestorderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		print_r($dataProvider);
 		
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -49,21 +53,25 @@ class RequestorderController extends Controller
         ]);
     }
 
-    public function actionTes()
-    {
-        return $this->render('tes');
-    }
-
+	
     /**
      * Displays a single Requestorder model.
      * @param string $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($kd)
     {
+    	$ro = new Requestorder();
+		$reqro = Requestorder::find()->where(['KD_RO' => $kd])->one();
+		$detro = $reqro->detro;
+        $employ = $reqro->employe;
+    	
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'reqro' => $reqro,
+            'detro' => $detro,
+            'employ' => $employ,
         ]);
+        
     }
 	
     /**
@@ -74,18 +82,22 @@ class RequestorderController extends Controller
    
     public function actionCreate()
     {
+		$connection = \Yii::$app->db2;
+		$cons = \Yii::$app->db_esm;
+		
         $model = new Requestorder();
         $reqorder = new Roatribute();
         $rodetail = new Rodetail();
+        $rostatus = new Requestorderstatus();
 		
 		$empId = Yii::$app->user->identity->EMP_ID;
 		$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
-		var_dump($dt);
-
+		
 //			------------ TAHUN.BULAN.TANGGAL.RO.NO URUT (4DIGIT)   == > 2015.06.30.RO.0001				
 		$qwe = Requestorder::find()->select('ID')->orderBy(['ID' => SORT_DESC])->limit(1)->all();
+		if(count($qwe) == 0){ $lastKd = 0; } else { $lastKd = $qwe[0]['ID']; }
 		
-		$nKD = $qwe[0]['ID'] +1;
+		$nKD = $lastKd +1;
 		$pnjg = strlen($nKD);
 		if($pnjg == 1){ $kd = "000".$nKD; }
 		else if($pnjg == 2){ $kd = "00".$nKD; }
@@ -93,7 +105,6 @@ class RequestorderController extends Controller
 		else if($pnjg >= 4 ){ $kd = $nKD; }
 		
 		$kode = date('Y.m.d').'.RO.'.$kd;
-//		echo $kode;
 		
 		$model->KD_RO = $kode;
 		$model->ID_USER = $empId;
@@ -102,16 +113,23 @@ class RequestorderController extends Controller
 		$model->CREATED_AT = date("Y-m-d H:i:s");
 		$model->save();
 		
-		return $this->redirect(['buatro','id'=>$kode]);
 		
+		$que = "SELECT EMP_ID FROM a0001 WHERE DEP_ID='GA' AND (JAB_ID='MGR' OR JAB_ID='SVR')";
+		$modelss = $connection->createCommand($que);
+		$users = $modelss->queryAll();
+		foreach($users as $usr){ $isi[] = ['KD_RO'=>$kode,'ID_USER'=>$usr['EMP_ID'],'STATUS'=>'0'];}
+		$cons->createCommand()->batchInsert( Requestorderstatus::tableName(), ['KD_RO', 'ID_USER', 'STATUS'], $isi )->execute();		
+		
+		return $this->redirect(['buatro','id'=>$kode]);
+	//	print_r(Yii::$app->user->identity);
     }
 	
-	public function actionBuatro()
+	public function actionBuatro()	
     {
         $model = new Requestorder();
         $reqorder = new Roatribute();
         $rodetail = new Rodetail();
-
+		
 		return $this->render('create', [
 			'model' => $model,
 			'reqorder' => $reqorder,
@@ -124,26 +142,63 @@ class RequestorderController extends Controller
         $rodetail = new Rodetail();
 		$hsl = $rodetail->load(Yii::$app->request->post());
 		$rodetail->save();
-	///	var_dump($hsl);
-		
 		return $this->redirect(['buatro','id'=>$id]);
-	//	print_r($this->findModel($id));
-//	$myModels = $rodetail->findModel($id);
+    }
+	
+    public function actionHapus($kode,$id)
+    {
+		new Rodetail();
+		$ro = Rodetail::findOne($id);
+		$ro->STATUS = 3;
+		$ro->save();
+
+       //$this->findModel($id)->delete();
+		return $this->redirect(['buatro','id'=>$kode]);
+    }
+
+	public function actionProses($kd)
+    {
 		
-//		$model->KD_RO = 'fg78';
-//		$model->save();
-		/*
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'reqorder' => $reqorder,
-                'rodetail' => $rodetail,
-            ]);
-        }
-		*/
+		$empId = Yii::$app->user->identity->EMP_ID;
+		$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
+		if($dt[0]['JAB_ID'] != 'MGR'){ return $this->redirect(['esm/requestorder']); }
 		
+    	$ro = new Requestorder();
+		$reqro = Requestorder::find()->where(['KD_RO' => $kd])->one();
+		$detro = $reqro->detro;
+        $employ = $reqro->employe;
+    	
+		//$ro = new Requestorderstatus();
+		$rostat = Requestorderstatus::find()->where(['KD_RO' => $kd,'ID_USER' => $empId])->one();
+		$rostat->STATUS =  1;
+		$rostat->save();
+		
+        return $this->render('proses', [
+            'reqro' => $reqro,
+            'detro' => $detro,
+            'employ' => $employ,
+        ]);
+    }
+	
+	public function actionSimpanproses()
+    {
+        //$rodetails = new Rodetail();
+		$ts = Yii::$app->request->post();
+		if(count($ts) == 0){ return $this->redirect([' ']); }
+		$kd = $ts['kd'];
+		
+		foreach($ts['ck'] as $ts){
+			$rodetail  = Rodetail::findOne($ts);
+			$rodetail->STATUS = 1;
+			if($rodetail->save()){
+				$reqro = Requestorder::find()->where(['KD_RO' => $kd])->one();
+				$reqro->STATUS = 1;
+				$reqro->save();
+			}
+		}
+		return $this->redirect(['proses', 'kd' => $kd]);
+	
+//		$rodetail->save();
     }
 	
 	/*
@@ -182,10 +237,16 @@ class RequestorderController extends Controller
 	
     public function actionHapusro($id)
     {
-		Rodetail::findModel($id)->delete();
+
+	echo $id;
+        \Yii::$app->db_esm->createCommand()
+            ->update('r0001', ['status'=>3], ['KD_RO'=>$id])
+            ->execute();
+
+//		Rodetail::findModel($id)->delete();
 //        $this->findModel($id)->delete();
 
-        return $this->redirect(['buatro','id'=>$id]);
+		return $this->redirect(['index']);
     }
 
     /**
@@ -201,6 +262,36 @@ class RequestorderController extends Controller
         return $this->redirect(['index']);
     }
 
+	
+    public function actionCreatepo()
+    {
+        return $this->render('createpo');
+		
+		
+    }
+
+	
+	
+	public function actionCetakpdf($kd){
+    	$ro = new Requestorder();
+		$reqro = Requestorder::find()->where(['KD_RO' => $kd])->one();
+		$detro = $reqro->detro;
+        $employ = $reqro->employe;
+    	
+        
+		$mpdf=new mPDF();
+		$mpdf->WriteHTML($this->renderPartial( 'pdfTester', [
+            'reqro' => $reqro,
+            'detro' => $detro,
+            'employ' => $employ,
+        ]));
+        $mpdf->Output();
+        exit;
+		//return $this->renderPartial('mpdf');
+	}
+	
+	
+	
     /**
      * Finds the Requestorder model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

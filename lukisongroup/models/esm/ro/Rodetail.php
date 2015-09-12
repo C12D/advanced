@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\esm\ro;
+namespace lukisongroup\models\esm\ro;
 
 use Yii;
 
@@ -43,7 +43,7 @@ class Rodetail extends \yii\db\ActiveRecord
     {
         return [
  //           [['ID','KD_RO', 'KD_BARANG', 'NM_BARANG', 'QTY', 'NO_URUT', 'NOTE', 'STATUS', 'CREATED_AT', 'UPDATED_AT'], 'required'],
-  //          [['KD_RO', 'NM_BARANG', 'QTY'], 'required'],
+			[['KD_RO', 'QTY','UNIT','KD_BARANG'], 'required'],
             [['QTY', 'STATUS'], 'integer'],
             [['NOTE'], 'string'],
             [['CREATED_AT', 'UPDATED_AT'], 'safe'],
@@ -59,12 +59,13 @@ class Rodetail extends \yii\db\ActiveRecord
     {
         return [
             'ID' => 'ID',
+            'UNIT' => 'Satuan Barang',
             'KD_RO' => 'Kd  Ro',
-            'KD_BARANG' => 'Kd  Barang',
+            'KD_BARANG' => 'Kode  Barang',
             'NM_BARANG' => 'Nm  Barang',
-            'QTY' => 'Qty',
+            'QTY' => 'Quantity',
             'NO_URUT' => 'No  Urut',
-            'NOTE' => 'Note',
+            'NOTE' => 'Catatan',
             'STATUS' => 'Status',
             'CREATED_AT' => 'Created  At',
             'UPDATED_AT' => 'Updated  At',

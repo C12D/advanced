@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\master\Unitbarang;
+use lukisongroup\models\master\Unitbarang;
 
 /**
  * UnitbarangSearch represents the model behind the search form about `app\models\master\Unitbarang`.
@@ -42,7 +42,7 @@ class UnitbarangSearch extends Unitbarang
      */
     public function search($params)
     {
-        $query = Unitbarang::find();
+        $query = Unitbarang::find()->where('STATUS <> 3');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

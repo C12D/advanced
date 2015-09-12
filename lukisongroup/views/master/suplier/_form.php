@@ -1,21 +1,26 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
+use kartik\widgets\SwitchInput;
 
 use yii\helpers\ArrayHelper;
-use app\models\master\Perusahaan;
+use lukisongroup\models\master\Perusahaan;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\Suplier */
+/* @var $model lukisongroup\models\esm\Suplier */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="suplier-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+		'type' => ActiveForm::TYPE_HORIZONTAL,
+		'method' => 'post',
+		'action' => ['master/suplier/simpan'],
+		]); ?>
 
-    <?= $form->field($model, 'KD_SUPPLIER')->textInput(['maxlength' => true]) ?>
+    <?php //= $form->field($model, 'KD_SUPPLIER')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'NM_SUPPLIER')->textInput(['maxlength' => true]) ?>
 
@@ -41,28 +46,15 @@ use app\models\master\Perusahaan;
 		$drop = ArrayHelper::map(Perusahaan::find()->all(), 'KD_CORP', 'NM_CORP');
 	?>
     <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
-    <?php //= $form->field($model, 'KD_CORP')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'KD_CAB')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'KD_DEP')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'STATUS')->dropDownList(['' => ' -- Silahkan Pilih --', '0' => 'Tidak Aktif', '1' => 'Aktif']) ?>
-    <?php //= $form->field($model, 'STATUS')->textInput() ?>
-
+	
+    <?=  $form->field($model, 'STATUS')->radioList(['1'=>'Aktif','0'=>'Tidak Aktif']) ?>
     <?= $form->field($model, 'CREATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
-    <?php //= $form->field($model, 'CREATED_BY')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'CREATED_AT')->hiddenInput(['value'=>date('Y-m-d H:i:s')])->label(false) ?>
 
-    <?php //= $form->field($model, 'CREATED_AT')->textInput() ?>
-
-    <?php //= $form->field($model, 'UPDATED_BY')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'UPDATED_AT')->textInput() ?>
-
-    <?php //= $form->field($model, 'DATA_ALL')->textarea(['rows' => 6]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-plus"></i>&nbsp;&nbsp; Tambah Suplier' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		</div>
     </div>
 
     <?php ActiveForm::end(); ?>

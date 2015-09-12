@@ -1,19 +1,19 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\Unitbarang */
+/* @var $model lukisongroup\models\esm\Unitbarang */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="unitbarang-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'KD_UNIT')->textInput(['maxlength' => true]) ?>
-
+    <?php $form = ActiveForm::begin([
+			'type' => ActiveForm::TYPE_HORIZONTAL,
+		]);
+	?>
     <?= $form->field($model, 'NM_UNIT')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'QTY')->textInput(['maxlength' => true]) ?>
@@ -26,18 +26,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
-    <?php //= $form->field($model, 'STATUS')->textInput() ?>
+    <?= $form->field($model, 'UPDATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
+	
+    <?= $form->field($model, 'UPDATED_AT')->hiddenInput(['value'=>date('Y-m-d H:i:s')])->label(false) ?>
 
-    <?= $form->field($model, 'UPDATED_AT')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
-    <?php //= $form->field($model, 'CREATED_BY')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'CREATED_AT')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'UPDATED_AT')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : '<i class="fa fa-pencil"></i>&nbsp;&nbsp;Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		</div>
+	</div>
 
     <?php ActiveForm::end(); ?>
 

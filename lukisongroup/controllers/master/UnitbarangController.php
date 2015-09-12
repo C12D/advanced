@@ -3,8 +3,8 @@
 namespace lukisongroup\controllers\master;
 
 use Yii;
-use app\models\master\Unitbarang;
-use app\models\master\UnitbarangSearch;
+use lukisongroup\models\master\Unitbarang;
+use lukisongroup\models\master\UnitbarangSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -72,6 +72,19 @@ class UnitbarangController extends Controller
         }
     }
 
+    public function actionSimpan()
+    {
+        $model = new Unitbarang();
+
+		$model->load(Yii::$app->request->post());
+		$ck = Unitbarang::find()->where('STATUS <> 3')->max('KD_UNIT');
+		$nw = $ck+1;
+		$nw = str_pad( $nw, "2", "0", STR_PAD_LEFT );
+		$model->KD_UNIT = $nw;
+		$model->save();
+		return $this->redirect(['view', 'ID' => $model->ID, 'KD_UNIT' => $model->KD_UNIT]);
+    }
+
     /**
      * Updates an existing Unitbarang model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -91,7 +104,7 @@ class UnitbarangController extends Controller
             ]);
         }
     }
-
+	
     /**
      * Deletes an existing Unitbarang model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -101,7 +114,13 @@ class UnitbarangController extends Controller
      */
     public function actionDelete($ID, $KD_UNIT)
     {
-        $this->findModel($ID, $KD_UNIT)->delete();
+		
+		
+		$model = Unitbarang::find()->where(['ID'=>$ID, 'KD_UNIT'=>$KD_UNIT])->one();
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();  // equivalent to $model->update();
+//        $this->findModel($ID, $KD_UNIT)->delete();
 
         return $this->redirect(['index']);
     }

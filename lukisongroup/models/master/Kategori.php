@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 
@@ -61,7 +61,7 @@ class Kategori extends \yii\db\ActiveRecord
             'ID' => 'ID',
             'KD_KATEGORI' => 'Kode Kategori',
             'NM_KATEGORI' => 'Nama Kategori',
-            'NOTE' => 'NOTE',
+            'NOTE' => 'Catatan',
             'CREATED_BY' => 'Created By',
             'CREATED_AT' => 'Created At',
             'UPDATED_BY' => 'Updated By',

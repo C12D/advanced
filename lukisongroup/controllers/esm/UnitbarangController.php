@@ -3,8 +3,8 @@
 namespace lukisongroup\controllers\esm;
 
 use Yii;
-use app\models\esm\Unitbarang;
-use app\models\esm\UnitbarangSearch;
+use lukisongroup\models\esm\Unitbarang;
+use lukisongroup\models\esm\UnitbarangSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,6 +69,21 @@ class UnitbarangController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionSimpan()
+    {
+        $model = new Unitbarang();
+		$model->load(Yii::$app->request->post());
+		
+		$ck = Unitbarang::find()->select('KD_UNIT')->where('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
+		
+		if(count($ck) == 0){ $nkd = 1; } else { $nkd = $ck->KD_UNIT+1; }
+		
+		$kd = str_pad( $nkd, "4", "0", STR_PAD_LEFT );
+		$model->KD_UNIT = $kd;
+		$model->save();
+		return $this->redirect(['view', 'id' => $model->ID]);
     }
 
     /**

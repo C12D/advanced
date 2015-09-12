@@ -6,7 +6,7 @@
  * Author: -ptr.nov-
 */
 
-namespace app\models\hrd;
+namespace lukisongroup\models\hrd;
 
 use Yii;
 use yii\base\Model;

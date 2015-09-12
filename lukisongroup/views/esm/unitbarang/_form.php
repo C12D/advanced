@@ -1,18 +1,21 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\Unitbarang */
+/* @var $model lukisongroup\models\esm\Unitbarang */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="unitbarang-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'KD_UNIT')->textInput(['maxlength' => true]) ?>
+    <?php $form = ActiveForm::begin([
+			'type' => ActiveForm::TYPE_HORIZONTAL,
+			'method' => 'post',
+			'action' => ['esm/unitbarang/simpan'],
+		]);
+	?>
 
     <?= $form->field($model, 'NM_UNIT')->textInput(['maxlength' => true]) ?>
 
@@ -29,14 +32,12 @@ use yii\widgets\ActiveForm;
     <?php //= $form->field($model, 'STATUS')->textInput() ?>
 
     <?= $form->field($model, 'CREATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
-    <?php //= $form->field($model, 'CREATED_BY')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'CREATED_AT')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'UPDATED_AT')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?= $form->field($model, 'CREATED_AT')->hiddenInput(['value'=>date('Y-m-d H:i:s')])->label(false) ?>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		</div>
     </div>
 
     <?php ActiveForm::end(); ?>

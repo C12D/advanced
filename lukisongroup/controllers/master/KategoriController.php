@@ -3,8 +3,8 @@
 namespace lukisongroup\controllers\master;
 
 use Yii;
-use app\models\master\Kategori;
-use app\models\master\KategoriSearch;
+use lukisongroup\models\master\Kategori;
+use lukisongroup\models\master\KategoriSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -49,9 +49,17 @@ class KategoriController extends Controller
      */
     public function actionView($ID, $KD_KATEGORI)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($ID, $KD_KATEGORI),
-        ]);
+		$ck = Kategori::find()->where(['ID'=>$ID, 'KD_KATEGORI'=>$KD_KATEGORI])->one();
+		if(count($ck) == 0){
+			return $this->redirect(['index']);
+		}
+		if($ck->STATUS != 3){
+			return $this->render('view', [
+				'model' => $this->findModel($ID, $KD_KATEGORI),
+			]);
+		} else {
+			return $this->redirect(['index']);
+		}
     }
 
     /**
@@ -62,14 +70,28 @@ class KategoriController extends Controller
     public function actionCreate()
     {
         $model = new Kategori();
-
+/*
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'ID' => $model->ID, 'KD_KATEGORI' => $model->KD_KATEGORI]);
         } else {
+			*/
             return $this->render('create', [
                 'model' => $model,
             ]);
-        }
+  //      }
+    }
+
+    public function actionSimpan()
+    {
+        $model = new Kategori();
+
+		$model->load(Yii::$app->request->post());
+		$ck = Kategori::find()->where('STATUS <> 3')->max('KD_KATEGORI');
+		$nw = $ck+1;
+		$nw = str_pad( $nw, "2", "0", STR_PAD_LEFT );
+		$model->KD_KATEGORI = $nw;
+		$model->save();
+		return $this->redirect(['view', 'ID' => $model->ID, 'KD_KATEGORI' => $model->KD_KATEGORI]);
     }
 
     /**
@@ -81,8 +103,16 @@ class KategoriController extends Controller
      */
     public function actionUpdate($ID, $KD_KATEGORI)
     {
-        $model = $this->findModel($ID, $KD_KATEGORI);
+      //  $model = $this->findModel($ID, $KD_KATEGORI);
 
+		$model = Kategori::find()->where(['ID'=>$ID, 'KD_KATEGORI'=>$KD_KATEGORI])->one();
+		if(count($model) == 0){
+			return $this->redirect(['index']);
+		}
+		if($model->STATUS == 3){
+			return $this->redirect(['index']);
+		}
+		
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'ID' => $model->ID, 'KD_KATEGORI' => $model->KD_KATEGORI]);
         } else {
@@ -101,8 +131,12 @@ class KategoriController extends Controller
      */
     public function actionDelete($ID, $KD_KATEGORI)
     {
-        $this->findModel($ID, $KD_KATEGORI)->delete();
-
+		$model = Kategori::find()->where(['ID'=>$ID, 'KD_KATEGORI'=>$KD_KATEGORI])->one();
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();  // equivalent to $model->update();
+		
+        //$this->findModel($ID, $KD_KATEGORI)->delete();
         return $this->redirect(['index']);
     }
 

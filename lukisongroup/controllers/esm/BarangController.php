@@ -3,13 +3,14 @@
 namespace lukisongroup\controllers\esm;
 
 use Yii;
-use app\models\esm\Unitbarang;
-use app\models\esm\Barang;
-use app\models\esm\BarangSearch;
+use lukisongroup\models\esm\Unitbarang;
+use lukisongroup\models\esm\Barang;
+use lukisongroup\models\esm\BarangSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+	use yii\web\UploadedFile;
 /**
  * BarangController implements the CRUD actions for Barang model.
  */
@@ -100,6 +101,34 @@ WHERE db2.NM_TYPE = 'FDSFDG'
         }
     }
 
+    public function actionSimpan()
+    {
+        $model = new Barang();
+		$model->load(Yii::$app->request->post());
+		
+		$kdDbtr = $model->KD_DISTRIBUTOR;	
+		$kdType = $model->KD_TYPE;	
+		$kdKategori = $model->KD_KATEGORI;	
+		$kdUnit = $model->KD_UNIT;	
+		
+		$ck = Barang::find()->select('KD_BARANG')->where('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
+		
+		if(count($ck) == 0){ $nkd = 1; } else { $kd = explode('.',$ck->KD_BARANG); $nkd = $kd[5]+1; }
+		
+		$kd = "BRG.".$kdDbtr.".".$kdType.".".$kdKategori.".".$kdUnit.".".str_pad( $nkd, "4", "0", STR_PAD_LEFT );
+		$model->KD_BARANG = $kd;
+		
+		$image = $model->uploadImage();
+		if ($model->save()) {
+			// upload only if valid uploaded file instance found
+			if ($image !== false) {
+				$path = $model->getImageFile();
+				$image->saveAs($path);
+			}
+		}
+		return $this->redirect(['view', 'id' => $model->ID]);
+    }
+
     /**
      * Updates an existing Barang model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -110,7 +139,15 @@ WHERE db2.NM_TYPE = 'FDSFDG'
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			$image = $model->uploadImage();
+			if ($model->save()) {
+				// upload only if valid uploaded file instance found
+				if ($image !== false) {
+					$path = $model->getImageFile();
+					$image->saveAs($path);
+				}
+			}
             return $this->redirect(['view', 'id' => $model->ID]);
         } else {
             return $this->render('update', [
@@ -125,10 +162,15 @@ WHERE db2.NM_TYPE = 'FDSFDG'
      * @param string $ID
      * @return mixed
      */
-    public function actionDelete($ID)
+    public function actionDelete($id)
     {
-        $this->findModel($ID)->delete();
-
+     //   $this->findModel($ID)->delete();
+	 
+		$model = Barang::find()->where(['ID'=>$id])->one();
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
 

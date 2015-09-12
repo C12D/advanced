@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\master\BarangumumSearch */
+/* @var $model lukisongroup\models\master\BarangumumSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
