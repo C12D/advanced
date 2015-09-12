@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 
 //use app\models\UploadForm;
 	use yii\web\UploadedFile;
+	
+	use yii\helpers\Json;
 /**
  * BarangumumController implements the CRUD actions for Barangumum model.
  */
@@ -63,6 +65,7 @@ class BarangumumController extends Controller
      */
     public function actionCreate()
     {
+		
         $model = new Barangumum();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -81,19 +84,19 @@ class BarangumumController extends Controller
 		
 		$model->load(Yii::$app->request->post());
 		
-		$kdBrg = $model->KD_BARANG;	
-		$kdCorp = $model->KD_CORP;	
-		$kdType = $model->KD_TYPE;	
-		$kdKategori = $model->KD_KATEGORI;	
-		$kdUnit = $model->KD_UNIT;	
+		//$kdBrg = $model->KD_BARANG;	
+	//	$kdCorp = $model->KD_CORP;	
+	//	$kdType = $model->KD_TYPE;	
+	//	$kdKategori = $model->KD_KATEGORI;	
+	///	$kdUnit = $model->KD_UNIT;	
 		
-		$ck = Barangumum::find()->select('KD_BARANG')->where(['KD_CORP' => $kdCorp])->andWhere('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
-		if(count($ck) == 0){ $nkd = 1; } else { $kd = explode('.',$ck->KD_BARANG); $nkd = $kd[5]+1; }
+		//$ck = Barangumum::find()->select('KD_BARANG')->where(['KD_CORP' => $kdCorp])->andWhere('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
+		//if(count($ck) == 0){ $nkd = 1; } else { $kd = explode('.',$ck->KD_BARANG); $nkd = $kd[5]+1; }
 		
-		$kd = "BRG.".$kdCorp.".".$kdType.".".$kdKategori.".".$kdUnit.".".str_pad( $nkd, "4", "0", STR_PAD_LEFT );
+	//	$kd = "BRG.".$kdCorp.".".$kdType.".".$kdKategori.".".$kdUnit.".".str_pad( $nkd, "4", "0", STR_PAD_LEFT );
 
 		
-		$model->KD_BARANG = $kd;
+		//$model->KD_BARANG = $kd;
 		
 		$image = $model->uploadImage();
 		if ($model->save()) {
@@ -172,4 +175,35 @@ class BarangumumController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+	
+	  public function actionGenerate() {
+            $out = [];
+            if (isset($_POST['depdrop_parents'])) {
+                $parents = $_POST['depdrop_parents'];
+                //print_r($parents);
+                if ($parents != null) {
+                    $corp_id = $parents[0];
+                    $generate_KdBrg= Yii::$app->ambilkonci->getKey_KdBrg($corp_id);
+                    //$out = self::getSubCatList($cat_id);
+                    // the getSubCatList function will query the database based on the
+                    // cat_id and return an array like below:
+                   // $out = self::getSubCatList1($cat_id);
+                    $data=[
+                            'out'=>[
+                                //['id'=>$generate_key_emp1, 'name'=> $generate_key_emp1],
+                                ['id'=> $generate_KdBrg, 'name'=>$generate_KdBrg, 'options'=> ['style'=>['color'=>'red'],'disabled'=>false]],
+                                //['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
+                                ],
+                            'selected'=>$generate_KdBrg,
+                        ];
+                   // $selected = self::getSubcat($cat_id);
+
+                    echo Json::encode(['output'=>$data['out'], 'selected'=>$data['selected']]);
+                    return;
+                }
+            }
+            echo Json::encode(['output'=>'', 'selected'=>'']);
+        }
+	
+	
 }

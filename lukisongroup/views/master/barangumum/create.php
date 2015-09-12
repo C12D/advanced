@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
 ?>
 <div class="barangumum-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+   
 	<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div> 
 
     <?= $this->render('_form', [
