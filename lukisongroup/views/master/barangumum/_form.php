@@ -5,18 +5,21 @@ use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\widgets\SwitchInput;
 use yii\helpers\ArrayHelper;
-	
 use lukisongroup\models\master\Kategori;
 use lukisongroup\models\master\Unitbarang;
 use lukisongroup\models\master\Suplier;
-use lukisongroup\models\master\Perusahaan;
-use lukisongroup\models\master\Tipebarang;
 
+use lukisongroup\models\master\Tipebarang;
 use kartik\widgets\FileInput;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\master\Barangumum */
-/* @var $form yii\widgets\ActiveForm */
+use lukisongroup\models\master\Perusahaan;
+use lukisongroup\models\hrd\Corp;
+
+use kartik\widgets\DepDrop;
+use yii\helpers\Url;
+
+$Corp = ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_ID','CORP_NM');
+
 ?>
 
 <div class="barangumum-form">
@@ -28,8 +31,33 @@ use kartik\widgets\FileInput;
 		'options' => ['enctype' => 'multipart/form-data']
 		]);
 	?>
+	
+	<div class='col-sm-2'> </div>
+	<div class='col-sm-6' style='background:#b8defb; padding-top:10px'>
+		<div class='col-sm-10'>
+			<?php
+				echo $form->field($model, 'KD_CORP')->dropDownList($Corp, ['id'=>'corp-id']);
+				//$form->field($model, 'KD_BARANG')->dropDownList($Corp, ['id'=>'brg_under_corp-id']);
+				echo $form->field($model, 'KD_BARANG')->widget(DepDrop::classname(), [
+					'options'=>[
+							'id'=>'brg_under_corp-id',
+							'readonly'=>true,
+							'selected'=>false,
+					],
+					'pluginOptions'=>[
+						'depends'=>['corp-id'],
+						'placeholder'=>'Select...',
+						'url'=>Url::to(['/master/barangumum/generate']),
+						'initialize'=>true, //loding First //
+						'placeholder' => false, //disable select //
+					]
+				]);
+			?>
+		</div>
+	</div>
+	<div class='col-sm-12' style="padding-bottom:10px "></div> 
 
-  
+	
     <?= $form->field($model, 'NM_BARANG')->textInput(['maxlength' => true]) ?>
 
 	<?php $drop = ArrayHelper::map(Tipebarang::find()->where(['STATUS' => 1])->all(), 'KD_TYPE', 'NM_TYPE'); ?>
