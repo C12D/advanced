@@ -4,31 +4,27 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\esm\Distributor */
-$this->sideMenu = 'esm';
+/* @var $model lukisongroup\models\esm\Distributor */
+
 $this->title = $model->KD_DISTRIBUTOR;
 $this->params['breadcrumbs'][] = ['label' => 'Distributor', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+
 ?>
 <div class="distributor-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+	<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div> 
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->ID_DISTRIBUTOR], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->ID_DISTRIBUTOR], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
- //           'idDbtr',
             'KD_DISTRIBUTOR',
             'NM_DISTRIBUTOR',
             'ALAMAT:ntext',
@@ -39,12 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'EMAIL:email',
             'WEBSITE',
             'NOTE:ntext',
-//            'STATUS',
-//            'createBy',
-//            'createAt',
-//            'updateAt',
-//            'DATA_ALL',
         ],
     ]) ?>
 
+    <p>
+        <?= Html::a('<i class="fa fa-pencil"></i>&nbsp;&nbsp;Ubah', ['update', 'id' => $model->ID], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-trash-o"></i>&nbsp;&nbsp;Hapus', ['delete', 'id' => $model->ID], [
+			'class' => 'btn btn-danger',
+			'data' => [
+			    'confirm' => 'Are you sure you want to delete this item?',
+			    'method' => 'post',
+			],
+        ]) ?>
+    </p>
 </div>

@@ -1,10 +1,10 @@
 <?php
 
-namespace app\models\master;
+namespace lukisongroup\models\master;
 
 use Yii;
 
-use app\models\esm\Barang;
+use lukisongroup\models\esm\Barang;
 
 
 /**
@@ -63,12 +63,12 @@ class Tipebarang extends \yii\db\ActiveRecord
             'ID' => 'ID',
             'KD_TYPE' => 'Kode Type',
             'NM_TYPE' => 'Nama Type',
-            'NOTE' => 'NOTE',
+            'NOTE' => 'Catatan',
             'CREATED_BY' => 'Created By',
             'CREATED_AT' => 'Created At',
             'UPDATED_BY' => 'Updated By',
             'UPDATED_AT' => 'Updated At',
-            'STATUS' => 'STATUS',
+            'STATUS' => 'Status',
         ];
     }
 }

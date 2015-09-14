@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\esm;
+namespace lukisongroup\models\esm;
 
 use Yii;
 
@@ -46,7 +46,7 @@ class Unitbarang extends \yii\db\ActiveRecord
         return [
             [['KD_UNIT', 'NM_UNIT', 'QTY'], 'required'],
             [['QTY'], 'integer'],
-            [['NOTE','SIZE', 'WEIGHT', 'COLOR', 'NOTE', 'STATUS', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT'], 'string'],
+            [['NOTE','SIZE', 'WEIGHT', 'COLOR', 'NOTE', 'STATUS', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT', 'UPDATED_BY'], 'string'],
             [['KD_UNIT'], 'string', 'max' => 25],
             [['NM_UNIT'], 'string', 'max' => 255]
         ];
@@ -61,12 +61,12 @@ class Unitbarang extends \yii\db\ActiveRecord
             'ID' => 'ID',
             'KD_UNIT' => 'Kode Unit',
             'NM_UNIT' => 'Nama Unit',
-            'QTY' => 'Quantity',
+            'QTY' => 'Jumlah',
             'SIZE' => 'Ukuran',
             'WEIGHT' => 'Berat',
             'COLOR' => 'Warna',
-            'NOTE' => 'NOTE',
-            'STATUS' => 'STATUS',
+            'NOTE' => 'Catatan',
+            'STATUS' => 'Status',
             'CREATED_BY' => 'Created By',
             'CREATED_AT' => 'Created At',
             'UPDATED_AT' => 'Updated At',

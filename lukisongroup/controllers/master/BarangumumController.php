@@ -1,14 +1,18 @@
 <?php
-
 namespace lukisongroup\controllers\master;
 
 use Yii;
-use app\models\master\Barangumum;
-use app\models\master\BarangumumSearch;
+use lukisongroup\models\master\Barangumum;
+use lukisongroup\models\master\BarangumumSearch;
+use lukisongroup\models\master\Barangumumupload;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+//use app\models\UploadForm;
+	use yii\web\UploadedFile;
+	
+	use yii\helpers\Json;
 /**
  * BarangumumController implements the CRUD actions for Barangumum model.
  */
@@ -61,6 +65,7 @@ class BarangumumController extends Controller
      */
     public function actionCreate()
     {
+		
         $model = new Barangumum();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -70,6 +75,41 @@ class BarangumumController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionSimpan()
+    {
+        $model = new Barangumum();
+	//	$bupload = new Barangumumupload();
+		
+		$model->load(Yii::$app->request->post());
+		
+		//$kdBrg = $model->KD_BARANG;	
+	//	$kdCorp = $model->KD_CORP;	
+	//	$kdType = $model->KD_TYPE;	
+	//	$kdKategori = $model->KD_KATEGORI;	
+	///	$kdUnit = $model->KD_UNIT;	
+		
+		//$ck = Barangumum::find()->select('KD_BARANG')->where(['KD_CORP' => $kdCorp])->andWhere('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
+		//if(count($ck) == 0){ $nkd = 1; } else { $kd = explode('.',$ck->KD_BARANG); $nkd = $kd[5]+1; }
+		
+	//	$kd = "BRG.".$kdCorp.".".$kdType.".".$kdKategori.".".$kdUnit.".".str_pad( $nkd, "4", "0", STR_PAD_LEFT );
+
+		
+		//$model->KD_BARANG = $kd;
+		
+		$image = $model->uploadImage();
+		if ($model->save()) {
+			// upload only if valid uploaded file instance found
+			if ($image !== false) {
+				$path = $model->getImageFile();
+				$image->saveAs($path);
+			}
+		}
+	
+		
+		return $this->redirect(['view', 'ID' => $model->ID, 'KD_BARANG' => $model->KD_BARANG]);
+//		echo  $hsl['barangumum']['KD_BARANG'];
     }
 
     /**
@@ -83,7 +123,16 @@ class BarangumumController extends Controller
     {
         $model = $this->findModel($ID, $KD_BARANG);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())){
+			
+			$image = $model->uploadImage();
+			if ($model->save()) {
+				// upload only if valid uploaded file instance found
+				if ($image !== false) {
+					$path = $model->getImageFile();
+					$image->saveAs($path);
+				}
+			}
             return $this->redirect(['view', 'ID' => $model->ID, 'KD_BARANG' => $model->KD_BARANG]);
         } else {
             return $this->render('update', [
@@ -101,7 +150,11 @@ class BarangumumController extends Controller
      */
     public function actionDelete($ID, $KD_BARANG)
     {
-        $this->findModel($ID, $KD_BARANG)->delete();
+		$model = Barangumum::find()->where(['ID'=>$ID, 'KD_BARANG'=>$KD_BARANG])->one();
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+//   $this->findModel($ID, $KD_BARANG)->delete();
 
         return $this->redirect(['index']);
     }
@@ -122,4 +175,35 @@ class BarangumumController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+	
+	  public function actionGenerate() {
+            $out = [];
+            if (isset($_POST['depdrop_parents'])) {
+                $parents = $_POST['depdrop_parents'];
+                //print_r($parents);
+                if ($parents != null) {
+                    $corp_id = $parents[0];
+                    $generate_KdBrg= Yii::$app->ambilkonci->getKey_KdBrg($corp_id);
+                    //$out = self::getSubCatList($cat_id);
+                    // the getSubCatList function will query the database based on the
+                    // cat_id and return an array like below:
+                   // $out = self::getSubCatList1($cat_id);
+                    $data=[
+                            'out'=>[
+                                //['id'=>$generate_key_emp1, 'name'=> $generate_key_emp1],
+                                ['id'=> $generate_KdBrg, 'name'=>$generate_KdBrg, 'options'=> ['style'=>['color'=>'red'],'disabled'=>false]],
+                                //['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
+                                ],
+                            'selected'=>$generate_KdBrg,
+                        ];
+                   // $selected = self::getSubcat($cat_id);
+
+                    echo Json::encode(['output'=>$data['out'], 'selected'=>$data['selected']]);
+                    return;
+                }
+            }
+            echo Json::encode(['output'=>'', 'selected'=>'']);
+        }
+	
+	
 }

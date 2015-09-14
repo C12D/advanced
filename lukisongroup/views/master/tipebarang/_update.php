@@ -1,18 +1,17 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+//use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\master\Tipebarang */
+/* @var $model lukisongroup\models\master\Tipebarang */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="tipebarang-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'KD_TYPE')->textInput(['maxlength' => true]) ?>
+    <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL]); ?>
 
     <?= $form->field($model, 'NM_TYPE')->textInput(['maxlength' => true]) ?>
 
@@ -20,16 +19,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'UPDATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
 	
-    <?php //= $form->field($model, 'CREATED_AT')->textInput() ?>
+    <?=  $form->field($model, 'STATUS')->radioList(['1'=>'Aktif','0'=>'Tidak Aktif']) ?>
 
-    <?php //= $form->field($model, 'UPDATED_BY')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'UPDATED_AT')->textInput() ?>
-
-    <?= $form->field($model, 'STATUS')->dropDownList(['' => ' -- Silahkan Pilih --', '0' => 'Tidak Aktif', '1' => 'Aktif']) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+        <?= Html::submitButton('<i class="fa fa-pencil"></i>&nbsp;&nbsp; Ubah Tipe Barang', ['class' => 'btn btn-primary']) ?>
+		</div>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models\esm;
+namespace lukisongroup\models\esm;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\esm\Distributor;
+use lukisongroup\models\esm\Distributor;
 
 /**
  * DistributorSearch represents the model behind the search form about `app\models\esm\Distributor`.
@@ -18,8 +18,8 @@ class DistributorSearch extends Distributor
     public function rules()
     {
         return [
-            [['ID_DISTRIBUTOR', 'TLP1', 'TLP2', 'FAX', 'STATUS'], 'integer'],
-            [['KD_DISTRIBUTOR', 'NM_DISTRIBUTOR', 'ALAMAT', 'PIC', 'EMAIL', 'WEBSITE', 'NOTE', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT', 'DATA_ALL'], 'safe'],
+            [['ID', 'TLP1', 'TLP2', 'FAX', 'STATUS'], 'integer'],
+            [['KD_DISTRIBUTOR', 'NM_DISTRIBUTOR', 'ALAMAT', 'PIC', 'EMAIL', 'WEBSITE', 'NOTE', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT', 'UPDATED_BY', 'DATA_ALL'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class DistributorSearch extends Distributor
      */
     public function search($params)
     {
-        $query = Distributor::find();
+        $query = Distributor::find()->where('d0001.STATUS <> 3');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,7 +56,7 @@ class DistributorSearch extends Distributor
         }
 
         $query->andFilterWhere([
-            'ID_DISTRIBUTOR' => $this->ID_DISTRIBUTOR,
+            'ID' => $this->ID,
             'TLP1' => $this->TLP1,
             'TLP2' => $this->TLP2,
             'FAX' => $this->FAX,

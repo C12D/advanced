@@ -2,29 +2,27 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\models\master\Barangumum;
+use lukisongroup\models\master\Barangumum;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\master\Barangumum */
+/* @var $model lukisongroup\models\master\Barangumum */
 
 $this->title = $model->NM_BARANG;
 $this->params['breadcrumbs'][] = ['label' => 'Barang Umum', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+$this->sideCorp = 'Lukison Group';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'datamaster';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+
 ?>
 <div class="barangumum-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+	<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div>
 
-    <p>
-        <?= Html::a('Update', ['update', 'ID' => $model->ID, 'KD_BARANG' => $model->KD_BARANG], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'ID' => $model->ID, 'KD_BARANG' => $model->KD_BARANG], [
-			'class' => 'btn btn-danger',
-			'data' => [
-			    'confirm' => 'Are you sure you want to delete this item?',
-			    'method' => 'post',
-			],
-        ]) ?>
-    </p>
 
 <?php
 	$sts = $model->STATUS;
@@ -35,31 +33,31 @@ $this->params['breadcrumbs'][] = $this->title;
 	}
 ?>
 
+	<?php if($model->IMAGE == null){ $gmbr = "df.jpg"; } else { $gmbr = $model->IMAGE; }  ?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-//	           'ID',
 			'KD_BARANG',
 			'NM_BARANG',
-//			'KD_TYPE',
 			[
 				'label' => 'Type Barang',
 				'value' => $model->type->NM_TYPE,
 			],
-			
-//			'KD_KATEGORI',
 			[
 				'label' => 'Kategori',
 				'value' => $model->kategori->NM_KATEGORI,
 			],
 			
-//			'KD_UNIT',
+			[
+				'attribute'=>'photo',
+				'value'=>Yii::$app->urlManager->baseUrl.'/upload/barangumum/'.$gmbr,
+				'format' => ['image',['width'=>'150','height'=>'150']],
+			],
 			[
 				'label' => 'Unit',
 				'value' => $model->unit->NM_UNIT,
 			],
 			
-//			'KD_SUPPLIER',
 			[
 				'label' => 'Suplier',
 				'value' => $model->suplier->NM_SUPPLIER,
@@ -70,32 +68,29 @@ $this->params['breadcrumbs'][] = $this->title;
 			'HPP',
 			'HARGA',
 			'BARCODE',
-			'IMAGE',
 			'NOTE:ntext',
 			
-//			'KD_CORP',
 			[
 				'label' => 'Group Perusahaan',
 				'value' => $model->perusahaan->NM_CORP,
 			],
 			
-//			'STATUS',
 			[
-				'label' => 'STATUS',
+				'label' => 'Status',
 				'value' => $stat,
 			],
-			
-//			'KD_CAB',
-//			'KD_DEP',
-			
-			/*
-			'STATUS',
-			'CREATED_BY',
-			'CREATED_AT',
-			'UPDATED_BY',
-			'UPDATED_AT',
-			'data_all:ntext', */
         ],
     ]) ?>
 
+
+    <p>
+        <?= Html::a('<i class="fa fa-pencil"></i>&nbsp;&nbsp;Ubah', ['update', 'ID' => $model->ID, 'KD_BARANG' => $model->KD_BARANG], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-trash-o"></i>&nbsp;&nbsp;Hapus', ['delete', 'ID' => $model->ID, 'KD_BARANG' => $model->KD_BARANG], [
+			'class' => 'btn btn-danger',
+			'data' => [
+			    'confirm' => 'Are you sure you want to delete this item?',
+			    'method' => 'post',
+			],
+        ]) ?>
+    </p>
 </div>

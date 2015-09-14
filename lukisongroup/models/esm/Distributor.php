@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\esm;
+namespace lukisongroup\models\esm;
 
 use Yii;
 
@@ -48,14 +48,14 @@ class Distributor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['KD_DISTRIBUTOR', 'NM_DISTRIBUTOR', 'ALAMAT', 'PIC', 'TLP1', 'TLP2', 'FAX', 'EMAIL', 'WEBSITE', 'NOTE', 'STATUS', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT', 'DATA_ALL'], 'string'],
-            [['KD_DISTRIBUTOR', 'NM_DISTRIBUTOR', 'ALAMAT', 'PIC', 'TLP1', 'TLP2', 'STATUS'], 'required'],
+            [['KD_DISTRIBUTOR', 'NM_DISTRIBUTOR', 'ALAMAT', 'PIC', 'TLP1', 'TLP2', 'FAX', 'EMAIL', 'WEBSITE', 'NOTE', 'STATUS', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT', 'DATA_ALL', 'UPDATED_BY'], 'string'],
+            [['KD_DISTRIBUTOR', 'NM_DISTRIBUTOR', 'ALAMAT', 'PIC', 'STATUS'], 'required'],
  //           [['alamat', 'NOTE'], 'string'],
             [['TLP1', 'TLP2', 'FAX', 'STATUS'], 'integer'],
-            [['KD_DISTRIBUTOR'], 'string', 'max' => 50],
+            [['KD_DISTRIBUTOR'], 'string', 'max' => 255],
  //           [['nmDbtr', 'pic', 'email', 'website', 'createBy', 'createAt', 'updateAt', 'DATA_ALL'], 'string', 'max' => 255]
 			
-			[['CREATED_BY'], 'string', 'max' => 255]
+			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 255]
         ];
     }
 
@@ -65,7 +65,7 @@ class Distributor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ID_DISTRIBUTOR' => 'Id Dbtr',
+            'ID' => 'Id Dbtr',
             'KD_DISTRIBUTOR' => 'Kode Distributor',
             'NM_DISTRIBUTOR' => 'Nama Distributor',
             'ALAMAT' => 'Alamat Distributor',
@@ -75,11 +75,12 @@ class Distributor extends \yii\db\ActiveRecord
             'FAX' => 'Fax',
             'EMAIL' => 'Email',
             'WEBSITE' => 'Website',
-            'NOTE' => 'NOTE',
+            'NOTE' => 'Note',
             'STATUS' => 'Status Distributor',
             'CREATED_BY' => 'Create By',
             'CREATED_AT' => 'Create At',
             'UPDATED_AT' => 'Update At',
+            'UPDATED_BY' => 'Update By',
             'DATA_ALL' => 'Data All',
         ];
     }
