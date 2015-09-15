@@ -61,6 +61,22 @@ class PurchaseorderController extends Controller
         ]);
     }
 	
+    public function actionSimpanpo()
+    {
+        $model = new Purchaseorder();
+        $model->load(Yii::$app->request->post());
+
+
+        $kdpo = 'POB-'.date('ymdhis');
+        $ck = Purchaseorder::find()->where(['KD_PO'=>$kdpo])->count();  
+        if($ck == 0){
+            $model->KD_PO = $kdpo;
+            $model->STATUS = '100';
+            $model->save();
+        }
+        return $this->redirect(['create', 'kdpo' => $model->KD_PO]);
+    }
+
     public function actionSimpan()
     {
 //		var_dump($_POST);
@@ -77,15 +93,20 @@ class PurchaseorderController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($kdpo)
     {
         $model = new Purchaseorder();
-		$que = Requestorder::find()->where('STATUS <> 3')->all();  
-		
-		
+        $qq = Purchaseorder::find()->where(['KD_PO'=>$kdpo])->count();  
+        if($qq == 0){ return $this->redirect([' ']); }
+        if($kdpo == ''){ return $this->redirect([' ']); }
+        if($kdpo == null){ return $this->redirect([' ']); }
+
+
+		$que = Requestorder::find()->where('STATUS <> 3 and STATUS <> 0')->all();
+
         $searchModel = new RequestorderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
+        $dataProvider = $searchModel->cari(Yii::$app->request->queryParams);
+
 		return $this->render('create', [
 			'model' => $model,
 			'que' => $que,
@@ -106,7 +127,8 @@ class PurchaseorderController extends Controller
 public function actionDetail($kd_ro,$ids)
 {
     $searchModel = new RodetailSearch([
-        'KD_RO' => $kd_ro  // Tambahkan ini
+        'KD_RO' => $kd_ro,  // Tambahkan ini
+        'STATUS' => 1  // Tambahkan ini
     ]);
 	
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
