@@ -13,10 +13,10 @@ use scotthuangzl\googlechart\GoogleChart;
 //use backend\assets\AppAsset; 	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
 //AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
 
-$this->sideCorp = 'PT.Sarana Sinar Surya';                              /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'sss_warehouse';                                      /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Gosend - Warehouse Dashboard');           /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                          /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+$this->sideCorp = 'PT.Lukisongroup';                          /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'datamaster';                                  /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'LG - Barang Umum Dashboard');          /* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
 
 				$pertama= GoogleChart::widget(array('visualization' => 'PieChart',
 					'data' => array(
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;                          /* belum
         <div class="col-sm-4 col-md-4 col-lg-4 ">
             <?php
             echo Html::panel(
-                ['heading' => 'Employee Status', 'body' => $pertama],
+                ['heading' => 'Barang Status', 'body' => $pertama],
                 Html::TYPE_SUCCESS
             );
             ?>
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;                          /* belum
         <div class="col-sm-4 col-md-4 col-lg-4">
             <?php
             echo Html::panel(
-                ['heading' => 'Employee Properties', 'body' =>$kedua],
+                ['heading' => 'Supplier Properties', 'body' =>$kedua],
                 Html::TYPE_SUCCESS
             );
             ?>

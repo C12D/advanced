@@ -6,7 +6,7 @@
  * Author: -ptr.nov-
 */
 
-namespace lukisongroup\controllers\dashboard\esm;
+namespace lukisongroup\controllers\dashboard\master;
 
 /* VARIABLE BASE YII2 Author: -YII2- */
 use Yii;
@@ -19,6 +19,7 @@ use yii\filters\VerbFilter;
 	
 /**
  * HRD | CONTROLLER EMPLOYE .
+ *
  */
 class BarangController extends Controller
 {
@@ -26,7 +27,7 @@ class BarangController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(['prodak']),
+                'class' => VerbFilter::className(['barang']),
                 'actions' => [
                     //'delete' => ['post'],
 					'save' => ['post'],
