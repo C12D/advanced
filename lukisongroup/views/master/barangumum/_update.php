@@ -10,6 +10,7 @@ use lukisongroup\models\master\Unitbarang;
 use lukisongroup\models\master\Suplier;
 use lukisongroup\models\master\Perusahaan;
 use lukisongroup\models\master\Tipebarang;
+use lukisongroup\models\hrd\Corp;
 
 use kartik\widgets\FileInput;
 /* @var $this yii\web\View */
@@ -21,6 +22,11 @@ use kartik\widgets\FileInput;
 
     <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL,'options' => ['enctype' => 'multipart/form-data']]); ?>
 
+    <?php
+        $drop = ArrayHelper::map(Corp::find()->all(), 'CORP_ID', 'CORP_NM');
+    ?>
+    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --','disabled'=>true])->label('Group Perusahaan') ?>
+    
     <?= $form->field($model, 'KD_BARANG')->textInput(['maxlength' => true, 'readonly'=>true]) ?>
 
     <?= $form->field($model, 'NM_BARANG')->textInput(['maxlength' => true]) ?>
@@ -46,8 +52,6 @@ use kartik\widgets\FileInput;
 	?>
     <?= $form->field($model, 'KD_SUPPLIER')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Supplier') ?>
 
-    <?= $form->field($model, 'KD_DISTRIBUTOR')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'PARENT')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'HPP')->textInput() ?>
@@ -64,36 +68,19 @@ use kartik\widgets\FileInput;
 
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
-	<?php
-		$drop = ArrayHelper::map(Perusahaan::find()->all(), 'KD_CORP', 'NM_CORP');
-	?>
-    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --','disabled'=>true])->label('Group Perusahaan') ?>
-	
-	
     <?= $form->field($model, 'KD_CAB')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'KD_DEP')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'STATUS')->dropDownList(['' => ' -- Silahkan Pilih --', '0' => 'Tidak Aktif', '1' => 'Aktif']) ?>
-    <?php //= $form->field($model, 'STATUS')->textInput() ?>
-
-    <?php //= $form->field($model, 'CREATED_BY')->textInput(['maxlength' => true]) ?>
-
-    <?php //= $form->field($model, 'CREATED_AT')->textInput() ?>
 
     <?= $form->field($model, 'UPDATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
-    <?php //= $form->field($model, 'UPDATED_BY')->textInput(['maxlength' => true]) ?>
 
-    <?php //= $form->field($model, 'UPDATED_AT')->textInput() ?>
-
-    <?php //= $form->field($model, 'DATA_ALL')->textarea(['rows' => 6]) ?>
-
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-		</div>
-    </div>
-
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+        <?= Html::submitButton('<i class="fa fa-pencil"></i>&nbsp;&nbsp; Ubah Barang Umum', ['class' => 'btn btn-primary']) ?>
+        </div>
+    </div><br/><br/>
 
     <?php ActiveForm::end(); ?>
 

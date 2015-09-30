@@ -14,7 +14,7 @@ use scotthuangzl\googlechart\GoogleChart;
 //AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
 
 $this->sideCorp = 'PT.Lukisongroup';                          /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'datamaster';                                  /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->sideMenu = 'umum_datamaster';                                  /* kd_menu untuk list menu pada sidemenu, get from table of database */
 $this->title = Yii::t('app', 'LG - Barang Umum Dashboard');          /* title pada header page */
 $this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
 

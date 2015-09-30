@@ -11,179 +11,174 @@ use yii\bootstrap\Modal;
 use lukisongroup\models\esm\ro\Rodetail;
 use lukisongroup\models\esm\ro\RodetailSearch;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\esm\po\Purchaseorder */
-/* @var $form yii\widgets\ActiveForm */
+use lukisongroup\models\master\Barangumum;
+use lukisongroup\models\master\Suplier;
+use lukisongroup\models\master\Unitbarang;
+
+use lukisongroup\models\esm\po\Podetail;
+
 ?>
 
 <!-- Stack the columns on mobile by making one full-width and the other half-width -->
 <div class="row">
 	<div class="col-xs-12 col-md-3">
-
     <?php Pjax::begin(['id'=>'pjax-users']); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             'KD_RO',
-		[
-            'format'=>'raw',
-            'value' => function ($data){
-                $count = \lukisongroup\models\esm\ro\Rodetail::find()
-                    ->where([
-                        'KD_RO'=>$data->KD_RO,
-                    ])
-                    ->count();
- 
-                if(!empty($count)){
-                    return  Html::a('<button type="button" class="btn btn-success btn-xs">View</button>',['detail','kd_ro'=>$data->KD_RO,'ids'=>'adw'],[
-                                                    'data-toggle'=>"modal",
-                                                    'data-target'=>"#myModal",
-                                                    'data-title'=> $data->KD_RO,
-                                                    ]); // ubah ini
-                } else {
-                    return '<button type="button" class="btn btn-danger btn-xs">No Data</button>';
-                }
-            }
+			[
+	            'format'=>'raw',
+	            'value' => function ($data){
+	                $count = Rodetail::find()
+	                    ->where([
+	                        'KD_RO'=>$data->KD_RO,
+	                    ])
+	                    ->count();
+	 
+	                if(!empty($count)){
+	                    return  Html::a('<button type="button" class="btn btn-success btn-xs">View</button>',['detail','kd_ro'=>$data->KD_RO,'kdpo'=>$_GET['kdpo']],[
+	                                                    'data-toggle'=>"modal",
+	                                                    'data-target'=>"#myModal",
+	                                                    'data-title'=> $data->KD_RO,
+	                                                    ]); // ubah ini
+	                } else {
+	                    return '<button type="button" class="btn btn-danger btn-xs">No Data</button>';
+	                }
+	            }
+	        ],
         ],
-        ],
-    ]); ?>
+   		]); 
+    ?>
     <?php Pjax::end(); ?>
 	
-<?php
-$this->registerJs("
-    $('#myModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var modal = $(this)
-        var title = button.data('title') 
-        var href = button.attr('href') 
-        modal.find('.modal-title').html(title)
-        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
-        $.post(href)
-            .done(function( data ) {
-                modal.find('.modal-body').html(data)
-            });
-        })
-");
+	<?php
+		$this->registerJs("
+		    $('#myModal').on('show.bs.modal', function (event) {
+		        var button = $(event.relatedTarget)
+		        var modal = $(this)
+		        var title = button.data('title') 
+		        var href = button.attr('href') 
+		        modal.find('.modal-title').html(title)
+		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
+		        $.post(href)
+		            .done(function( data ) {
+		                modal.find('.modal-body').html(data)
+		            });
+		        })
+		");
 
-Modal::begin([
-    'id' => 'myModal',
-    'header' => '<h4 class="modal-title">...</h4>',
-]);
- 
-echo '...';
- 
-Modal::end();
-?>
+		Modal::begin([
+		    'id' => 'myModal',
+		    'header' => '<h4 class="modal-title">...</h4>',
+		]);
+		 
+		echo '...';
+		 
+		Modal::end();
+	?>
 	
-	
-		<!-- div class="list-group">
-			<?php $a = 0; foreach($que as $qu){ $a=$a+1; ?>
-				<a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal<?php echo $a; ?>"><?php echo $qu->KD_RO; ?> - <?php echo $qu->KD_CORP; ?> - <?php echo $qu->KD_DEP; ?></a>
-				
-				<?php $detail = Rodetail::find()->where('STATUS <> 3')->andwhere(['KD_RO' => $qu->KD_RO])->all();   ?>
-				<!-- Modal -- >
-				
-				<div class="modal fade" id="myModal<?php echo $a; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				  <div class="modal-dialog" role="document">
-					<div class="modal-content">
-					  <div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Detail : <?php echo $qu->KD_RO; ?> - <?php echo $qu->KD_CORP; ?> - <?php echo $qu->KD_DEP; ?></h4>
-					  </div>
-					  <div class="modal-body">
-					  
-						<table class="table table-bordered table-hover table-striped">
-							<thead style="background-color:orange;">
-								<tr>
-									<th>#</th>
-									<th>Kode Barang</th>
-									<th>Nama Barang</th>
-									<th>Qty</th>
-									<th>Unit</th>
-									<th>Pilih</th>
-								</tr>
-							</thead>
-							
-							<tbody>
-								<?php $b = 0; foreach($detail as $det){ $b=$b+1; ?>
-									<tr>
-										<th scope="row"><?php echo $b; ?></th>
-										<td><?php echo $det->KD_BARANG; ?></td>
-										<td><?php echo $det->NM_BARANG; ?></td>
-										<td><?php echo $det->QTY; ?></td>
-										<td><?php echo $det->UNIT; ?></td>
-										<td><input type="checkbox" name="pilih[]" value="<?php echo $det->ID; ?>"/></td>
-									</tr>
-								<?php } ?>
-							</tbody>
-						
-						</table>
-					  </div>
-					  <div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					  </div>
-					</div>
-				  </div>
-				</div>
-
-			<?php } ?>
-			
-			
-		</div -->
 	</div>
-  
-	<div class="col-xs-12 col-md-9">
 
-		<table class="table table-bordered table-hover table-striped">
+
+	<div class="col-xs-12 col-md-9">
+		<h2 style="margin-top:0px;">&nbsp;&nbsp;&nbsp; 
+		<?php 
+			$brg = Suplier::find('NM_SUPPLIER')->where(['KD_SUPPLIER'=>$quer->KD_SUPPLIER])->one(); 
+			echo $brg->NM_SUPPLIER;
+		?>
+		</h2>
+
+
+		<table class="table table-bordered table-striped"  style="border-collapse:collapse;">
 			<thead style="background-color:orange;">
 				<tr>
 					<th>#</th>
-					<th>Kode Barang</th>
 					<th>Nama Barang</th>
 					<th>Qty</th>
 					<th>Unit</th>
-					<th>Pilih</th>
 				</tr>
 			</thead>
 			
 			<tbody>
-			
+				<?php $a=0; foreach ($podet as $po => $rows) { $a=$a+1; ?>
+				
+				<tr class=" accordion-toggle" data-toggle="collapse" data-target="#demo<?php echo $a; ?>" style="cursor:pointer;">
+					<?php $nmBrg = Barangumum::find('NM_BARANG')->where(['KD_BARANG'=>$rows->KD_BARANG])->one(); ?>
+					<td><?php echo $a; ?></td>
+					<td><?php echo $nmBrg->NM_BARANG; ?></td>
+					<td><?php echo $rows->QTY; ?></td>
+					<td><?php echo $rows->UNIT; ?></td>
+				</tr>
+
+		        <tr >
+		            <td colspan="6"  class="hiddenRow"  style="padding:0px;">
+		            	<div class="accordian-body collapse" id="demo<?php echo $a; ?>" style="padding:10px;">
+		            		<table class="table table-hover">
+								<thead style="background-color:#FF8533;">
+									<tr>
+										<th>Kode RO</th>
+										<th>Quantity</th>
+										<th>Unit</th>
+									</tr>
+								</thead>
+
+<?php
+$kdpo = $_GET['kdpo'];
+$form = ActiveForm::begin([
+    'method' => 'post',
+    'action' => ['esm/purchaseorder/spo?kdpo='.$kdpo],
+]);
+?>
+								<tbody>
+									<?php $pod = Podetail::find()->where(['ID_DET_PO'=>$rows->ID])->all(); ?>
+									<?php $b=0; foreach ($pod as $pods => $pode) { $b=$b+1;  ?>
+									<tr>
+										<td><?php echo $pode->KD_RO; ?></td>
+										<td id="<?php echo 'a'.$a.''.$b; ?>" onclick="edit(<?php echo $a.''.$b; ?>)">
+											<?php echo $pode->QTY; ?>
+										</td>
+										<td style="display:none;" id="<?php echo 'b'.$a.''.$b; ?>">
+
+											<div class="row">
+											  <div class="col-xs-2">
+											  	<input type="text" class="form-control" value="<?php echo $pode->QTY; ?>" name="qty[]" />
+											  	<input type="hidden" class="form-control" value="<?php echo $pode->ID; ?>" name="id[]" />
+											  	<input type="hidden" class="form-control" value="<?php echo $rows->ID; ?>" name="idpo" />
+											  </div>
+											  <div class="col-xs-8">
+											  	<input type="text" class="form-control" value="" placeholder="Keterangan" name="ket[]" />
+											  </div>
+											</div>
+
+										</td>
+										<td>
+									<?php $brg = Unitbarang::find('NM_UNIT')->where(['KD_UNIT'=>$pode->UNIT])->one(); ?><?php echo $brg->NM_UNIT; ?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+		            		</table>
+		            		<div style="text-align:right;">
+		            			<button type="submit" class="btn btn-success">Ubah Qty</button>
+		            		</div>
+<?php
+ ActiveForm::end(); 
+ ?>
+
+		            	</div>  
+		            </td>
+		        </tr>
+
+				<?php } ?>
 			</tbody>
-		
 		</table>	
+
+<script>
+function edit(kd){
+	document.getElementById('a'+kd).style.display="none";
+	document.getElementById('b'+kd).style.display="block";
+}	
+</script>
 	</div>
 </div>
-
-<!--
-<div class="purchaseorder-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'KD_PO')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'KD_SUPPLIER')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'CREATE_BY')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'CREATE_AT')->textInput() ?>
-
-    <?= $form->field($model, 'APPROVE_BY')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'APPROVE_AT')->textInput() ?>
-
-    <?= $form->field($model, 'STATUS')->textInput() ?>
-
-    <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-	<iframe src="../requestorder" style="width:100%; height:600px;">
-	</iframe>
-</div>
--->

@@ -1,21 +1,17 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+$this->sideCorp = 'PT.Lukisongroup';                        /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'admin';                                  /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'LG - Administrator');         /* title pada header page */
 
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
-/* add Menu Author: -ptr.nov-*/
-$this->sideMenu = 'admin';
-$this->title = 'Signup';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
+   
 
-    <p>Please fill out the following fields to signup:</p>
-
+   
     <div class="row">
+        <div class="col-lg-3"></div>
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
                 <?= $form->field($model, 'username') ?>

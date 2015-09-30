@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\system\user;
+namespace lukisongroup\models\system\user;
 use lukisongroup\models\hrd\Employe;
 use kartik\builder\Form;
 use Yii;
@@ -33,8 +33,8 @@ class Userlogin extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'User.ID'),
-            'username' => Yii::t('app', 'Username'),
-			'auth_key' => Yii::t('app', 'AuthKey'),
+            'username' => Yii::t('app', 'User Name'),
+			'auth_key' => Yii::t('app', 'Access Token'),
 			'password_hash' => Yii::t('app', 'Password Hash'),
 			'password_reset_token' => Yii::t('app', 'Reset Password'),
 			'email' => Yii::t('app', 'Email'),

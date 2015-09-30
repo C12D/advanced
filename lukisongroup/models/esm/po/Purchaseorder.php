@@ -4,6 +4,7 @@ namespace lukisongroup\models\esm\po;
 
 use Yii;
 
+
 /**
  * This is the model class for table "p0001".
  *
@@ -35,6 +36,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
         return Yii::$app->get('db_esm');
     }
 
+
     /**
      * @inheritdoc
      */
@@ -47,7 +49,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
             [['STATUS'], 'integer'],
             [['NOTE'], 'string'],
             [['KD_PO'], 'string', 'max' => 30],
-            [['KD_SUPPLIER', 'CREATE_BY', 'APPROVE_BY'], 'string', 'max' => 20]
+            [['KD_SUPPLIER', 'CREATE_BY', 'APPROVE_BY'], 'string', 'max' => 50]
         ];
     }
 

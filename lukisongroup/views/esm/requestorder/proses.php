@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
 
 
 
-<div class="requestorder-view">
+<div class="requestorder-view" style="margin:0px 20px;">
 
     <center>
 		<h2 style="margin-bottom:0px;"><b>Form Permintaan Barang</b></h2>
@@ -88,11 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
         </tbody>
     </table>
 	
-	<div style="text-align:left; float:left;">
+	<!-- div style="text-align:left; float:left;">
 	<?php 
 		echo Html::a('<i class="fa fa-print fa-fw"></i> Cetak', ['cetakpdf','kd'=>$reqro->KD_RO], ['target' => '_blank', 'class' => 'btn btn-warning']);
 	?>
-	</div>
+	</div -->
 	
 	<div style="text-align:right;">
 		<?php if($sts == 0){ ?><button type="submit" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp;Terima RO</button><?php } ?>

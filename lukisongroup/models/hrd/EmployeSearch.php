@@ -38,7 +38,7 @@ class EmployeSearch extends Employe
     {
         return [
             [['EMP_ID', 'EMP_NM','EMP_NM_BLK','EMP_JOIN_DATE','EMP_RESIGN_DATE'], 'safe'],
-			[['EMP_ID','EMP_CORP_ID'], 'string', 'max' => 10],
+			[['EMP_ID','EMP_CORP_ID'], 'string', 'max' => 15],
 			[['corpOne.CORP_NM','deptOne.DEP_NM','jabOne.JAB_NM','sttOne.STS_NM'], 'safe'],
         ];
     }
@@ -148,7 +148,7 @@ class EmployeSearch extends Employe
             ->JoinWith('jabOne',true,'left JOIN')
             ->JoinWith('sttOne',true,'left JOIN')
             //->where(['a0001.EMP_STS' => 3]);
-            ->Where('a0001.EMP_STS=3 or a0001.status=3');
+            ->Where('a0001.EMP_STS=3 and a0001.status<>3');
         /* SUB JOIN*/
         //$query->leftJoin(['company'=>$queryCop],'company.CORP_ID=a0001.EMP_CORP_ID');//->orderBy(['company.CORP_ID'=>SORT_ASC]);
         //->andFilterWhere(['EMP_ID'=>'006']);

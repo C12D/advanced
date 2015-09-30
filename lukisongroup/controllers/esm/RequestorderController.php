@@ -10,7 +10,6 @@ use lukisongroup\models\esm\ro\Requestorderstatus;
 
 use lukisongroup\models\esm\ro\Rodetail;
 use lukisongroup\models\esm\ro\RodetailSearch;
-
 use lukisongroup\models\hrd\Employe;
 
 use yii\web\Controller;
@@ -111,16 +110,22 @@ class RequestorderController extends Controller
 		$model->KD_DEP = $dt[0]['DEP_ID'];
 		$model->KD_CORP = $dt[0]['EMP_CORP_ID'];
 		$model->CREATED_AT = date("Y-m-d H:i:s");
-		$model->save();
 		
-		
-		$que = "SELECT EMP_ID FROM a0001 WHERE DEP_ID='GA' AND (JAB_ID='MGR' OR JAB_ID='SVR')";
+		$jab = $dt[0]['DEP_ID'];
+		$que = "SELECT EMP_ID FROM a0001 WHERE (DEP_ID='GA' OR DEP_ID='$jab' ) AND (JAB_ID='MGR' OR JAB_ID='SVR') AND EMP_STS<>'3'";
 		$modelss = $connection->createCommand($que);
 		$users = $modelss->queryAll();
-		foreach($users as $usr){ $isi[] = ['KD_RO'=>$kode,'ID_USER'=>$usr['EMP_ID'],'STATUS'=>'0'];}
-		$cons->createCommand()->batchInsert( Requestorderstatus::tableName(), ['KD_RO', 'ID_USER', 'STATUS'], $isi )->execute();		
-		
-		return $this->redirect(['buatro','id'=>$kode]);
+
+        if(count($users) != 0){
+    		foreach($users as $usr){ 
+                $isi[] = ['KD_RO'=>$kode,'ID_USER'=>$usr['EMP_ID'],'STATUS'=>'0'];
+            }
+
+            $model->save(); 
+    		$cons->createCommand()->batchInsert( Requestorderstatus::tableName(), ['KD_RO', 'ID_USER', 'STATUS'], $isi )->execute();	
+            return $this->redirect(['buatro','id'=>$kode]);
+		}
+        return $this->redirect([' ']);
 	//	print_r(Yii::$app->user->identity);
     }
 	
@@ -162,6 +167,11 @@ class RequestorderController extends Controller
 		$empId = Yii::$app->user->identity->EMP_ID;
 		$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
 		if($dt[0]['JAB_ID'] != 'MGR'){ return $this->redirect(['esm/requestorder']); }
+
+        $rostat = Requestorderstatus::find()->where(['KD_RO' => $kd,'ID_USER' => $empId])->one();
+        if(count($rostat) == 0){
+            return $this->redirect([' ']);
+        }
 		
     	$ro = new Requestorder();
 		$reqro = Requestorder::find()->where(['KD_RO' => $kd])->one();
@@ -169,10 +179,9 @@ class RequestorderController extends Controller
         $employ = $reqro->employe;
     	
 		//$ro = new Requestorderstatus();
-		$rostat = Requestorderstatus::find()->where(['KD_RO' => $kd,'ID_USER' => $empId])->one();
-		$rostat->STATUS =  1;
+        $rostat->STATUS =  1;
 		$rostat->save();
-		
+
         return $this->render('proses', [
             'reqro' => $reqro,
             'detro' => $detro,
@@ -237,8 +246,6 @@ class RequestorderController extends Controller
 	
     public function actionHapusro($id)
     {
-
-	echo $id;
         \Yii::$app->db_esm->createCommand()
             ->update('r0001', ['status'=>3], ['KD_RO'=>$id])
             ->execute();
@@ -266,8 +273,6 @@ class RequestorderController extends Controller
     public function actionCreatepo()
     {
         return $this->render('createpo');
-		
-		
     }
 
 	
@@ -278,7 +283,6 @@ class RequestorderController extends Controller
 		$detro = $reqro->detro;
         $employ = $reqro->employe;
     	
-        
 		$mpdf=new mPDF();
 		$mpdf->WriteHTML($this->renderPartial( 'pdfTester', [
             'reqro' => $reqro,

@@ -3,26 +3,17 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use lukisongroup\models\master\Barangumum;
+use lukisongroup\models\hrd\Corp;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\master\Barangumum */
-
-$this->title = $model->NM_BARANG;
-$this->params['breadcrumbs'][] = ['label' => 'Barang Umum', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
-
-$this->sideCorp = 'Lukison Group';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'datamaster';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+$this->sideCorp = 'Master Data Umum';                  	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'umum_datamaster';                   	/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Umum - Barang Detail ');  /* title pada header page */
 
 ?>
 <div class="barangumum-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-	<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div>
-
+ 
+    <div class="row"> 
+        <div class="col-md-8" style="margin:10px;"> 
 
 <?php
 	$sts = $model->STATUS;
@@ -37,7 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+
 			'KD_BARANG',
+			[
+				'label' => 'Group Perusahaan',
+				'value' => $model->corp->CORP_NM,
+			],
 			'NM_BARANG',
 			[
 				'label' => 'Type Barang',
@@ -63,17 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
 				'value' => $model->suplier->NM_SUPPLIER,
 			],
 			
-			'KD_DISTRIBUTOR',
+//			'KD_DISTRIBUTOR',
 			'PARENT',
 			'HPP',
 			'HARGA',
 			'BARCODE',
 			'NOTE:ntext',
-			
-			[
-				'label' => 'Group Perusahaan',
-				'value' => $model->perusahaan->NM_CORP,
-			],
 			
 			[
 				'label' => 'Status',
@@ -93,4 +84,8 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
 			],
         ]) ?>
     </p>
+
+        </div>
+    </div>
 </div>
+

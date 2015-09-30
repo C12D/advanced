@@ -47,5 +47,17 @@ class BarangController extends Controller
 		
 		return $this->render('index');
     }
-	
+	public function actionChat()
+    {
+        //$model = new LoginForm();
+		//$this->sideMenu = 'alg_purchasing';
+		//$model = Employe::findOne('LG.2015.0000');
+		//$js='$("#chating").modal("show")';
+		//$this->getView()->registerJs($js);
+		return $this->render('/widget/chat/index',[
+			//'model' => $model,
+			'ctrl_chat'=>'umum_datamaster',
+		]);
+       
+    }
 }

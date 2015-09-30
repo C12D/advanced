@@ -4,29 +4,35 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use lukisongroup\models\esm\Barang;
 
-/* @var $this yii\web\View */
-/* @var $searchModel lukisongroup\models\esm\BarangSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Barang';
-$this->params['breadcrumbs'][] = $this->title;
-
-$this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+$this->sideCorp = 'ESM Prodak';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'esm_datamaster';                   /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'ESM - Prodak');           /* title pada header page */
 
 ?>
 
 
 <div class="barang-index">
     <?php
-	$gridColumns = [
+		$gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
-
+			[
+				/*Author -ptr.nov- image*/
+               'attribute' => 'Gambar',
+               'format' => 'html', //'format' => 'image',
+               'value'=>function($data){
+                            return Html::img(Yii::$app->urlManager->baseUrl.'/upload/barangesm/' . $data->IMAGE, ['width'=>'40']);
+                        },
+            ],  
+			
             'KD_BARANG',
-			'nmdbtr',
+			'NM_BARANG',
 			'unitbrg',
+			 'HPP', 'HARGA',
+			'KD_TYPE',
+			'KD_KATEGORI', 
+			'STATUS',
+			//'nmdbtr',
+		
 			
 			[
 				'format' => 'raw',
@@ -42,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
         ]; 
 	
 	
-	echo Yii::$app->gv->grview($gridColumns,$dataProvider,$searchModel, 'Barang ESM', 'barang-esm',$this->title);
+	echo Yii::$app->gv->grview($gridColumns,$dataProvider,$searchModel, 'Barang ESM', 'barang-esm','');
 	
 	?>
 </div>

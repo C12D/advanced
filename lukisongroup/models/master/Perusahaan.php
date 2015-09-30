@@ -18,7 +18,7 @@ class Perusahaan extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'c1000';
+        return 'a0001';
     }
 
     /**

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
 $this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
+$this->title = Yii::t('app', 'Permintaan Barang');         /* title pada header page */
 $this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
 
 ?>
@@ -40,7 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
     ?>
 </aside -->
 
-<div class="requestorder-index">
+<div class="requestorder-index" style="padding:10px;">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <hr/>
 
     <?php 
 	$empId = Yii::$app->user->identity->EMP_ID;

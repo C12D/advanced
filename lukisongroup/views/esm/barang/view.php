@@ -4,23 +4,12 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use lukisongroup\models\esm\Barang;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\esm\Barang */
-
-$this->title = $model->KD_BARANG;
-$this->params['breadcrumbs'][] = ['label' => 'Barang', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
-$this->sideCorp = 'ESM Request Order';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'esm_esm';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+$this->sideCorp = 'ESM Prodak';                       	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'esm_datamaster';                   	/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'ESM - Prodak View');       /* title pada header page */
 
 ?>
 <div class="barang-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-	<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div> 
 
 <?php
 	$sts = $model->STATUS;
@@ -36,24 +25,25 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
     <?= DetailView::widget([
 		'model' => $model,
 		'attributes' => [
-			'KD_BARANG',
-			'NM_BARANG',
-			[
-				'label' => 'Total Barang',
-				'value' => $model->unitb->NM_UNIT,
-			],
-			[
-				'label' => 'Nama Distributor',
-				'value' => $model->dbtr->NM_DISTRIBUTOR,
-			],
 			[
 				'attribute'=>'Gambar',
 				'value'=>Yii::$app->urlManager->baseUrl.'/upload/barangesm/'.$gmbr,
 				'format' => ['image',['width'=>'150','height'=>'150']],
 			],	
+			'KD_BARANG',
+			'NM_BARANG',
+			[
+				'label' => 'Total Barang',
+				'value' => $model->unitb->NM_UNIT,
+			],	
+			
 			'HPP',
 			'HARGA',
-			'BARCODE',
+			//'BARCODE',
+			[
+				'label' => 'Nama Distributor',
+				'value' => $model->dbtr->NM_DISTRIBUTOR,
+			],
 			'NOTE',
 			[
 				'label' => 'Status',
