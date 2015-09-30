@@ -52,7 +52,7 @@ class EmployeController extends Controller
 		//set menu side menu index - Array Jeson Decode
        // $side_menu=M1000::find()->findMenu('sss_berita_acara')->one()->jval;
         //$side_menu=json_decode($side_menu,true);
-
+		
 		/*	variable content View Employe Author: -ptr.nov- */
         $searchModel = new EmployeSearch();
 		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -113,6 +113,8 @@ class EmployeController extends Controller
             echo $out;
             return;
         }
+		//$generate_key_emp= Yii::$app->ambilkonci->getKey_Employe('GSN');
+		//print_r($generate_key_emp);
 		return $this->render('index', [
 			//'side_menu'=>$side_menu,			/* Content variable Array -SideMenu- */
             'searchModel' => $searchModel, 		/* Content variable Array -Filter Search- */
@@ -241,5 +243,38 @@ class EmployeController extends Controller
         // Else return to rendering a normal view
         //return $this->render('view', ['model'=>$model]);
     }
+	
+	
+	//combo get 
+	   public function actionSubcat() {
+            $out = [];
+            if (isset($_POST['depdrop_parents'])) {
+                $parents = $_POST['depdrop_parents'];
+                //print_r($parents);
+                if ($parents != null) {
+                    $cat_id = $parents[0];
+					//$generate_key_emp= Yii::$app->ambilkonci->getKey_Employe($cat_id);
+                    $generate_key_emp1= Yii::$app->ambilkonci->getKey_Employe($cat_id);
+                    //$out = self::getSubCatList($cat_id);
+                    // the getSubCatList function will query the database based on the
+                    // cat_id and return an array like below:
+                   // $out = self::getSubCatList1($cat_id);
+                    $data=[
+                            'out'=>[
+                                //['id'=>$generate_key_emp1, 'name'=> $generate_key_emp1],
+                                ['id'=> $generate_key_emp1, 'name'=>$generate_key_emp1, 'options'=> ['style'=>['color'=>'red'],'disabled'=>false]],
+                                //['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
+                                ],
+                            'selected'=>$generate_key_emp1,
+                        ];
+                   // $selected = self::getSubcat($cat_id);
+
+                    echo Json::encode(['output'=>$data['out'], 'selected'=>$data['selected']]);
+                    return;
+                }
+            }
+            echo Json::encode(['output'=>'', 'selected'=>'']);
+        }
+	
 	
 }

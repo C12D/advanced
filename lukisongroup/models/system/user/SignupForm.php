@@ -1,5 +1,5 @@
 <?php
-namespace app\models\system\user;
+namespace lukisongroup\models\system\user;
 
 use common\models\User;
 use yii\base\Model;
@@ -62,5 +62,16 @@ class SignupForm extends Model
         }
 
         return null;
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app', 'Username'),
+            'email' => Yii::t('app', 'eMail'),
+            'password' => Yii::t('app', 'Password'),
+            'auth_key' => Yii::t('app', 'Access Token'),
+                 
+        ];
     }
 }

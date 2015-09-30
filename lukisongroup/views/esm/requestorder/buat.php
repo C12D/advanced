@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
 
 ?>
 
-<div class="requestorder-form">
+<div class="requestorder-form" style="margin:0px 20px;">
 
     <?php // $form = ActiveForm::begin(); ?>
 	<?php
@@ -62,5 +62,5 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
     </div>
 
     <?php ActiveForm::end(); ?>
-
+zdefr
 </div>

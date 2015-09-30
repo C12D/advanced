@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="ttl">
 	<center>
-		<?php echo Html::img('@web/img/lukison.png',  ['class' => 'pnjg']);?>
+		<?php echo Html::img('@web/upload/lukison.png',  ['class' => 'pnjg']);?>
 	</center>
 
 

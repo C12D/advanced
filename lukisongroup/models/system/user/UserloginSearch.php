@@ -6,7 +6,7 @@
  * Author: -ptr.nov-
 */
 
-namespace app\models\system\user;
+namespace lukisongroup\models\system\user;
 
 use Yii;
 use yii\base\Model;

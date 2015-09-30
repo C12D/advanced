@@ -4,7 +4,8 @@ namespace lukisongroup\models\master;
 
 use Yii;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;;
+use yii\data\ActiveDataProvider;
+use lukisongroup\models\master\Barangumum;
 
 /**
  * BarangumumSearch represents the model behind the search form about `app\models\master\Barangumum`.
@@ -45,17 +46,17 @@ class BarangumumSearch extends Barangumum
     public function search($params)
     {
         $query = Barangumum::find()->where('b1000.STATUS <> 3');
-		//$query->joinWith(['type' => function ($q) {
-		//	$q->where('b1001.NM_TYPE LIKE "%' . $this->nmtype . '%"');
-		//}]);
-		//$query->joinWith(['kategori' => function ($q) {
-		//	$q->where('b1002.NM_KATEGORI LIKE "%' . $this->nmktegori . '%"');
-		//}]);
+		$query->joinWith(['type' => function ($q) {
+			$q->where('b1001.NM_TYPE LIKE "%' . $this->nmtype . '%"');
+		}]);
+		$query->joinWith(['kategori' => function ($q) {
+			$q->where('b1002.NM_KATEGORI LIKE "%' . $this->nmktegori . '%"');
+		}]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-/*
+
 		 $dataProvider->setSort([
 			'attributes' => [
             'KD_BARANG',
@@ -72,14 +73,14 @@ class BarangumumSearch extends Barangumum
 				]
 			]
 		]);
-		*/
+		
     if (!($this->load($params) && $this->validate())) {
         /**
          * The following line will allow eager loading with country data 
          * to enable sorting by country on initial loading of the grid.
          */ 
-       // $query->joinWith(['type']);
-     //   $query->joinWith(['kategori']);
+        $query->joinWith(['type']);
+        $query->joinWith(['kategori']);
         return $dataProvider;
     }
 

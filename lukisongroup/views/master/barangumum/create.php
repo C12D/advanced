@@ -2,27 +2,18 @@
 
 use yii\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\master\Barangumum */
-
-$this->title = 'Buat Barang Umum';
-$this->params['breadcrumbs'][] = ['label' => 'Barang Umum', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
-$this->sideCorp = 'Lukison Group';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'datamaster';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
-
+$this->sideCorp = 'Master Data Umum';                  /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'umum_datamaster';                   /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Umum - Barang Entry ');    /* title pada header page */
 ?>
 <div class="barangumum-create">
 
-   
-	<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div> 
+	<div class="row"> 
+		<div class="col-md-8" style="margin:10px;"> 
+		    <?= $this->render('_form', [
+		        'model' => $model,
+		    ]) ?>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+		</div>
+	</div>
 </div>

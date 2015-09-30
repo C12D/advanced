@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 use lukisongroup\models\master\Suplier;
 
 /* @var $this yii\web\View */
@@ -15,6 +15,13 @@ $this->title = 'Purchaseorders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="purchaseorder-index">
+
+<script type="text/javascript">
+function submitform()
+{
+  document.myform.submit();
+}
+</script>
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -35,18 +42,21 @@ $this->params['breadcrumbs'][] = $this->title;
 					<h4 class="modal-title" id="myModalLabel">Pilih Supplier</h4>
 				  </div>
 				  
-    <?php $form = ActiveForm::begin(); ?>
+    			<?php $form = ActiveForm::begin([
+					'type' => ActiveForm::TYPE_HORIZONTAL,
+					'method' => 'post',
+					'action' => ['esm/purchaseorder/simpanpo'],
+				]); ?>
 				  <div class="modal-body">
 					
-	<?php $drop = ArrayHelper::map(Suplier::find()->where(['STATUS' => 1])->all(), 'KD_SUPPLIER', 'NM_SUPPLIER'); ?>
-    <?= $form->field($model, 'KD_SUPPLIER')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Supplier') ?>
+				<?php $drop = ArrayHelper::map(Suplier::find()->where(['STATUS' => 1])->all(), 'KD_SUPPLIER', 'NM_SUPPLIER'); ?>
+			    <?= $form->field($model, 'KD_SUPPLIER')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Supplier') ?>
 				  </div>
 				  <div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				  </div>
-				  
-    <?php ActiveForm::end(); ?>
+					<button type="submit" class="btn btn-primary" >Save changes</button>
+				  </div> 
+  				<?php ActiveForm::end(); ?>
 			</div>
 		  </div>
 		</div>

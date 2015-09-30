@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
 
 
 
-<div class="requestorder-view">
+<div class="requestorder-view" style="margin:0px 20px;">
 
     <center>
 		<h2 style="margin-bottom:0px;"><b>Form Permintaan Barang</b></h2>

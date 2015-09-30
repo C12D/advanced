@@ -1,5 +1,5 @@
 <?php
-namespace app\models\system\user;
+namespace lukisongroup\models\system\user;
 
 use common\models\User;
 use yii\base\Model;

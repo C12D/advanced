@@ -60,7 +60,8 @@ $tab_employe= GridView::widget([
                         },
             ],  
 				'EMP_ID',
-            [
+            /*
+			[
                 'class' => 'kartik\grid\EditableColumn',
                 'attribute' =>'EMP_NM',
                 'readonly'=>function($model, $key, $index, $widget) {
@@ -73,16 +74,17 @@ $tab_employe= GridView::widget([
                     //    'pluginOptions' => ['min'=>0, 'max'=>5000]
                    // ]
                 ],
-                /*
+                /
                 'editableOptions'=> function ($model, $key, $index, $widget) {
                         return [
                             'header'=>'Employe name',
                             'size'=>'md',
                         ];
                     }
-                */
+                /
             ],
-
+			*/
+				'EMP_NM',
 				'EMP_NM_BLK',			
             [
 				/*Author -ptr.nov-*/

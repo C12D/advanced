@@ -6,6 +6,7 @@ use kartik\widgets\SwitchInput;
 
 use yii\helpers\ArrayHelper;
 use lukisongroup\models\master\Perusahaan;
+use lukisongroup\models\hrd\Corp;
 
 /* @var $this yii\web\View */
 /* @var $model lukisongroup\models\esm\Suplier */
@@ -43,7 +44,7 @@ use lukisongroup\models\master\Perusahaan;
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
 	<?php
-		$drop = ArrayHelper::map(Perusahaan::find()->all(), 'KD_CORP', 'NM_CORP');
+		$drop = ArrayHelper::map(Corp::find()->all(), 'CORP_ID', 'CORP_NM');
 	?>
     <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
 	

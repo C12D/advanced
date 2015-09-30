@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use lukisongroup\models\master\Suplier;
+use lukisongroup\models\hrd\Corp;
 
 /**
  * SuplierSearch represents the model behind the search form about `app\models\esm\Suplier`.
@@ -43,8 +44,8 @@ class SuplierSearch extends Suplier
     public function search($params)
     {
         $query = Suplier::find()->where('STATUS <> 3');
-		$query->joinWith(['perusahaan' => function ($q) {
-			$q->where('c1000.NM_CORP LIKE "%' . $this->nmgroup . '%"');
+		$query->joinWith(['corp' => function ($q) {
+			$q->where('a0001.CORP_NM LIKE "%' . $this->nmgroup . '%"');
 		}]);
 		
         $dataProvider = new ActiveDataProvider([
@@ -58,8 +59,8 @@ class SuplierSearch extends Suplier
 				'ALAMAT',
 				'KOTA',
 				'nmgroup' => [
-					'asc' => ['c1000.NM_CORP' => SORT_ASC],
-					'desc' => ['c1000.NM_CORP' => SORT_DESC],
+					'asc' => ['a0001.CORP_NM' => SORT_ASC],
+					'desc' => ['a0001.CORP_NM' => SORT_DESC],
 					'label' => 'Group Perusahaan'
 				]
 			]
@@ -70,7 +71,7 @@ class SuplierSearch extends Suplier
          * The following line will allow eager loading with country data 
          * to enable sorting by country on initial loading of the grid.
          */ 
-        $query->joinWith(['perusahaan']);
+        $query->joinWith(['corp']);
         return $dataProvider;
     }
  

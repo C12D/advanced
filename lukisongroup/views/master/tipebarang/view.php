@@ -3,23 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\master\Tipebarang */
-
-$this->title = 'Detail Tipe Barang : '.$model->NM_TYPE;
-$this->params['breadcrumbs'][] = ['label' => 'Tipe Barang', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
-$this->sideCorp = 'Lukison Group';                       /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'datamaster';                                 /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'Data Master');         /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                      /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+$this->sideCorp = 'Master Data Umum';               		   	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'umum_datamaster';               		    	/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Umum - Type Detail Barang ');	    /* title pada header page */
 
 ?>
 <div class="tipebarang-view">
-
-<h2><?= Html::encode($this->title) ?></h2>
-<div style="border-top:1px solid #c6c6c6; ">&nbsp;</div>
 
 <?php
 	if($model->STATUS == '1'){

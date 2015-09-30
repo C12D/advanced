@@ -7,10 +7,10 @@ use Yii;
 use lukisongroup\models\master\Kategori;
 use lukisongroup\models\master\Unitbarang;
 use lukisongroup\models\master\Suplier;
-use lukisongroup\models\master\Perusahaan;
 use lukisongroup\models\master\Tipebarang;
-
 use yii\web\UploadedFile;
+use lukisongroup\models\hrd\Corp;
+use lukisongroup\models\master\Perusahaan;
 
 /**
  * This is the model class for table "b1000".
@@ -91,9 +91,9 @@ class Barangumum extends \yii\db\ActiveRecord
         return $this->hasOne(Suplier::className(), ['KD_SUPPLIER' => 'KD_SUPPLIER']);
     }
 
-	public function getPerusahaan()
+	public function getCorp()
     {
-        return $this->hasOne(Perusahaan::className(), ['KD_CORP' => 'KD_CORP']);
+        return $this->hasOne(Corp::className(), ['CORP_ID' => 'KD_CORP']);
     }
 
     /**

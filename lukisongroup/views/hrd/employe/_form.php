@@ -14,6 +14,7 @@ use yii\helpers\ArrayHelper;
 use lukisongroup\models\system\side_menu\M1000;
 use kartik\sidenav\SideNav;
 use kartik\markdown\Markdown;
+use yii\helpers\Url;
 
 $this->sideMenu = 'hrd_employee';
 $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL,'options'=>['enctype'=>'multipart/form-data']]);
@@ -51,6 +52,27 @@ $EmployeeInput= FormGrid::widget([
 	'autoGenerateColumns'=>true,
 	'rows'=>[
 		[
+            //'columns'=>2,
+			//'contentBefore'=>'<div class="box box-warning box-solid "> <div class="box-header with-border ">CORPORATE IDENTITY</div></div>',
+			//autoGenerateColumns'=>false,
+			'columns'=>4,
+			'attributes'=>[
+				'employe_identity' => [
+					'columns'=>4,
+					'label'=>'CORPORATE :',
+					'attributes'=>[
+						'EMP_CORP_ID'=>[
+
+								'type'=>Form::INPUT_DROPDOWN_LIST ,
+								'items'=>ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_ID','CORP_NM'),
+								'options' => [ 'id'=>'cat-id',],
+								'columnOptions'=>['colspan'=>1],
+						],
+					],
+				],
+			],
+		],
+		[
 			'contentBefore'=>'<legend class="text-info"><small>EMPLOYE IDENTITY</small></legend>',	
 			'columns'=>1,
 			'autoGenerateColumns'=>false,
@@ -59,6 +81,25 @@ $EmployeeInput= FormGrid::widget([
 					'label'=>'Employee.ID',
 					'columns'=>5,
 					'attributes'=>[
+						'EMP_ID'=>[
+                            'disabled'=>true,
+                            'type'=>Form::INPUT_WIDGET,
+                            'widgetClass'=>'kartik\widgets\DepDrop',
+                            'options' => [
+                                'options'=>['id'=>'subcat-id','readonly'=>true,'selected'=>false], //PR VISIBLE DROP DOWN
+                                'pluginOptions'=>[
+                                    'depends'=>['cat-id'],
+                                    //'placeholder'=>'Select...',
+                                    'url'=>Url::to(['/hrd/employe/subcat']),
+                                    'initialize'=>true, //loding First //
+                                    'placeholder' => false, //disable select //
+                                ],
+
+                            ],
+
+                            'columnOptions'=>['colspan'=>2],
+                        ],
+						/*
 						'EMP_ID'=>[
 							'type'=>Form::INPUT_TEXT,
 							'Form::SIZE_LARGE', 							
@@ -73,6 +114,7 @@ $EmployeeInput= FormGrid::widget([
 							//'label'=>$nl,
 							//'value'=>$nl,
 						],
+						*/
 						'EMP_NM'=>[
 							'type'=>Form::INPUT_TEXT, 
 							'options'=>['placeholder'=>'Enter First Name...'],

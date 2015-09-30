@@ -14,12 +14,12 @@ namespace lukisongroup\controllers\system;
 	use yii\web\NotFoundHttpException;
 	use yii\filters\VerbFilter;
 /* CLASS USER Author: -ptr.nov- */
-use app\models\system\user\Userlogin;			/* TABLE CLASS JOIN */
-use app\models\system\user\UserloginSearch;		/* TABLE CLASS SEARCH */
-use app\models\system\user\PasswordResetRequestForm;
-use app\models\system\user\ResetPasswordForm;
-use app\models\system\user\SignupForm;
-use app\models\system\user\ContactForm;
+use lukisongroup\models\system\user\Userlogin;			/* TABLE CLASS JOIN */
+use lukisongroup\models\system\user\UserloginSearch;		/* TABLE CLASS SEARCH */
+use lukisongroup\models\system\user\PasswordResetRequestForm;
+use lukisongroup\models\system\user\ResetPasswordForm;
+use lukisongroup\models\system\user\SignupForm;
+use lukisongroup\models\system\user\ContactForm;
 /**
  * HRD | CONTROLLER MODUL HRD .
  */
@@ -62,7 +62,7 @@ class UserController extends Controller
 		if ($model->load(Yii::$app->request->post())){
 			if($model->validate()){
 				if($model->save()) {
-					return $this->redirect(['view', 'id' => $model->username]);	
+					return $this->redirect(['view', 'id' => $model->id]);	
 				} 
 			}
 		}else {
@@ -77,18 +77,26 @@ class UserController extends Controller
      */
     public function actionCreate()
     {		
-        $model = new Modulset();
-        if ($model->load(Yii::$app->request->post())){
-				if($model->validate()){
-				if($model->save()) {
-					return $this->redirect(['view', 'id' => $model->username]);	
-				} 
-			}
-		}else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                //if (Yii::$app->getUser()->login($user)) {  // user save signup return langsung login
+                //    return $this->goHome();
+                //}
+                $searchModel_Userlogin = new UserloginSearch();
+                $dataProvider_Userlogin = $searchModel_Userlogin->search(Yii::$app->request->queryParams);
+        
+                return $this->render('index', [
+                    'searchModel_Userlogin'=>$searchModel_Userlogin,
+                    'dataProvider_Userlogin'=>$dataProvider_Userlogin,
+                ]);
+            }
         }
+
+        
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -99,7 +107,7 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->username]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -134,14 +142,14 @@ class UserController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            //if ($user = $model->signup()) {
                 /*if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
                 }
 				*/
 				//return $this->goBack();//.'/admin'; // Return url user menu admin -ptr.nov-
-				return $this->redirect('/index.php/admin');
-            }
+				//return $this->redirect('/index.php/admin');
+           // }
         }
 
         return $this->render('signup', [

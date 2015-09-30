@@ -1,6 +1,6 @@
 <?php 
 use yii\helpers\Html;
-use app\models\hrd\Dept;
+use lukisongroup\models\hrd\Dept;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\builder\FormGrid;

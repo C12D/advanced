@@ -26,6 +26,7 @@ $ProfAttribute1 = [
 $this->title = 'Workbench <i class="fa  fa fa-coffee"></i> ' . $model->EMP_NM . ' ' . $model->EMP_NM_BLK .'</a>';
 $prof=$this->render('login_index/_info', [
     'model' => $model,
+	'dataProvider' => $dataProvider,
 ]);
 $EmpDashboard=$this->render('login_index/_dashboard', [
     'model' => $model,
@@ -44,154 +45,175 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 					);
 					?>
 		</div>
-        <div class="row">
-            <?php
-            echo Html::panel(
-                [
-                    'heading' => '<div></div>',
-                    'body'=>$EmpDashboard,
-                ],
-                Html::TYPE_INFO
-            );
-            ?>
-        </div>
-		 <div class="col-xs-12 col-sm-6 col-dm-4  col-lg-4" >
+       <div class="row" >
+			<div class="col-xs-12 col-sm-6 col-dm-4  col-lg-4">
+				<?php
+					echo Html::panel([
+							'id'=>'home1',
+							'heading' => 'Reminder',
+							'postBody' => Html::listGroup([
+									[
+										'content' => 'Berita Acara ',
+										'url' => '/widget/bt',
+										'badge' => '14'
+									],
+									[
+										'content' => 'Chating ',
+										'url' => '/widget/chat',
+										'badge' => '14'
+									],
+									[
+										'content' => 'Memo',
+										'url' => '/widget/memo',
+										'badge' => '2'
+									],
+									[
+										'content' => 'Notulen',
+										'url' => '/widget/notulen',
+										'badge' => '2'
+									],
+									[
+										'content' => 'email',
+										'url' => '/widget/email',
+										'badge' => '2'
+									],
+
+								]),
+						],
+						Html::TYPE_INFO
+					);
+				?>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-dm-4  col-lg-4" >
+				
+				<?php
+					echo Html::panel([
+							'id'=>'home1',
+							'heading' => 'Task Manager',
+							'postBody' => Html::listGroup([
+									[
+										'content' => 'Jobsdesk ',
+										'url' => '/widget/jobsdsk',
+										'badge' => '14'
+									],
+									[
+										'content' => 'Head Jobs ',
+										'url' => '/widget/headjob',
+										'badge' => '14'
+									],
+									[
+										'content' => 'Additional Jobs',
+										'url' => '/widget/addjob',
+										'badge' => '2'
+									],
+									[
+										'content' => 'Arsip File',
+										'url' => '/widget/arsip',
+										'badge' => '2'
+									],
+									[
+										'content' => 'Pilot Project',
+										'url' => '/widget/pilotprj',
+										'badge' => '2'
+									],
+
+								]),
+						],
+						Html::TYPE_INFO
+					);
+				?>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-dm-4  col-lg-4" >
 			<?php
-				echo Html::panel([
-						'id'=>'home1',
-						'heading' => 'Approval',
-						'postBody' => Html::listGroup([
-								[
-									'content' => 'Memo ',
-									'url' => '#',
-									'badge' => '14'
-								],
-								[
-									'content' => 'Notulen ',
-									'url' => '#',
-									'badge' => '14'
-								],
-								[
-									'content' => 'Berita Acara',
-									'url' => '#',
-									'badge' => '2'
-								],
-								[
-									'content' => 'Chating',
-									'url' => '#',
-									'badge' => '2'
-								],
-
-							]),
-					],
-					Html::TYPE_INFO
-				);
-			?>
+					echo Html::panel([
+							'id'=>'home1',
+							'heading' => 'Approval',
+							'postBody' => Html::listGroup([
+									[
+										'content' => 'Administration ',
+										'url' => '/widget/adm',
+										'badge' => '14'
+									],
+									[
+										'content' => 'Request/Sales Order',
+										'url' => '/widget/rso',
+										'badge' => '14'
+									],									
+									[
+										'content' => 'Purchase',
+										'url' => '/widget/po',
+										'badge' => '2'
+									],
+									[
+										'content' => 'Invoice',
+										'url' => '/widget/inv',
+										'badge' => '2'
+									],
+									[
+										'content' => 'Surat Jalan',
+										'url' => '/widget/sj',
+										'badge' => '2'
+									],
+								]),
+						],
+						Html::TYPE_INFO
+					);
+				?>
+				
+			</div>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-dm-4  col-lg-4" >
-			<?php
-				echo Html::panel([
-						'id'=>'home1',
-						'heading' => 'Reminder',
-						'postBody' => Html::listGroup([
-								[
-									'content' => 'Memo ',
-									'url' => '#',
-									'badge' => '14'
-								],
-								[
-									'content' => 'Notulen ',
-									'url' => '#',
-									'badge' => '14'
-								],
-								[
-									'content' => 'Berita Acara',
-									'url' => '#',
-									'badge' => '2'
-								],
-								[
-									'content' => 'Chating',
-									'url' => '#',
-									'badge' => '2'
-								],
-
-							]),
+		<div class="row" >
+			<div class="col-xs-12 col-sm-12 col-dm-12  col-lg-12" >
+				<?php
+				$items=[
+					[
+						'label'=>'<i class="glyphicon glyphicon-home"></i>Jobsdesk','content'=>'asdasdasd',
 					],
-					Html::TYPE_INFO
-				);
-			?>
-		</div>
-		<div class="col-xs-12 col-sm-6 col-dm-4  col-lg-4" >
-			<?php
-				echo Html::panel([
-						'id'=>'home1',
-						'heading' => 'Task Manager',
-						'postBody' => Html::listGroup([
-								[
-									'content' => 'Memo ',
-									'url' => '#',
-									'badge' => '14'
-								],
-								[
-									'content' => 'Notulen ',
-									'url' => '#',
-									'badge' => '14'
-								],
-								[
-									'content' => 'Berita Acara',
-									'url' => '#',
-									'badge' => '2'
-								],
-								[
-									'content' => 'Chating',
-									'url' => '#',
-									'badge' => '2'
-								],
+					[
+						'label'=>'<i class="glyphicon glyphicon-home"></i>Master Plan','content'=>'asdasdsad',
+						//'active'=>true,
 
-							]),
 					],
-					Html::TYPE_INFO
-				);
-			?>
-		</div>
-         <div class="col-xs-12 col-sm-12 col-dm-12  col-lg-12" >
-            <?php
-            $items=[
-                [
-                    'label'=>'<i class="glyphicon glyphicon-home"></i>Jobsdesk','content'=>'asdasdasd',
-                ],
-                [
-                    'label'=>'<i class="glyphicon glyphicon-home"></i>Master Plan','content'=>'asdasdsad',
-                    //'active'=>true,
 
-                ],
+					[
+						'label'=>'<i class="glyphicon glyphicon-home"></i>Attendance','content'=>'asdasdasd',
+					],
+					[
+						'label'=>'<i class="glyphicon glyphicon-home"></i>Mutation','content'=>'asdasdasd',                ],
 
-                [
-                    'label'=>'<i class="glyphicon glyphicon-home"></i>Attendance','content'=>'asdasdasd',
-                ],
-                [
-                    'label'=>'<i class="glyphicon glyphicon-home"></i>Mutation','content'=>'asdasdasd',                ],
-
-                [
-                    'label'=>'<i class="glyphicon glyphicon-home"></i>Regulations','content'=>'asdasdsadasd',
-                ],
+					[
+						'label'=>'<i class="glyphicon glyphicon-home"></i>Regulations','content'=>'asdasdsadasd',
+					],
 
 
-            ];
+				];
 
-            echo TabsX::widget([
-                'items'=>$items,
-                'position'=>TabsX::POS_ABOVE,
-                //'height'=>'tab-height-xs',
-                'bordered'=>true,
-                'encodeLabels'=>false,
-                //'align'=>TabsX::ALIGN_LEFT,
+				echo TabsX::widget([
+					'items'=>$items,
+					'position'=>TabsX::POS_ABOVE,
+					//'height'=>'tab-height-xs',
+					'bordered'=>true,
+					'encodeLabels'=>false,
+					//'align'=>TabsX::ALIGN_LEFT,
 
-            ]);
-            ?>
-         </div>
-
-
+				]);
+				?>
+				
+			</div>
+			</div>
+			<div class="row" style="padding-top:20px" >
+				<?php                       
+					echo Html::panel(
+						[
+							'heading' => '<div></div>',
+							'body'=>$EmpDashboard,
+						],
+						Html::TYPE_INFO
+					);
+				?>
+				
+			</div>
+		
 
  </div>
 

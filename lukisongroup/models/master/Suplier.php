@@ -4,6 +4,7 @@ namespace lukisongroup\models\master;
 
 use Yii;
 use lukisongroup\models\master\Perusahaan;
+use lukisongroup\models\hrd\Corp;
 
 /**
  * This is the model class for table "s1000".
@@ -48,13 +49,13 @@ class Suplier extends \yii\db\ActiveRecord
         return Yii::$app->get('db4');
     }
 
-	public function getPerusahaan()
+	public function getCorp()
     {
-        return $this->hasOne(Perusahaan::className(), ['KD_CORP' => 'KD_CORP']);
+        return $this->hasOne(Corp::className(), ['CORP_ID' => 'KD_CORP']);
     }
 	
 	public function getNmgroup() {
-		return $this->perusahaan->NM_CORP;
+		return $this->corp->CORP_NM;
 	}
 	
 	

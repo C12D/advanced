@@ -8,7 +8,7 @@ use common\models\LoginForm;
 use yii\filters\VerbFilter;
 use lukisongroup\models\hrd\Employe;
 use lukisongroup\models\hrd\EmployeSearch;
-use app\models\system\user\UserloginSearch;
+use lukisongroup\models\system\user\UserloginSearch;
 /**
  * Site controller
  */

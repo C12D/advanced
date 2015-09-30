@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\system\user;
+namespace lukisongroup\models\system\user;
 
 use Yii;
 use yii\base\Model;

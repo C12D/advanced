@@ -18,7 +18,7 @@ use kartik\widgets\FileInput;
 use lukisongroup\models\esm\ro\Requestorder;
 use lukisongroup\models\esm\ro\Rodetail;
 use lukisongroup\models\master\Barangumum;
-use lukisongroup\models\esm\Unitbarang;
+use lukisongroup\models\master\Unitbarang;
 
 use lukisongroup\models\hrd\Employe;
 
@@ -66,6 +66,7 @@ $ros = Requestorder::find()->joinWith('employe')->where(['KD_RO' => $id])->asArr
 
 ?>
 
+<div class="requestorder-form" style="margin:0px 20px;">
 <form class="form-horizontal">
 
 	<div class="form-group">
@@ -113,7 +114,7 @@ $form = ActiveForm::begin([
 
 
 	$brg = ArrayHelper::map(Barangumum::find()->all(), 'KD_BARANG', 'NM_BARANG');
-	$unit = ArrayHelper::map(Unitbarang::find()->all(), 'NM_UNIT', 'NM_UNIT');
+	$unit = ArrayHelper::map(Unitbarang::find()->all(), 'KD_UNIT', 'NM_UNIT');
 ?>
 <?php echo $form->field($rodetail, 'CREATED_AT')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false); ?>	
 <?php echo $form->field($rodetail, 'NM_BARANG')->hiddenInput(['value' => ''])->label(false); ?>	
@@ -230,3 +231,7 @@ $form = ActiveForm::begin([
     <?php ActiveForm::end(); ?>
 
 </div -->
+
+
+<br/><br/><br/>
+</div>

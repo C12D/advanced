@@ -84,24 +84,49 @@ class RequestorderSearch extends Requestorder
 		->andFilterWhere(['like', 'KD_RO', $this->KD_RO])
 		->andFilterWhere(['like', 'KD_CORP', $this->KD_CORP]);
         return $dataProvider;
-		
-		/*
-        $query->andFilterWhere([
-		'ID' => $this->ID,
-		'STATUS' => $this->STATUS,
-		'CREATED_AT' => $this->CREATED_AT,
+    }
+
+    public function cari($params)
+    {
+        $empId = Yii::$app->user->identity->EMP_ID;
+        $dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
+        $crp = $dt[0]['EMP_CORP_ID'];
+        
+        if($dt[0]['JAB_ID'] == 'MGR'){
+            $query = Requestorder::find()->where("r0001.status <> 3 and r0001.status <> 0 and r0001.KD_CORP = '$crp' ");
+        } else {
+            $query = Requestorder::find()->where("r0001.status <> 3 and r0001.status <> 0 and r0001.KD_CORP = '$crp' and r0001.ID_USER = '$empId' ");
+        }
+        
+        $query->joinWith(['employe' => function ($q) {
+            $q->where('a0001.EMP_NM LIKE "%' . $this->nmemp . '%"');
+        }]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
 
-        $query->andFilterWhere(['like', 'KD_RO', $this->KD_RO])
-            ->andFilterWhere(['like', 'NOTE', $this->NOTE])
-            ->andFilterWhere(['like', 'ID_USER', $this->ID_USER])
-            ->andFilterWhere(['like', 'KD_CORP', $this->KD_CORP])
-            ->andFilterWhere(['like', 'KD_CAB', $this->KD_CAB])
-            ->andFilterWhere(['like', 'KD_DEP', $this->KD_DEP])
-            ->andFilterWhere(['like', 'UPDATED_ALL', $this->UPDATED_ALL])
-            ->andFilterWhere(['like', 'DATA_ALL', $this->DATA_ALL]);
-
+         $dataProvider->setSort([
+            'attributes' => [
+            'KD_RO',
+            'KD_CORP',
+            
+            'nmemp' => [
+                'asc' => ['a0001.EMP_NM' => SORT_ASC],
+                'desc' => ['a0001.EMP_NM' => SORT_DESC],
+                'label' => 'Pembuat',
+            ],          
+            ]
+        ]);
+        
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        
+        $query->andFilterWhere(['like', 'a0001.EMP_NM', $this->EMP_NM])
+        ->andFilterWhere(['like', 'KD_RO', $this->KD_RO])
+        ->andFilterWhere(['like', 'KD_CORP', $this->KD_CORP]);
         return $dataProvider;
-		*/
     }
+    
 }
