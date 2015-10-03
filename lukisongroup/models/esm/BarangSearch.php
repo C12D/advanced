@@ -8,13 +8,18 @@ use yii\data\ActiveDataProvider;
 use lukisongroup\models\esm\Barang;
 use lukisongroup\models\esm\Barangmaxi;
 
+use lukisongroup\models\master\Tipebarang;
+use lukisongroup\models\master\Kategori;
+
 /**
  * BarangSearch represents the model behind the search form about `app\models\esm\Barang`.
  */
 class BarangSearch extends Barang
 {
 	public $nmdbtr;
-	public $unitbrg;
+    public $unitbrg;
+    public $tipebrg;
+	public $nmkategori;
     /**
      * @inheritdoc
      */
@@ -24,7 +29,7 @@ class BarangSearch extends Barang
             [['ID', 'HPP', 'HARGA', 'BARCODE', 'NOTE', 'STATUS', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT'], 'safe'],
             [['ID', 'HPP', 'HARGA'], 'integer'],
             [['KD_BARANG', 'KD_TYPE', 'KD_KATEGORI', 'NM_BARANG', 'KD_SUPPLIER', 'KD_DISTRIBUTOR', 'DATA_ALL'], 'safe'],
-            [['nmdbtr','unitbrg'], 'safe'],
+            [['nmdbtr','unitbrg','tipebrg','nmkategori'], 'safe'],
         ];
     }
 
@@ -50,9 +55,17 @@ class BarangSearch extends Barang
 		$query->joinWith(['dbtr' => function ($q) {
 			$q->where('d0001.NM_DISTRIBUTOR LIKE "%' . $this->nmdbtr . '%"');
 		}]);
-		$query->joinWith(['unitb' => function ($q) {
-			$q->where('ub0001.NM_UNIT LIKE "%' . $this->unitbrg . '%"');
-		}]);
+        $query->joinWith(['unitb' => function ($q) {
+            $q->where('ub0001.NM_UNIT LIKE "%' . $this->unitbrg . '%"');
+        }]);
+
+        $query->joinWith(['tipebg' => function ($q) {
+            $q->where('b1001.NM_TYPE LIKE "%' . $this->tipebrg . '%"');
+        }]);
+
+        $query->joinWith(['kategori' => function ($q) {
+            $q->where('b1002.NM_KATEGORI LIKE "%' . $this->nmkategori . '%"');
+        }]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -60,20 +73,34 @@ class BarangSearch extends Barang
 
 		 $dataProvider->setSort([
 			'attributes' => [
-            'KD_BARANG',
-            'NM_BARANG',
-			'nmdbtr' => [
-				'asc' => ['d0001.NM_DISTRIBUTOR' => SORT_ASC],
-				'desc' => ['d0001.NM_DISTRIBUTOR' => SORT_DESC],
-				'label' => 'Nama Distributor',
-			],
-			
-			'unitbrg' => [
-				'asc' => ['ub0001.NM_UNIT' => SORT_ASC],
-				'desc' => ['ub0001.NM_UNIT' => SORT_DESC],
-				'label' => 'Unit Barang',
-			],
-			
+                'KD_BARANG',
+                'NM_BARANG',
+                'HPP', 
+                'HARGA',
+    			'nmdbtr' => [
+    				'asc' => ['d0001.NM_DISTRIBUTOR' => SORT_ASC],
+    				'desc' => ['d0001.NM_DISTRIBUTOR' => SORT_DESC],
+    				'label' => 'Supplier',
+    			],
+    			
+                'unitbrg' => [
+                    'asc' => ['ub0001.NM_UNIT' => SORT_ASC],
+                    'desc' => ['ub0001.NM_UNIT' => SORT_DESC],
+                    'label' => 'Unit Barang',
+                ],
+                
+                'tipebrg' => [
+                    'asc' => ['b1001.NM_TYPE' => SORT_ASC],
+                    'desc' => ['b1001.NM_TYPE' => SORT_DESC],
+                    'label' => 'Tipe Barang',
+                ],
+                
+    			'nmkategori' => [
+    				'asc' => ['b1002.NM_KATEGORI' => SORT_ASC],
+    				'desc' => ['b1002.NM_KATEGORI' => SORT_DESC],
+    				'label' => 'Kategori',
+    			],
+    			
 			]
 		]);
 		
@@ -84,7 +111,10 @@ class BarangSearch extends Barang
          */ 
         return $dataProvider;
     }
-        $query->andFilterWhere(['like', 'b0001.KD_BARANG', $this->KD_BARANG]);
+
+        $query->andFilterWhere(['like', 'HPP', $this->HPP])
+            ->andFilterWhere(['like', 'HARGA', $this->HARGA])
+            ->andFilterWhere(['like', 'b0001.KD_BARANG', $this->KD_BARANG]);
         return $dataProvider;
 		/*
         $this->load($params);

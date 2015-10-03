@@ -24,7 +24,7 @@ class Kategori extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'b1002';
+        return 'dbm000.b1002';
     }
 
     /**

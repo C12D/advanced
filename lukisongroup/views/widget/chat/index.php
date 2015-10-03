@@ -1,20 +1,7 @@
 <?php
-use kartik\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\widgets\Breadcrumbs;
-
-/* TABLE CLASS DEVELOPE -> |DROPDOWN,PRIMARYKEY-> ATTRIBUTE */
-use app\models\hrd\Dept;
-/*	KARTIK WIDGET -> Penambahan componen dari yii2 dan nampak lebih cantik*/
-use kartik\grid\GridView;
-use kartik\widgets\ActiveForm;
-use kartik\tabs\TabsX;
-use kartik\date\DatePicker;
-use kartik\builder\Form;
-use yii\bootstrap\Modal;
-use kartik\detail\DetailView;
-//use backend\assets\AppAsset; 	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
-//AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
+use Yii;
+use lukisongroup\assets\AppAssetChating;  	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
+AppAssetChating::register($this);
 
 //$this->sideCorp = 'LG Widget';                                   /* Title Select Company pada header pasa sidemenu/menu samping kiri */
 $this->sideMenu = $ctrl_chat;                           /* kd_menu untuk list menu pada sidemenu, get from table of database */
@@ -59,11 +46,22 @@ ActiveForm::end();
  */
 ?>
 
-<div class="body-content">
-    <div class="row" style="padding-left: 5px; padding-right: 5px">
-		<div class="col-sm-3"></div>
-        <div class="col-sm-4 col-md-4 col-lg-4 ">
-           <img src="<?php echo Yii::$app->urlManager->baseUrl.'/upload/image/underc1.jpg'; ?>"  height="200" width="300">           
-        </div>
-    </div>
+<div class="container" ng-app="app">
+
+<div  ng-controller="Shell1" ng-init="userInit(uid='piter','123')">
+	
+		<div class="chat-container" ng-controller="Shell as vm">
+		<irontec-simple-chat
+			messages="vm.messages"
+			username="vm.username"
+			input-placeholder-text="You can write here"
+			submit-button-text="Send your message"
+			title="Lukisongroup Chating"
+			theme="material"
+			submit-function="vm.sendMessage"
+			visible="true">
+		</irontec-simple-chat>
+	  </div>
+	
+</div>
 </div>

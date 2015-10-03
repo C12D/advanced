@@ -79,11 +79,8 @@ class DistributorController extends Controller
         $model = new Distributor();
 		$model->load(Yii::$app->request->post());
 		
-		$ck = Distributor::find()->select('KD_DISTRIBUTOR')->where('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
-		
-		if(count($ck) == 0){ $nkd = 1; } else { $kd = explode('.',$ck->KD_DISTRIBUTOR); $nkd = $kd[1]+1; }
-		
-		$kd = "DIS.".str_pad( $nkd, "3", "0", STR_PAD_LEFT );
+        $kd = Yii::$app->esmcode->kdDbtr();
+        
 		$model->KD_DISTRIBUTOR = $kd;
 		$model->save();
 		return $this->redirect(['view', 'id' => $model->ID]);

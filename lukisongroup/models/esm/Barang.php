@@ -5,6 +5,8 @@ namespace lukisongroup\models\esm;
 use Yii;
 use yii\web\UploadedFile;
 
+use lukisongroup\models\master\Tipebarang;
+use lukisongroup\models\master\Kategori;
 /**
  * This is the model class for table "b0001".
  *
@@ -48,15 +50,38 @@ class Barang extends \yii\db\ActiveRecord
         return Yii::$app->get('db_esm');
     }
 	
-	public function getUnitb()
+    public function getUnitb()
     {
         return $this->hasOne(Unitbarang::className(), ['ID' => 'KD_UNIT']);
     }
-	public function getUnitbrg()
+    public function getUnitbrg()
     {
         return $this->unitb->NM_UNIT;
     }
+
+
+
+    public function getTipebg()
+    {
+        return $this->hasOne(Tipebarang::className(), ['KD_TYPE' => 'KD_TYPE']);
+    }
+    public function getTipebrg()
+    {
+        return $this->tipebg->NM_TYPE;
+    }
+    
+
+	public function getKategori()
+    {
+        return $this->hasOne(Kategori::className(), ['KD_KATEGORI' => 'KD_KATEGORI']);
+    }
+	public function getNmkategori()
+    {
+        return $this->kategori->NM_KATEGORI;
+    }
 	
+
+
 	public function getDbtr()
     {
         return $this->hasOne(Distributor::className(), ['KD_DISTRIBUTOR' => 'KD_DISTRIBUTOR']);
@@ -146,8 +171,10 @@ class Barang extends \yii\db\ActiveRecord
             'CREATED_AT' => 'Created At',
             'UPDATED_AT' => 'Update At',
             'DATAA_ALL' => 'Data All',
-            'nmdbtr' => Yii::t('app', 'Nama Distributor'),
+            'nmdbtr' => Yii::t('app', 'Supplier'),
             'unitbrg' => Yii::t('app', 'Unit'),
+            'tipebrg' => Yii::t('app', 'Tipe Barang'),
+            'nmkategori' => Yii::t('app', 'Kategori'),
         ];
     }
 }
