@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-$this->sideCorp = 'ESM Distributor';                  /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideCorp = 'ESM Suplier';                  /* Title Select Company pada header pasa sidemenu/menu samping kiri */
 $this->sideMenu = 'esm_datamaster';                   /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'ESM - Distributor Detail ');    /* title pada header page */
+$this->title = Yii::t('app', 'ESM - Suplier Detail ');    /* title pada header page */
 
 ?>
 <div class="distributor-view">

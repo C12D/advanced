@@ -26,14 +26,14 @@ $this->title = Yii::t('app', 'ESM - Prodak');           /* title pada header pag
 			
             'KD_BARANG',
 			'NM_BARANG',
+			'nmdbtr',
 			'unitbrg',
-			 'HPP', 'HARGA',
-			'KD_TYPE',
-			'KD_KATEGORI', 
-			'STATUS',
-			//'nmdbtr',
+			'HPP', 
+			'HARGA',
+			'tipebrg', 
+			'nmkategori', 
 		
-			
+		
 			[
 				'format' => 'raw',
 				'value' => function ($model) {
