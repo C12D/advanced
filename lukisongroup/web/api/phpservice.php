@@ -1,7 +1,7 @@
 <?php 
 header('Access-Control-Allow-Origin: *');  
 	// Connect to your Database 
-	mysql_connect("localhost", "root", "") or die(mysql_error()); 
+	mysql_connect("202.53.254.83", "root", "r4h4514") or die(mysql_error()); 
 	mysql_select_db("db_test") or die(mysql_error()); 
  
 	// Select accounts

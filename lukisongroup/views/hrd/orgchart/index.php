@@ -56,7 +56,7 @@ $this->registerJs('
 			});
 
 			$.ajax({
-				url: \'http://localhost/orgchart1/phpservice.php\',
+				url: \'http://10.10.102.213/orgchart1/phpservice.php\',
 				dataType: \'text\',
 				success: function(text) {
 					var items = JSON.parse(decodeURIComponent(text));
