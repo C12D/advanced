@@ -1,5 +1,5 @@
 <?php 
-header('Access-Control-Allow-Origin: *');  
+	header('Access-Control-Allow-Origin: *');  
 	// Connect to your Database 
 	mysql_connect("localhost", "root", "") or die(mysql_error()); 
 	mysql_select_db("db_test") or die(mysql_error()); 
@@ -48,7 +48,8 @@ header('Access-Control-Allow-Origin: *');
     }
 	
 	// serialize $rootAccount object including all its children into JSON string  
-	$jsonstring = encodeURIComponent(json_encode($items));
+	//$jsonstring = encodeURIComponent(json_encode($items));
+	$jsonstring = json_encode($items);
 
 	echo $jsonstring;
 ?>
