@@ -113,7 +113,7 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 									],
 									[
 										'content' => 'Pilot Project',
-										'url' => '/widget/pilotprj',
+										'url' => '/widget/pilotproject',
 										'badge' => '2'
 									],
 
