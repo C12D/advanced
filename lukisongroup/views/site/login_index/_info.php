@@ -69,7 +69,7 @@ ActiveForm::end();
       	<img src="<?= Yii::getAlias('@HRD_EMP_UploadUrl') .'/'. $model->EMP_IMG; ?>" class="img-thumbnail" alt="Cinque Terre" width="100px" height="100px"/>
 	</div>
 	
-    <div class="col-xs-12 col-sm-5 col-dm-3 col-lg-3"  style="margin-left:0 ;padding-left: 0; padding-top:10px; margin-bottom: 20px">
+    <div class="col-xs-12 col-sm-5 col-dm-3 col-lg-3"  style="margin-left:0 ;padding-left: 0; padding-top:0px; margin-bottom: 20px">
 
       <table id="table1" style="display:block;padding-left: 0; color: darkred">
           <tr>
@@ -79,22 +79,25 @@ ActiveForm::end();
               <td colspan = "3" width="auto"  valign="top" style="color:red"><b><?php echo $model->EMP_NM . ' ' . $model->EMP_NM_BLK; ?></b>  </td>
           </tr>
 
-
-
 		<tr>
 			<td width="auto"  valign="top">Job Title</td>
 			<td valign="top" style="padding-left: 2px"><b> :</b> </td>
-			<td  width="auto" style="padding-left: 2px">CTO</td>
+			<td  width="auto" style="padding-left: 2px"><?php echo $dataProvider[0]['groupfunction']->GF_NM; ?></td>
 		</tr>
 		<tr>
 			<td width="auto"  valign="top">Job Level</td>
 			<td valign="top" style="padding-left: 2px"><b> :</b> </td>
-			<td  width="auto" style="padding-left: 2px"><?php echo $dataProvider[0]['jabOne']->JAB_NM; ?></td>
+			<td  width="auto" style="padding-left: 2px"><?php echo $dataProvider[0]['jobgrade']->JOBGRADE_ID . ' - ' . $dataProvider[0]['jobgrade']->JOBGRADE_NM; ?></td>
 		</tr>
 		<tr>
 			<td width="auto"  valign="top">Organization</td>
 			<td valign="top" style="padding-left: 2px"><b> :</b> </td>
 			<td  width="auto" style="padding-left: 2px"><?php echo $dataProvider[0]['deptOne']->DEP_NM; ?></td>
+		</tr>
+		<tr>
+			<td width="auto"  valign="top">Org Lavel</td>
+			<td valign="top" style="padding-left: 2px"><b> :</b> </td>
+			<td  width="auto" style="padding-left: 2px"><?php echo $dataProvider[0]['deptsub']->DEP_SUB_ID . ' - ' . $dataProvider[0]['deptsub']->DEP_SUB_NM; ?></td>
 		</tr>
 
 	</table>

@@ -47,7 +47,7 @@ class Groupfunction extends \yii\db\ActiveRecord
     {
         return [
             'GF_ID' => 'Gf  ID',
-            'GF_NM' => 'Gf  Nm',
+            'GF_NM' => 'Grp Fnction',
             'SORT' => 'Sort',
         ];
     }

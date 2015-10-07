@@ -12,8 +12,12 @@ use yii\widgets\Breadcrumbs;
 use lukisongroup\models\hrd\Employe;
 use lukisongroup\models\hrd\Corp;
 use lukisongroup\models\hrd\Dept;
-use lukisongroup\models\hrd\Jabatan;
+//use lukisongroup\models\hrd\Jabatan;
 use lukisongroup\models\hrd\Status;
+use lukisongroup\models\hrd\Jobgrade;
+use lukisongroup\models\hrd\Groupseqmen;
+use lukisongroup\models\hrd\Groupfunction;
+use lukisongroup\models\hrd\Deptsub;
 use lukisongroup\models\system\side_menu\M1000;
 
 /*	KARTIK WIDGET -> Penambahan componen dari yii2 dan nampak lebih cantik*/
@@ -35,7 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
 /*variable Dropdown*/
 $Combo_Corp = ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_NM','CORP_NM');
 $Combo_Dept = ArrayHelper::map(Dept::find()->orderBy('SORT')->asArray()->all(), 'DEP_NM','DEP_NM');
-$Combo_Jab = ArrayHelper::map(Jabatan::find()->orderBy('SORT')->asArray()->all(), 'JAB_NM','JAB_NM');
+$Combo_SubDept= ArrayHelper::map(Deptsub::find()->orderBy('SORT')->asArray()->all(), 'DEP_SUB_NM','DEP_SUB_NM');
+$Combo_GrpFnc = ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_NM','GF_NM');
+$Combo_Seq = ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_NM','SEQ_NM');
+$Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_NM','JOBGRADE_NM');
 $Combo_Status = ArrayHelper::map(Status::find()->orderBy('SORT')->asArray()->all(), 'STS_NM','STS_NM');
 
 //--EMPLOYE ACTIVED--
@@ -60,8 +67,7 @@ $tab_employe= GridView::widget([
                         },
             ],  
 				'EMP_ID',
-            /*
-			[
+            [
                 'class' => 'kartik\grid\EditableColumn',
                 'attribute' =>'EMP_NM',
                 'readonly'=>function($model, $key, $index, $widget) {
@@ -74,17 +80,16 @@ $tab_employe= GridView::widget([
                     //    'pluginOptions' => ['min'=>0, 'max'=>5000]
                    // ]
                 ],
-                /
+                /*
                 'editableOptions'=> function ($model, $key, $index, $widget) {
                         return [
                             'header'=>'Employe name',
                             'size'=>'md',
                         ];
                     }
-                /
+                */
             ],
-			*/
-				'EMP_NM',
+
 				'EMP_NM_BLK',			
             [
 				/*Author -ptr.nov-*/
@@ -99,8 +104,25 @@ $tab_employe= GridView::widget([
 				'filter' => $Combo_Dept,
 			],
 			[
+				/*Author -ptr.nov- SUB DEPARTMENT*/
+				'attribute' =>'deptsub.DEP_SUB_NM',
+				'filter' => $Combo_SubDept,
+			],	
+			[
+				/*Author -ptr.nov- GROUP FINCTION */
+				'attribute' =>'groupfunction.GF_NM',
+				'filter' => $Combo_GrpFnc,
+			],
+			
+			[
 				/*Author -ptr.nov-*/
-				'attribute' =>'jabOne.JAB_NM',
+				'attribute' =>'groupseqmen.SEQ_NM',
+				'filter' => $Combo_Seq,
+			],
+			
+			[
+				/*Author -ptr.nov-*/
+				'attribute' =>'jobgrade.JOBGRADE_NM',
 				'filter' => $Combo_Jab,
 			],
 			[
@@ -210,9 +232,25 @@ $tab_employe_resign= GridView::widget([
             'attribute' =>'deptOne.DEP_NM',
             'filter' => $Combo_Dept,
         ],
+		[
+            /*Author -ptr.nov- SUB DEPARTMENT*/
+            'attribute' =>'deptsub.DEP_SUB_NM',
+            'filter' => $Combo_SubDept,
+        ],		
+		
+		[
+            /*Author -ptr.nov- GROUP FINCTION */
+            'attribute' =>'groupfunction.GF_NM',
+            'filter' => $Combo_GrpFnc,
+		],
         [
-            /*Author -ptr.nov-*/
-            'attribute' =>'jabOne.JAB_NM',
+            /*Author -ptr.nov- GROUP SEQWEN*/
+            'attribute' =>'groupseqmen.SEQ_NM',
+            'filter' => $Combo_Seq,
+        ],
+		[
+            /*Author -ptr.nov- JOBGRADE*/
+            'attribute' =>'jobgrade.JOBGRADE_NM',
             'filter' => $Combo_Jab,
         ],
         [

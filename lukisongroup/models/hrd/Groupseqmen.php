@@ -45,7 +45,7 @@ class Groupseqmen extends \yii\db\ActiveRecord
     {
         return [
             'SEQ_ID' => 'Seq  ID',
-            'SEQ_NM' => 'Seq  Nm',
+            'SEQ_NM' => 'Seqmen',
         ];
     }
 }

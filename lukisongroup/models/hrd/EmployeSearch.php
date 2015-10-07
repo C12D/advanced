@@ -11,7 +11,8 @@ namespace lukisongroup\models\hrd;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-
+//use lukisongroup\models\hrd\Jobgrade;
+//use lukisongroup\models\hrd\Groupseqmen;
 /**
  * Author -ptr.nov- Employe Search
  */
@@ -23,14 +24,15 @@ class EmployeSearch extends Employe
 	 public $user;
      public $corpOne;
      public $deptOne;
-	 public $jabOne;
+	 //public $jabOne;
      public $sttOne;
+	 //public $jobgrade;
 	
 	/*	[2] RELATED ATTRIBUTE JOIN TABLE*/
 	public function attributes()
 	{
 		/*Author -ptr.nov- add related fields to searchable attributes */
-		return array_merge(parent::attributes(), ['corpOne.CORP_NM','deptOne.DEP_NM','jabOne.JAB_NM','sttOne.STS_NM']);
+		return array_merge(parent::attributes(), ['corpOne.CORP_NM','deptOne.DEP_NM','deptsub.DEP_SUB_NM','groupfunction.GF_NM','groupseqmen.SEQ_NM','jobgrade.JOBGRADE_NM','sttOne.STS_NM']);
 	}
 	
 	/*	[3] FILTER */
@@ -39,7 +41,7 @@ class EmployeSearch extends Employe
         return [
             [['EMP_ID', 'EMP_NM','EMP_NM_BLK','EMP_JOIN_DATE','EMP_RESIGN_DATE'], 'safe'],
 			[['EMP_ID','EMP_CORP_ID'], 'string', 'max' => 15],
-			[['corpOne.CORP_NM','deptOne.DEP_NM','jabOne.JAB_NM','sttOne.STS_NM'], 'safe'],
+			[['corpOne.CORP_NM','deptOne.DEP_NM','deptsub.DEP_SUB_NM','groupfunction.GF_NM','groupseqmen.SEQ_NM','jobgrade.JOBGRADE_NM','sttOne.STS_NM'], 'safe'],
         ];
     }
 	
@@ -56,9 +58,12 @@ class EmployeSearch extends Employe
 		/*[5.1] JOIN TABLE */
 		$query = Employe::find()
 						 ->JoinWith('corpOne',true,'LEFT JOIN')
-                         ->JoinWith('deptOne',true,'left JOIN')                        
-						 ->JoinWith('jabOne',true,'left JOIN')
-						  ->JoinWith('sttOne',true,'left JOIN')
+                         ->JoinWith('deptOne',true,'left JOIN')						 
+						 ->JoinWith('deptsub',true,'left JOIN')						 
+						 ->JoinWith('groupfunction',true,'left JOIN')						 
+						 ->JoinWith('groupseqmen',true,'left JOIN')						 
+						 ->JoinWith('jobgrade',true,'left JOIN')
+						 ->JoinWith('sttOne',true,'left JOIN')						 				  
 						  ->Where('a0001.EMP_STS<>3 and a0001.status<>3');
                           //->orWhere('a0001.EMP_STS<>3 and a0001.status<>3');
                           //->orWhere(['a0001.status'=> !3])
@@ -74,18 +79,35 @@ class EmployeSearch extends Employe
 		/*[5.2] SHORTING */
 			/* SORTING CORPORATE Author -ptr.nov-*/
 			$dataProvider->sort->attributes['corpOne.CORP_NM'] = [
-				'asc' => ['a0001.CORP_NM' => SORT_ASC],
-				'desc' => ['a0001.CORP_NM' => SORT_DESC],
+				'asc' => ['u0001.CORP_NM' => SORT_ASC],
+				'desc' => ['u0001.CORP_NM' => SORT_DESC],
 			];
 			/* SORTING DEPARTMENT Author -ptr.nov-*/
 			$dataProvider->sort->attributes['deptOne.DEP_NM'] = [	
-				'asc' => ['a0002.DEP_NM' => SORT_ASC],
-				'desc' => ['a0002.DEP_NM' => SORT_DESC],
+				'asc' => ['u0002a.DEP_NM' => SORT_ASC],
+				'desc' => ['u0002a.DEP_NM' => SORT_DESC],
 			];
-			/* SORTING JABATAN Author -ptr.nov-*/
-			$dataProvider->sort->attributes['jabOne.JAB_NM'] = [	
-				'asc' => ['a0003.JAB_NM' => SORT_ASC],
-				'desc' => ['a0003.JAB_NM' => SORT_DESC],
+			/* SORTING SUB DEPARTMENT Author -ptr.nov-*/
+			$dataProvider->sort->attributes['deptsub.DEP_SUB_NM'] = [	
+				'asc' => ['u0002b.DEP_SUB_NM' => SORT_ASC],
+				'desc' => ['u0002b.DEP_SUB_NM' => SORT_DESC],
+			];		
+			
+			/* SORTING Group Function Author -ptr.nov-*/
+			$dataProvider1->sort->attributes['groupfunction.GF_NM'] = [
+				'asc' => ['u0003a.GF_NM' => SORT_ASC],
+				'desc' => ['u0003a.GF_NM' => SORT_DESC],
+			];
+			
+			/* SORTING Group Seqment Author -ptr.nov-*/
+			$dataProvider1->sort->attributes['groupseqmen.SEQ_NM'] = [
+				'asc' => ['groupseqmen.SEQ_NM' => SORT_ASC],
+				'desc' => ['groupseqmen.SEQ_NM' => SORT_DESC],
+			];
+			/* SORTING JOBGRADE Author -ptr.nov-*/
+			$dataProvider->sort->attributes['jobgrade.JOBGRADE_NM'] = [	
+				'asc' => ['jobgrade.JOBGRADE_NM' => SORT_ASC],
+				'desc' => ['jobgrade.JOBGRADE_NM' => SORT_DESC],
 			];
 			/* SORTING STATUS Author -ptr.nov-*/
 			$dataProvider->sort->attributes['sttOne.STS_NM'] = [	
@@ -110,9 +132,12 @@ class EmployeSearch extends Employe
 					->andFilterWhere(['like', 'EMP_NM', $this->EMP_NM])
 					->andFilterWhere(['like', 'EMP_NM_BLK', $this->EMP_NM_BLK])
 					->andFilterWhere(['like', 'b0009.STS_NM', $this->getAttribute('sttOne.STS_NM')])
-					->andFilterWhere(['like', 'a0001.CORP_NM', $this->getAttribute('corpOne.CORP_NM')])
-					->andFilterWhere(['like', 'a0002.DEP_NM', $this->getAttribute('deptOne.DEP_NM')])
-					->andFilterWhere(['like', 'a0003.JAB_NM', $this->getAttribute('jabOne.JAB_NM')])
+					->andFilterWhere(['like', 'u0001.CORP_NM', $this->getAttribute('corpOne.CORP_NM')])
+					->andFilterWhere(['like', 'u0002a.DEP_NM', $this->getAttribute('deptOne.DEP_NM')])
+					->andFilterWhere(['like', 'u0002b.DEP_SUB_NM', $this->getAttribute('deptsub.DEP_SUB_NM')])
+					->andFilterWhere(['like', 'u0003a.GF_NM', $this->getAttribute('groupfunction.GF_NM')])
+					->andFilterWhere(['like', 'u0003b.SEQ_NM', $this->getAttribute('groupseqmen.SEQ_NM')])
+					->andFilterWhere(['like', 'u0003c.JOBGRADE_NM', $this->getAttribute('jobgrade.JOBGRADE_NM')])					
 					->andFilterWhere(['like', 'b0009.STS_NM', $this->getAttribute('sttOne.STS_NM')]);
 					
 		/*[5.4] FILTER WHERE LIKE (date)*/	
@@ -145,8 +170,11 @@ class EmployeSearch extends Employe
         $query1 = Employe::find()
             ->JoinWith('corpOne',true,'LEFT JOIN')
             ->JoinWith('deptOne',true,'left JOIN')
-            ->JoinWith('jabOne',true,'left JOIN')
-            ->JoinWith('sttOne',true,'left JOIN')
+			->JoinWith('deptsub',true,'left JOIN')	
+            ->JoinWith('groupfunction',true,'left JOIN')						 
+			->JoinWith('groupseqmen',true,'left JOIN')						 
+			->JoinWith('jobgrade',true,'left JOIN')
+			->JoinWith('sttOne',true,'left JOIN')	
             //->where(['a0001.EMP_STS' => 3]);
             ->Where('a0001.EMP_STS=3 and a0001.status<>3');
         /* SUB JOIN*/
@@ -159,18 +187,36 @@ class EmployeSearch extends Employe
         /*[5.2] SHORTING */
         /* SORTING CORPORATE Author -ptr.nov-*/
         $dataProvider1->sort->attributes['corpOne.CORP_NM'] = [
-            'asc' => ['a0001.CORP_NM' => SORT_ASC],
-            'desc' => ['a0001.CORP_NM' => SORT_DESC],
+            'asc' => ['u0001.CORP_NM' => SORT_ASC],
+            'desc' => ['u0001.CORP_NM' => SORT_DESC],
         ];
         /* SORTING DEPARTMENT Author -ptr.nov-*/
         $dataProvider1->sort->attributes['deptOne.DEP_NM'] = [
-            'asc' => ['a0002.DEP_NM' => SORT_ASC],
-            'desc' => ['a0002.DEP_NM' => SORT_DESC],
+            'asc' => ['deptOne.DEP_NM' => SORT_ASC],
+            'desc' => ['deptOne.DEP_NM' => SORT_DESC],
         ];
-        /* SORTING JABATAN Author -ptr.nov-*/
-        $dataProvider1->sort->attributes['jabOne.JAB_NM'] = [
-            'asc' => ['a0003.JAB_NM' => SORT_ASC],
-            'desc' => ['a0003.JAB_NM' => SORT_DESC],
+		
+		/* SORTING SUB DEPARTMENT Author -ptr.nov-*/
+			$dataProvider->sort->attributes['deptsub.DEP_SUB_NM'] = [	
+				'asc' => ['u0002b.DEP_SUB_NM' => SORT_ASC],
+				'desc' => ['u0002b.DEP_SUB_NM' => SORT_DESC],
+		];	
+			
+		/* SORTING Group Function Author -ptr.nov-*/
+			$dataProvider1->sort->attributes['groupfunction.GF_NM'] = [
+				'asc' => ['u0003a.GF_NM' => SORT_ASC],
+				'desc' => ['u0003a.GF_NM' => SORT_DESC],
+		];
+			
+		/* SORTING Group Seqment Author -ptr.nov-*/
+			$dataProvider1->sort->attributes['groupseqmen.SEQ_NM'] = [
+            'asc' => ['groupseqmen.SEQ_NM' => SORT_ASC],
+            'desc' => ['groupseqmen.SEQ_NM' => SORT_DESC],
+        ];
+        /* SORTING JOBGRADE Author -ptr.nov-*/
+        $dataProvider1->sort->attributes['jobgrade.JOBGRADE_NM'] = [
+            'asc' => ['Jobgrade.JOBGRADE_NM' => SORT_ASC],
+            'desc' => ['Jobgrade.JOBGRADE_NM' => SORT_DESC],
         ];
         /* SORTING STATUS Author -ptr.nov-*/
         $dataProvider1->sort->attributes['sttOne.STS_NM'] = [
@@ -195,10 +241,13 @@ class EmployeSearch extends Employe
             ->andFilterWhere(['like', 'EMP_NM', $this->EMP_NM])
             ->andFilterWhere(['like', 'EMP_NM_BLK', $this->EMP_NM_BLK])
             ->andFilterWhere(['like', 'b0009.STS_NM', $this->getAttribute('sttOne.STS_NM')])
-            ->andFilterWhere(['like', 'a0001.CORP_NM', $this->getAttribute('corpOne.CORP_NM')])
-            ->andFilterWhere(['like', 'a0002.DEP_NM', $this->getAttribute('deptOne.DEP_NM')])
-            ->andFilterWhere(['like', 'a0003.JAB_NM', $this->getAttribute('jabOne.JAB_NM')])
-            ->andFilterWhere(['like', 'b0009.STS_NM', $this->getAttribute('sttOne.STS_NM')]);
+            ->andFilterWhere(['like', 'u0001.CORP_NM', $this->getAttribute('corpOne.CORP_NM')])
+            ->andFilterWhere(['like', 'u0002a.DEP_NM', $this->getAttribute('deptOne.DEP_NM')])
+			->andFilterWhere(['like', 'u0002b.DEP_SUB_NM', $this->getAttribute('deptsub.DEP_SUB_NM')])
+            ->andFilterWhere(['like', 'u0003a.GF_NM', $this->getAttribute('groupfunction.GF_NM')])
+			->andFilterWhere(['like', 'u0003b.SEQ_NM', $this->getAttribute('groupseqmen.SEQ_NM')])
+			->andFilterWhere(['like', 'u0003c.JOBGRADE_NM', $this->getAttribute('jobgrade.JOBGRADE_NM')])					
+			->andFilterWhere(['like', 'b0009.STS_NM', $this->getAttribute('sttOne.STS_NM')]);
 
         /*[5.4] FILTER WHERE LIKE (date)*/
         /* FILTER COLUMN DATE RANGE Author -ptr.nov-*/
@@ -223,8 +272,11 @@ class EmployeSearch extends Employe
         $query = Employe::find()
             ->JoinWith('corpOne',true,'LEFT JOIN')
             ->JoinWith('deptOne',true,'left JOIN')
-            ->JoinWith('jabOne',true,'left JOIN')
-            ->JoinWith('sttOne',true,'left JOIN')
+			->JoinWith('deptsub',true,'left JOIN')	
+			->JoinWith('groupfunction',true,'left JOIN')
+			->JoinWith('groupseqmen',true,'left JOIN')			
+            ->JoinWith('jobgrade',true,'left JOIN')
+            ->JoinWith('sttOne',true,'left JOIN')				
             ->where("a0001.EMP_ID='". $Emp_Id . "'");
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
