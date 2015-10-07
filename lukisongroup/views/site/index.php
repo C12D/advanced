@@ -77,6 +77,11 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 										'url' => '/widget/email',
 										'badge' => '2'
 									],
+									[
+										'content' => 'Documentation',
+										'url' => '/widget/docdba',
+										'badge' => '2'
+									],
 
 								]),
 						],
