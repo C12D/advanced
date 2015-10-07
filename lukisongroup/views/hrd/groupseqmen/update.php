@@ -2,17 +2,12 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\hrd\Groupseqmen */
+$this->sideCorp = 'Modul HRM';                     			/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                     			/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Update - Group Seqment');     /* title pada header page */
 
-$this->title = 'Update Groupseqmen: ' . ' ' . $model->SEQ_ID;
-$this->params['breadcrumbs'][] = ['label' => 'Groupseqmens', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->SEQ_ID, 'url' => ['view', 'id' => $model->SEQ_ID]];
-$this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="groupseqmen-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -3,16 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\hrd\Groupfunction */
+$this->sideCorp = 'Modul HRM';                            	   /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                            	   /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'DetailView Group Function');     /* title pada header page */
 
-$this->title = $model->GF_ID;
-$this->params['breadcrumbs'][] = ['label' => 'Groupfunctions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="groupfunction-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->GF_ID], ['class' => 'btn btn-primary']) ?>
