@@ -22,7 +22,7 @@ class Proggresjobdetail extends \yii\db\ActiveRecord
     public static function getDb()
     {
         /* Author -ptr.nov- : HRD */
-        return \Yii::$app->db5;
+        return \Yii::$app->db_widget;
     }
 
     public static function tableName()
