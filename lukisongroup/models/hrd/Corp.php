@@ -19,20 +19,21 @@ class Corp extends \yii\db\ActiveRecord
     public static function getDb()
     {
         /* Author -ptr.nov- : UMUM */
-        return \Yii::$app->db4;
+        return \Yii::$app->db2;
     }
 
 	/* [2] TABLE SELECT */
     public static function tableName()
     {
-        return '{{dbm000.a0001}}';
+        //return '{{dbm000.a0001}}';
+		return '{{u0001}}';
     }
 
 	/* [3] RULE SCENARIO -> DetailView */
     public function rules()
     {
         return [
-            [['CORP_ID'], 'required'],
+            [['CORP_ID','CORP_NM'], 'required'],
             [['CORP_ID'], 'string', 'max' => 5],
             [['CORP_NM'], 'string', 'max' => 30],
          ];
