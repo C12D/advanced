@@ -54,7 +54,7 @@ class DocdbaSearch extends Docdba
             // $query->where('0=1');
             return $dataProvider;
         }
-
+	
         $query->andFilterWhere([
             'ID' => $this->ID,
             'PARENT' => $this->PARENT,
@@ -63,7 +63,7 @@ class DocdbaSearch extends Docdba
             'USER_CREATED' => $this->USER_CREATED,
             'SORT' => $this->SORT,
         ]);
-
+	
         $query->andFilterWhere(['like', 'MDL_ID', $this->MDL_ID])
             ->andFilterWhere(['like', 'MDL_NM', $this->MDL_NM])
             ->andFilterWhere(['like', 'MDL_DB', $this->MDL_DB])
@@ -76,7 +76,8 @@ class DocdbaSearch extends Docdba
             ->andFilterWhere(['like', 'DSCRP', $this->DSCRP])
             ->andFilterWhere(['like', 'CORP_ID', $this->CORP_ID])
             ->andFilterWhere(['like', 'DEP_ID', $this->DEP_ID]);
-
+			
+		$query->orderby(['SORT'=>SORT_ASC]);
         return $dataProvider;
     }
 }

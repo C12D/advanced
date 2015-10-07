@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?= TreeGrid::widget([
       'dataProvider' => $dataProvider,
+	  //'pageSizeLimit' => [5,100],
       'keyColumnName' => 'ID',
       'parentColumnName' => 'PARENT',
       'columns' => [
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'MDL_FLD',
             'MDL_CLS',
             'MDL_LINK',
-            'DSCRP:ntext',
+            'DSCRP',
             // 'CREATED_DATE',
             // 'STATUS',
             // 'CORP_ID',
