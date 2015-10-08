@@ -17,13 +17,12 @@ use kartik\tabs\TabsX;
 use kartik\date\DatePicker;
 use kartik\builder\Form;
 
-use backend\assets\AppAsset; 	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
-AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
+//use backend\assets\AppAsset; 	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
+//AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
 
-/*Title page Modul*/
-$this->sideMenu = 'hrd_employee';
-$this->title = Yii::t('app', 'Department');
-$this->params['breadcrumbs'][] = $this->title;
+$this->sideCorp = 'Modul HRM';                        /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                        /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Department');           /* title pada header page */
 ?>
 
 <?php

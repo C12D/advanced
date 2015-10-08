@@ -2,16 +2,9 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\maxi\Maxiprodak */
-
-//$this->title = Yii::t('app', 'Update {modelClass}: ', [
-//    'modelClass' => 'Maxiprodak',
-//]) . ' ' . $model->EMP_ID;
-
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Maxiprodaks'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->EMP_ID, 'url' => ['view', 'id' => $model->BRG_ID]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->sideCorp = 'Modul HRM';                        /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                        /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Update - Department');           /* title pada header page */
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>

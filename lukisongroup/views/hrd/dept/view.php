@@ -11,9 +11,9 @@ use kartik\builder\Form;
 use kartik\icons\Icon;
 use kartik\widgets\Growl;
 
-$this->sideMenu = 'hrd_employee';
-//$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Maxiprodaks'), 'url' => ['prodak']];
-//$this->params['breadcrumbs'][] = $this->title;
+$this->sideCorp = 'Modul HRM';                        			/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                        			/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Detail View Department');         /* title pada header page */
 ?>
 
 <?php	
