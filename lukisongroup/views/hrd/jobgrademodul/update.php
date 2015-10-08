@@ -2,17 +2,10 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\hrd\Jobgrademodul */
-
-$this->title = 'Update Jobgrademodul: ' . ' ' . $model->ID;
-$this->params['breadcrumbs'][] = ['label' => 'Jobgrademoduls', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->ID, 'url' => ['view', 'id' => $model->ID]];
-$this->params['breadcrumbs'][] = 'Update';
-?>
+$this->sideCorp = 'Modul HRM';                            		/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                            		/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Update - Modul JobGrade');     /* title pada header page */
 <div class="jobgrademodul-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -3,17 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\hrd\Deptsub */
+$this->sideCorp = 'Modul HRM';                                   	 /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                                       /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'DetailView Sub Department');           /* title pada header page */
 
-$this->title = $model->DEP_SUB_ID;
-$this->params['breadcrumbs'][] = ['label' => 'Deptsubs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="deptsub-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->DEP_SUB_ID], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->DEP_SUB_ID], [

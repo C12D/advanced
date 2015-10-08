@@ -3,18 +3,11 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $searchModel lukisongroup\models\hrd\JobgradeSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Jobgrades';
-$this->params['breadcrumbs'][] = $this->title;
+$this->sideCorp = 'Modul HRM';               /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';               /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'JobGrade');    /* title pada header page */
 ?>
 <div class="jobgrade-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?= Html::a('Create Jobgrade', ['create'], ['class' => 'btn btn-success']) ?>
     </p>

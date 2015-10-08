@@ -3,20 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $searchModel lukisongroup\models\hrd\DeptsubSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+$this->sideCorp = 'Modul HRM';                            /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                            /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Sub Department');           /* title pada header page */
 
-$this->title = 'Deptsubs';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="deptsub-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    
     <p>
-        <?= Html::a('Create Deptsub', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Sub Department', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

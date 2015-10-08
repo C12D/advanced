@@ -1,18 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+$this->sideCorp = 'Modul HRM';                                     /* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_modul';                                     /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Update - Sub Department');           /* title pada header page */
 
-/* @var $this yii\web\View */
-/* @var $model lukisongroup\models\hrd\Deptsub */
-
-$this->title = 'Update Deptsub: ' . ' ' . $model->DEP_SUB_ID;
-$this->params['breadcrumbs'][] = ['label' => 'Deptsubs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->DEP_SUB_ID, 'url' => ['view', 'id' => $model->DEP_SUB_ID]];
-$this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="deptsub-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
