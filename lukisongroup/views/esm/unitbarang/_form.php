@@ -29,6 +29,8 @@ use kartik\form\ActiveForm;
 
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'STATUS')->dropDownList(['' => ' -- Silahkan Pilih --', '0' => 'Tidak Aktif', '1' => 'Aktif']) ?>
+
     <?php //= $form->field($model, 'STATUS')->textInput() ?>
 
     <?= $form->field($model, 'CREATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>

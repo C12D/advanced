@@ -20,6 +20,10 @@ use lukisongroup\models\esm\ro\Rodetail;
 use lukisongroup\models\master\Barangumum;
 use lukisongroup\models\master\Unitbarang;
 
+
+use lukisongroup\models\esm\Barang;
+
+
 use lukisongroup\models\hrd\Employe;
 
 use yii\grid\GridView;
@@ -113,7 +117,9 @@ $form = ActiveForm::begin([
 ]);
 
 
-	$brg = ArrayHelper::map(Barangumum::find()->all(), 'KD_BARANG', 'NM_BARANG');
+	$brgar['Barang Umum'] = $brg = ArrayHelper::map(Barangumum::find()->all(), 'KD_BARANG', 'NM_BARANG');
+	$brgar['Barang ESM'] = $brgs = ArrayHelper::map(Barang::find()->all(), 'KD_BARANG', 'NM_BARANG');
+
 	$unit = ArrayHelper::map(Unitbarang::find()->all(), 'KD_UNIT', 'NM_UNIT');
 ?>
 <?php echo $form->field($rodetail, 'CREATED_AT')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false); ?>	
@@ -122,9 +128,8 @@ $form = ActiveForm::begin([
 <?php echo $form->field($rodetail, 'KD_RO')->textInput(['value' => $id, 'readonly' => true])->label('Kode Request Order'); ?>
 
 <div class="row">
-  <div class="col-xs-3"><?php echo $form->field($rodetail, 'KD_BARANG')->dropDownList($brg, ['prompt'=>' -- Pilih Salah Satu --','onchange' => '$("#rodetail-nm_barang").val($(this).find("option:selected").text())'])->label('Nama Barang'); ?></div>
+  <div class="col-xs-3"><?php echo $form->field($rodetail, 'KD_BARANG')->dropDownList($brgar, ['prompt'=>' -- Pilih Salah Satu --','onchange' => '$("#rodetail-nm_barang").val($(this).find("option:selected").text())'])->label('Nama Barang'); ?></div>
   <div class="col-xs-3"><?php echo $form->field($rodetail, 'QTY')->textInput(['maxlength' => true, 'placeholder'=>'Jumlah Barang']); ?></div>
-  <div class="col-xs-3"><?php echo $form->field($rodetail, 'UNIT')->dropDownList($unit, ['prompt'=>' -- Pilih Salah Satu --']); ?></div>
   <div class="col-xs-3"><?php echo $form->field($rodetail, 'NOTE')->textInput(['maxlength' => true, 'placeholder'=>'Catatan Barang']); ?></div>
 </div>
 
@@ -138,9 +143,9 @@ $form = ActiveForm::begin([
  ActiveForm::end(); 
  ?>
 
+<?= Yii::$app->session->getFlash('error'); ?>
 <?php
- $que = Rodetail::find()->where(['KD_RO' => $id])->andWhere('STATUS <> 3');; 
- 
+$que = Rodetail::find()->where(['KD_RO' => $id])->andWhere('STATUS <> 3');;  
 echo "<br/><br/>";
 
         $dataProvider = new ActiveDataProvider([

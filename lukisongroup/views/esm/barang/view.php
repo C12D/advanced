@@ -42,7 +42,7 @@ $this->title = Yii::t('app', 'ESM - Prodak View');       /* title pada header pa
 			//'BARCODE',
 			[
 				'label' => 'Nama Distributor',
-				'value' => $model->dbtr->NM_DISTRIBUTOR,
+				'value' => $model->sup->NM_DISTRIBUTOR,
 			],
 			'NOTE',
 			[

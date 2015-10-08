@@ -38,7 +38,7 @@ use kartik\widgets\FileInput;
 	
 	
 	<?php
-		$drop = ArrayHelper::map(Unitbarang::find()->all(), 'ID', 'NM_UNIT');
+		$drop = ArrayHelper::map(Unitbarang::find()->all(), 'KD_UNIT', 'NM_UNIT');
 	?>
     <?= $form->field($model, 'KD_UNIT')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --']) ?>
 	

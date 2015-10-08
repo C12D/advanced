@@ -16,7 +16,7 @@ use lukisongroup\models\master\Kategori;
  */
 class BarangSearch extends Barang
 {
-	public $nmdbtr;
+	public $nmsuplier;
     public $unitbrg;
     public $tipebrg;
 	public $nmkategori;
@@ -29,7 +29,7 @@ class BarangSearch extends Barang
             [['ID', 'HPP', 'HARGA', 'BARCODE', 'NOTE', 'STATUS', 'CREATED_BY', 'CREATED_AT', 'UPDATED_AT'], 'safe'],
             [['ID', 'HPP', 'HARGA'], 'integer'],
             [['KD_BARANG', 'KD_TYPE', 'KD_KATEGORI', 'NM_BARANG', 'KD_SUPPLIER', 'KD_DISTRIBUTOR', 'DATA_ALL'], 'safe'],
-            [['nmdbtr','unitbrg','tipebrg','nmkategori'], 'safe'],
+            [['nmsuplier','unitbrg','tipebrg','nmkategori'], 'safe'],
         ];
     }
 
@@ -52,8 +52,8 @@ class BarangSearch extends Barang
     public function search($params)
     {
         $query = Barang::find()->where('b0001.STATUS <> 3');
-		$query->joinWith(['dbtr' => function ($q) {
-			$q->where('d0001.NM_DISTRIBUTOR LIKE "%' . $this->nmdbtr . '%"');
+		$query->joinWith(['sup' => function ($q) {
+			$q->where('d0001.NM_DISTRIBUTOR LIKE "%' . $this->nmsuplier . '%"');
 		}]);
         $query->joinWith(['unitb' => function ($q) {
             $q->where('ub0001.NM_UNIT LIKE "%' . $this->unitbrg . '%"');
@@ -77,7 +77,7 @@ class BarangSearch extends Barang
                 'NM_BARANG',
                 'HPP', 
                 'HARGA',
-    			'nmdbtr' => [
+    			'nmsuplier' => [
     				'asc' => ['d0001.NM_DISTRIBUTOR' => SORT_ASC],
     				'desc' => ['d0001.NM_DISTRIBUTOR' => SORT_DESC],
     				'label' => 'Supplier',

@@ -44,7 +44,7 @@ class Purchasedetail extends \yii\db\ActiveRecord
         return [
             [['KD_PO', 'QTY', 'UNIT', 'STATUS', 'STATUS_DATE', 'NOTE'], 'required'],
             [['KD_PO', 'QTY', 'STATUS'], 'integer'],
-            [['STATUS_DATE','KD_BARANG'], 'safe'],
+            [['STATUS_DATE','KD_BARANG', 'HARGA'], 'safe'],
             [['NOTE'], 'string'],
             [['UNIT'], 'string', 'max' => 255]
         ];

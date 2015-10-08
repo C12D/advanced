@@ -78,9 +78,10 @@ class UnitbarangController extends Controller
 
 		$model->load(Yii::$app->request->post());
 		$ck = Unitbarang::find()->where('STATUS <> 3')->max('KD_UNIT');
-		$nw = $ck+1;
+		$nw = preg_replace("/[^0-9\']/", '', $ck)+1;
+
 		$nw = str_pad( $nw, "2", "0", STR_PAD_LEFT );
-		$model->KD_UNIT = $nw;
+		$model->KD_UNIT = 'U'.$nw;
 		$model->save();
 		return $this->redirect(['view', 'ID' => $model->ID, 'KD_UNIT' => $model->KD_UNIT]);
     }

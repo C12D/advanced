@@ -52,7 +52,7 @@ class Barang extends \yii\db\ActiveRecord
 	
     public function getUnitb()
     {
-        return $this->hasOne(Unitbarang::className(), ['ID' => 'KD_UNIT']);
+        return $this->hasOne(Unitbarang::className(), ['KD_UNIT' => 'KD_UNIT']);
     }
     public function getUnitbrg()
     {
@@ -82,13 +82,13 @@ class Barang extends \yii\db\ActiveRecord
 	
 
 
-	public function getDbtr()
+	public function getSup()
     {
         return $this->hasOne(Distributor::className(), ['KD_DISTRIBUTOR' => 'KD_DISTRIBUTOR']);
     }
-	public function getNmdbtr()
+	public function getNmsuplier()
     {
-        return $this->dbtr->NM_DISTRIBUTOR;
+        return $this->sup->NM_DISTRIBUTOR;
     }
 	
 	public function getBrg()
@@ -171,7 +171,7 @@ class Barang extends \yii\db\ActiveRecord
             'CREATED_AT' => 'Created At',
             'UPDATED_AT' => 'Update At',
             'DATAA_ALL' => 'Data All',
-            'nmdbtr' => Yii::t('app', 'Supplier'),
+            'nmsuplier' => Yii::t('app', 'Supplier'),
             'unitbrg' => Yii::t('app', 'Unit'),
             'tipebrg' => Yii::t('app', 'Tipe Barang'),
             'nmkategori' => Yii::t('app', 'Kategori'),

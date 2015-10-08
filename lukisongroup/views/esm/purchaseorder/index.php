@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 use yii\helpers\ArrayHelper;
 use kartik\form\ActiveForm;
@@ -14,7 +14,8 @@ use lukisongroup\models\master\Suplier;
 $this->title = 'Purchaseorders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="purchaseorder-index">
+
+<div class="purchaseorder-index" style="padding:10px;">
 
 <script type="text/javascript">
 function submitform()
@@ -26,11 +27,84 @@ function submitform()
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+
+<?php 
+
+	$gridColumns = [
+        ['class' => 'yii\grid\SerialColumn'],
+
+        //'ID',
+        'KD_PO',
+        'KD_SUPPLIER',
+        'CREATE_BY',
+        'CREATE_AT',
+        // 'APPROVE_BY',
+        // 'APPROVE_AT',
+        // 'STATUS',
+        // 'NOTE:ntext',
+
+
+        ['class' => 'yii\grid\ActionColumn',
+		'template' => '{link} {edit}',
+		'buttons' => [
+			'link' => function ($url,$model) { return Html::a('', ['view','kd'=>$model->KD_PO],['class'=>'glyphicon glyphicon-eye-open', 'title'=>'Detail']);},
+
+			'edit' => function ($url,$model) { return Html::a('', ['buatro','id'=>$model->KD_PO],['class'=>'glyphicon glyphicon-pencil', 'title'=>'Ubah RO']); },
+
+			],
+        ],
+	];
+
+	echo GridView::widget([
+			'dataProvider'=> $dataProvider,
+			'filterModel' => $searchModel,
+			'columns' => $gridColumns,
+			'pjax'=>true,
+			'toolbar' => [
+				'{export}',
+			],
+			'panel' => [
+				'heading'=>'<h3 class="panel-title"></h3>',
+				'type'=>'warning',
+				'before'=> '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus fa-fw"></i> Buat PO</button>',
+				'showFooter'=>false,
+			],		
+			
+			'export' =>['target' => GridView::TARGET_BLANK],
+			'exportConfig' => [
+				GridView::PDF => [ 'filename' => 'PO-'.date('ymdHis') ],
+				GridView::EXCEL => [ 'filename' => 'PO-'.date('ymdHis') ],
+			],
+		]);
+		
+?>
+    <!-- ?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'ID',
+            'KD_PO',
+            'KD_SUPPLIER',
+            'CREATE_BY',
+            'CREATE_AT',
+            // 'APPROVE_BY',
+            // 'APPROVE_AT',
+            // 'STATUS',
+            // 'NOTE:ntext',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ? -->
+
+</div>
+
     <p>
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+		<!-- Button trigger modal - - >
+		< button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
 		  Buat PO
-		</button>
+		</button >
 
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -63,25 +137,3 @@ function submitform()
 		
         <?php //= Html::a('Create Purchaseorder', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'ID',
-            'KD_PO',
-            'KD_SUPPLIER',
-            'CREATE_BY',
-            'CREATE_AT',
-            // 'APPROVE_BY',
-            // 'APPROVE_AT',
-            // 'STATUS',
-            // 'NOTE:ntext',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-</div>

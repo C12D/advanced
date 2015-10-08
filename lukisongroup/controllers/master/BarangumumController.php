@@ -87,11 +87,15 @@ class BarangumumController extends Controller
 		$kdKategori = $model->KD_KATEGORI;	
 		$kdUnit = $model->KD_UNIT;	
 		
+
+        $kd = Yii::$app->mastercode->barangumum($kdCorp,$kdType,$kdKategori,$kdUnit);
+        
+/*
 		$ck = Barangumum::find()->select('KD_BARANG')->where(['KD_CORP' => $kdCorp])->andWhere('STATUS <> 3')->orderBy(['ID'=>SORT_DESC])->one();
 		if(count($ck) == 0){ $nkd = 1; } else { $kd = explode('.',$ck->KD_BARANG); $nkd = $kd[5]+1; }
 		
 		$kd = "BRG.".$kdCorp.".".$kdType.".".$kdKategori.".".$kdUnit.".".str_pad( $nkd, "4", "0", STR_PAD_LEFT );
-
+*/
 		
 		$model->KD_BARANG = $kd;
 		

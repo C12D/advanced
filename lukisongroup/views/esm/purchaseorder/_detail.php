@@ -1,8 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\db\ActiveQuery;
 
-use lukisongroup\models\master\Unitbarang;
 use lukisongroup\models\esm\po\Podetail;
 use lukisongroup\models\esm\po\Purchasedetail;
 ?>
@@ -45,6 +45,7 @@ $form = ActiveForm::begin([
   </thead>
 
   <tbody>
+
 	<?php $a=0; foreach ($po as $npo => $isipo) { $a=$a+1; ?>
 
 	    <tr>
@@ -53,7 +54,12 @@ $form = ActiveForm::begin([
 	      	<td><?php echo $isipo->QTY; ?></td>
 	      	<td>
 		      	<?php 
-		      		$brg = Unitbarang::find('NM_UNIT')->where(['KD_UNIT'=>$isipo->UNIT])->one(); 
+		      		$ckUnit = preg_replace("/[^A-Z\']/", '', $isipo->UNIT);
+		      		if($ckUnit == 'U'){
+						$brg = lukisongroup\models\master\Unitbarang::find('NM_UNIT')->where(['KD_UNIT'=>$isipo->UNIT])->one();
+		      		} else {
+						$brg = lukisongroup\models\esm\Unitbarang::find('NM_UNIT')->where(['KD_UNIT'=>$isipo->UNIT])->one();
+		      		}
 		      		echo $brg->NM_UNIT; 
 		      	?>
 	      	</td>
@@ -79,10 +85,10 @@ $form = ActiveForm::begin([
 	<input type="hidden" name="kdpo" value="<?php echo $kdpo; ?>" />
 	<input type="hidden" name="kdro" value="<?php echo $kd_ro; ?>" />
 	<!-- input type="hidden" name="_csrf" value="< ?=Yii::$app->request->getCsrfToken()?>" / -->
-	  <div class="modal-footer">
+	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		<button type="submit" class="btn btn-primary">Save changes</button>
-	  </div>
+	</div>
 
 <?php
  ActiveForm::end(); 

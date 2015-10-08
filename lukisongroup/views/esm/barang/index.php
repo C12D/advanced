@@ -26,7 +26,7 @@ $this->title = Yii::t('app', 'ESM - Prodak');           /* title pada header pag
 			
             'KD_BARANG',
 			'NM_BARANG',
-			'nmdbtr',
+			'nmsuplier',
 			'unitbrg',
 			'HPP', 
 			'HARGA',

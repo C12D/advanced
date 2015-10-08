@@ -12,6 +12,10 @@ use lukisongroup\models\esm\ro\Rodetail;
 use lukisongroup\models\esm\ro\RodetailSearch;
 use lukisongroup\models\hrd\Employe;
 
+
+use lukisongroup\models\esm\Barang;
+use lukisongroup\models\master\Barangumum;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -145,9 +149,43 @@ class RequestorderController extends Controller
     public function actionSimpan($id)
     {
         $rodetail = new Rodetail();
-		$hsl = $rodetail->load(Yii::$app->request->post());
-		$rodetail->save();
-		return $this->redirect(['buatro','id'=>$id]);
+		$hsl = Yii::$app->request->post();
+
+        $created = $hsl['Rodetail']['CREATED_AT'];
+        $nmBarang = $hsl['Rodetail']['NM_BARANG'];
+        $kdRo = $hsl['Rodetail']['KD_RO'];
+        $kdBarang = $hsl['Rodetail']['KD_BARANG'];
+        $qty = $hsl['Rodetail']['QTY'];
+        $note = $hsl['Rodetail']['NOTE'];
+
+        $ck = Rodetail::find()->where(['KD_BARANG'=>$kdBarang, 'KD_RO'=>$kdRo])->andWhere('STATUS <> 3')->one();
+
+        if(count($ck) == 1){
+            \Yii::$app->getSession()->setFlash('error', '<br/><br/><p class="bg-danger" style="padding:15px"><b>Barang Sudah di Masukkan</b></p>');
+            return $this->redirect(['buatro','id'=>$id]);
+        } else {
+
+            $kdBrg = $hsl['Rodetail']['KD_BARANG'];
+            $ckBrg = explode('.', $kdBrg);
+            if($ckBrg[0] == 'BRG'){
+                $kdUnit = Barang::find('KD_UNIT')->where(['KD_BARANG'=>$kdBrg])->one();
+            } else if($ckBrg[0] == 'BRGU') {
+                $kdUnit = Barangumum::find('KD_UNIT')->where(['KD_BARANG'=>$kdBrg])->one();
+            }
+
+            $rodetail->UNIT = $kdUnit->KD_UNIT;
+            $rodetail->CREATED_AT = $created;
+            $rodetail->NM_BARANG = $nmBarang;
+            $rodetail->KD_RO = $kdRo;
+            $rodetail->KD_BARANG = $kdBarang;
+            $rodetail->QTY = $qty;
+            $rodetail->NOTE = $note;
+
+    		$rodetail->save();
+
+            \Yii::$app->getSession()->setFlash('error', '<br/><br/><p class="bg-success" style="padding:15px"><b>Barang berhasil di Masukkan</b></p>');
+    		return $this->redirect(['buatro','id'=>$id]);
+        }
     }
 	
     public function actionHapus($kode,$id)

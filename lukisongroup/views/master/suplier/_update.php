@@ -16,6 +16,11 @@ use lukisongroup\models\hrd\Corp;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?php
+        $drop = ArrayHelper::map(Corp::find()->all(), 'CORP_ID', 'CORP_NM');
+    ?>
+    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
+    
     <?= $form->field($model, 'NM_SUPPLIER')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'ALAMAT')->textarea(['rows' => 6]) ?>
@@ -36,11 +41,6 @@ use lukisongroup\models\hrd\Corp;
 
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
-	<?php
-		$drop = ArrayHelper::map(Corp::find()->all(), 'CORP_ID', 'CORP_NM');
-	?>
-    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
-	
     <?= $form->field($model, 'STATUS')->dropDownList(['' => ' -- Silahkan Pilih --', '0' => 'Tidak Aktif', '1' => 'Aktif']) ?>
 
     <?= $form->field($model, 'UPDATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>

@@ -23,6 +23,11 @@ use lukisongroup\models\hrd\Corp;
 
     <?php //= $form->field($model, 'KD_SUPPLIER')->textInput(['maxlength' => true]) ?>
 
+    <?php
+        $drop = ArrayHelper::map(Corp::find()->all(), 'CORP_ID', 'CORP_NM');
+    ?>
+    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
+    
     <?= $form->field($model, 'NM_SUPPLIER')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'ALAMAT')->textarea(['rows' => 6]) ?>
@@ -43,11 +48,6 @@ use lukisongroup\models\hrd\Corp;
 
     <?= $form->field($model, 'NOTE')->textarea(['rows' => 6]) ?>
 
-	<?php
-		$drop = ArrayHelper::map(Corp::find()->all(), 'CORP_ID', 'CORP_NM');
-	?>
-    <?= $form->field($model, 'KD_CORP')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Group Perusahaan') ?>
-	
     <?=  $form->field($model, 'STATUS')->radioList(['1'=>'Aktif','0'=>'Tidak Aktif']) ?>
     <?= $form->field($model, 'CREATED_BY')->hiddenInput(['value'=>Yii::$app->user->identity->username])->label(false) ?>
     <?= $form->field($model, 'CREATED_AT')->hiddenInput(['value'=>date('Y-m-d H:i:s')])->label(false) ?>

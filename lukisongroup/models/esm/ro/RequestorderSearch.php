@@ -129,4 +129,27 @@ class RequestorderSearch extends Requestorder
         return $dataProvider;
     }
     
+    public function caripo($params)
+    {
+        $query = Requestorder::find()->where("r0001.status <> 3 and r0001.status <> 0");
+        
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+         $dataProvider->setSort([
+            'attributes' => [
+            'KD_RO',        
+            ]
+        ]);
+        
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        
+        $query->andFilterWhere(['like', 'KD_RO', $this->KD_RO]);
+        return $dataProvider;
+    }
+    
 }

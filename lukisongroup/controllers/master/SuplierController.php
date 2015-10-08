@@ -67,17 +67,8 @@ class SuplierController extends Controller
 		$model->load(Yii::$app->request->post());
 		$crp = $model->KD_CORP;
 		
-		$ck = Suplier::find()->where('STATUS <> 3')->where(['KD_CORP'=>$crp])->max('KD_SUPPLIER');
-		if(count($ck) != 0){
-			$nw = explode('.',$ck);
-			$nm = $nw[2]+1;
-		}else{
-			$nm =1;
-		}
-		
-		$nn = str_pad($nm, "5", "0", STR_PAD_LEFT );
-		
-		$kd = 'SPL.'.$crp."." .$nn;
+		$kd = Yii::$app->mastercode->kdsupplier($crp);
+        
 		$model->KD_SUPPLIER = $kd;
 		$model->save();
 		return $this->redirect(['view', 'ID' => $model->ID, 'KD_SUPPLIER' => $model->KD_SUPPLIER]);
