@@ -37,8 +37,9 @@ class Employe extends \yii\db\ActiveRecord
             [['EMP_ID'], 'required'],
             [['EMP_ID','EMP_ZIP','EMP_CORP_ID'], 'string', 'max' => 15],
             [['EMP_NM','EMP_NM_BLK','EMP_IMG','EMP_KTP','GRP_NM'], 'string', 'max' => 20], 
-			[['DEP_ID','JAB_ID'], 'string', 'max' => 5], 
-			[['EMP_STS'], 'integer'],
+			[['DEP_ID','JOBGRADE_ID'], 'string', 'max' => 5], 
+			[['GF_ID','DEP_SUB_ID'], 'string', 'max' => 6], 
+			[['EMP_STS','SEQ_ID'], 'integer'],
 			[['EMP_JOIN_DATE','EMP_TGL_LAHIR','EMP_RESIGN_DATE'], 'safe'],
 			[['EMP_JOIN_DATE','EMP_TGL_LAHIR','EMP_RESIGN_DATE'], 'date','format' => 'yyyy-mm-dd'], 
 			[['EMP_ALAMAT'],  'filter', 'filter' => function($value) {
@@ -69,7 +70,7 @@ class Employe extends \yii\db\ActiveRecord
             'DEP_ID' => Yii::t('app', 'Department'),
 			'EMP_GENDER' => Yii::t('app', 'Jenis Kelamin'),
 			'EMP_STS' => Yii::t('app', 'Status'),
-			'JAB_ID' => Yii::t('app', 'Jabatan'),
+			'JOBGRADE_ID' => Yii::t('app', 'Jabatan'),
 			'EMP_JOIN_DATE' => Yii::t('app', 'Join Date'),
 			'EMP_RESIGN_DATE' => Yii::t('app', 'Resign Date'),		
 						
@@ -95,7 +96,7 @@ class Employe extends \yii\db\ActiveRecord
 			//UMUM
             'deptOne.DEP_NM' => Yii::t('app', 'Department'),
 			//UMUM
-			'jabOne.JAB_NM' => Yii::t('app', 'Position'),
+			//'jabOne.JAB_NM' => Yii::t('app', 'Position'),
 			//UMUM
             'sttOne.STS_NM' => Yii::t('app', 'Status'),      
         ];
@@ -129,11 +130,32 @@ class Employe extends \yii\db\ActiveRecord
 		{
 			return $this->hasOne(Dept::className(), ['DEP_ID' => 'DEP_ID']);
 		}
-		/* Join Class Table Jabatan Employe */
-		public function getJabOne()
+		
+		/* Join Class SUB DEPARTMENT */
+		public function getDeptsub()
 		{
-			return $this->hasOne(Jabatan::className(), ['JAB_ID' => 'JAB_ID']);
+			return $this->hasOne(Deptsub::className(), ['DEP_SUB_ID' => 'DEP_SUB_ID']);
 		}	
+		
+		/* Join Class Group Function */
+		public function getGroupfunction()
+		{
+			return $this->hasOne(Groupfunction::className(), ['GF_ID' => 'GF_ID']);
+		}		
+				
+		/* Join Class Group Seqmen bisnis dan support */
+		public function getGroupseqmen()
+		{
+			return $this->hasOne(Groupseqmen::className(), ['SEQ_ID' => 'SEQ_ID']);
+		}	
+		
+		/* Join Class Table Jabatan/Jobgrade Employe */
+		public function getJobgrade()
+		{
+			return $this->hasOne(Jobgrade::className(), ['JOBGRADE_ID' => 'JOBGRADE_ID']);
+		}		
+		
+		
 		/* Join Class Table tatus Employe */
 		public function getSttOne()
 		{

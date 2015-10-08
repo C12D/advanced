@@ -54,7 +54,7 @@ class Jobgrade extends \yii\db\ActiveRecord
         return [
             'ID' => 'ID',
             'JOBGRADE_ID' => 'Jobgrade  ID',
-            'JOBGRADE_NM' => 'Jobgrade  Nm',
+            'JOBGRADE_NM' => 'Grading',
             'SORT' => 'Sort',
             'JOBGRADE_STS' => 'Jobgrade  Sts',
             'JOBGRADE_DCRP' => 'Jobgrade  Dcrp',
