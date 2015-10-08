@@ -15,6 +15,7 @@ use lukisongroup\models\system\side_menu\M1000;
 use kartik\sidenav\SideNav;
 use kartik\markdown\Markdown;
 use yii\helpers\Url;
+use lukisongroup\models\hrd\Jobgrade;
 
 $this->sideMenu = 'hrd_employee';
 $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL,'options'=>['enctype'=>'multipart/form-data']]);
@@ -153,9 +154,9 @@ $EmployeeInput= FormGrid::widget([
 							'hint'=>'Select Department',
 							'columnOptions'=>['colspan'=>1],
 						],
-						'JAB_ID'=>[
+						'JOBGRADE_ID'=>[
 							'type'=>Form::INPUT_DROPDOWN_LIST , 
-							'items'=>ArrayHelper::map(Jabatan::find()->orderBy('SORT')->asArray()->all(), 'JAB_ID','JAB_NM'), 
+							'items'=>ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_ID','JOBGRADE_NM'), 
 							//'options'=>['placeholder'=>'Select Coorporate...'],
 							'hint'=>'Select	Position ',
 							'columnOptions'=>['colspan'=>1],
