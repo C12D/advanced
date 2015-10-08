@@ -49,7 +49,7 @@ class RequestorderSearch extends Requestorder
 		$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
 		$crp = $dt[0]['EMP_CORP_ID'];
 		
-		if($dt[0]['JOBGRADE_ID'] == 'M'){
+		if($dt[0]['JAB_ID'] == 'MGR'){
 			$query = Requestorder::find()->where("r0001.status <> 3 and r0001.KD_CORP = '$crp' ");
 		} else {
 			$query = Requestorder::find()->where("r0001.status <> 3 and r0001.KD_CORP = '$crp' and r0001.ID_USER = '$empId' ");

@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;                      /* belum di 
     <?php 
 	$empId = Yii::$app->user->identity->EMP_ID;
 	$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
-	$jbtan = $dt[0]['JOBGRADE_ID'];
+	$jbtan = $dt[0]['JAB_ID'];
 	
 	
 	$gridColumns = [

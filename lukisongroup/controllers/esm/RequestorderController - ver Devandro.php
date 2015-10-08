@@ -114,7 +114,7 @@ class RequestorderController extends Controller
 		$model->KD_DEP = $dt[0]['DEP_ID'];
 		$model->KD_CORP = $dt[0]['EMP_CORP_ID'];
 		$model->CREATED_AT = date("Y-m-d H:i:s");
-		/*
+		
 		$jab = $dt[0]['DEP_ID'];
 		$que = "SELECT EMP_ID FROM a0001 WHERE (DEP_ID='GA' OR DEP_ID='$jab' ) AND (JAB_ID='MGR' OR JAB_ID='SVR') AND EMP_STS<>'3'";
 		$modelss = $connection->createCommand($que);
@@ -129,7 +129,6 @@ class RequestorderController extends Controller
     		$cons->createCommand()->batchInsert( Requestorderstatus::tableName(), ['KD_RO', 'ID_USER', 'STATUS'], $isi )->execute();	
             return $this->redirect(['buatro','id'=>$kode]);
 		}
-		*/
         return $this->redirect([' ']);
 	//	print_r(Yii::$app->user->identity);
     }
