@@ -68,18 +68,21 @@ $tab_employe= GridView::widget([
             ],  
 				'EMP_ID',
             [
-                'class' => 'kartik\grid\EditableColumn',
+                //'class' => 'kartik\grid\EditableColumn',
                 'attribute' =>'EMP_NM',
+				/*
                 'readonly'=>function($model, $key, $index, $widget) {
                         return (10==$model->STATUS); // do not allow editing of inactive records
                     },
-                'editableOptions' => [
-                   'header' => 'Employe name',
-                    'inputType' => \kartik\editable\Editable::INPUT_TEXT,
-                    //'options' => [
-                    //    'pluginOptions' => ['min'=>0, 'max'=>5000]
-                   // ]
-                ],
+				
+					'editableOptions' => [
+					   'header' => 'Employe name',
+						'inputType' => \kartik\editable\Editable::INPUT_TEXT,
+						//'options' => [
+						//    'pluginOptions' => ['min'=>0, 'max'=>5000]
+					   // ]
+					],
+				*/
                 /*
                 'editableOptions'=> function ($model, $key, $index, $widget) {
                         return [
@@ -112,8 +115,7 @@ $tab_employe= GridView::widget([
 				/*Author -ptr.nov- GROUP FINCTION */
 				'attribute' =>'groupfunction.GF_NM',
 				'filter' => $Combo_GrpFnc,
-			],
-			
+			],			
 			[
 				/*Author -ptr.nov-*/
 				'attribute' =>'groupseqmen.SEQ_NM',
@@ -445,6 +447,7 @@ use kartik\alert\Alert;
 		[
 			'label'=>'<i class="glyphicon glyphicon-home"></i> Employe Resign','content'=>$tab_employe_resign,//$tab_profile,
 		],
+		/*
 		[
 			'label'=>'<i class="glyphicon glyphicon-home"></i> Test Affix','content'=>$KiriMenu.$affk,//$sortImg,// ,
 		],
@@ -454,6 +457,7 @@ use kartik\alert\Alert;
 		[
 			'label'=>'<i class="glyphicon glyphicon-home"></i> RATING','content'=>$strRat,//$sortImg,// ,
 		],
+		*/
 
 	];
 

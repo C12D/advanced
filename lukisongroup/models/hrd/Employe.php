@@ -95,6 +95,7 @@ class Employe extends \yii\db\ActiveRecord
             'corpOne.CORP_NM' => Yii::t('app', 'Company'),
 			//UMUM
             'deptOne.DEP_NM' => Yii::t('app', 'Department'),
+			//'jobgrade.JOBGRADE_NM' => Yii::t('app', 'Grading'),
 			//UMUM
 			//'jabOne.JAB_NM' => Yii::t('app', 'Position'),
 			//UMUM

@@ -4,8 +4,12 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use lukisongroup\models\hrd\Corp;
 use lukisongroup\models\hrd\Dept;
-use lukisongroup\models\hrd\Jabatan;
+//use lukisongroup\models\hrd\Jabatan;
 use lukisongroup\models\hrd\Status;
+use lukisongroup\models\hrd\Deptsub;
+use lukisongroup\models\hrd\Groupfunction;
+use lukisongroup\models\hrd\Groupseqmen;
+use lukisongroup\models\hrd\Jobgrade;
 
 use kartik\detail\DetailView;
 use yii\bootstrap\Modal;
@@ -16,26 +20,34 @@ use kartik\icons\Icon;
 use kartik\widgets\Growl;
 use kartik\widgets\FileInput;
 
+$this->sideCorp = 'HRM - Employee';             		/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_employee';               		/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header page */
 
-$this->sideMenu = 'hrd_employee';
-
-//$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Maxiprodaks'), 'url' => ['prodak']];
-//$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
 <?php	
-	$Combo_Corp = ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_ID','CORP_NM');
-	$Combo_Dept = ArrayHelper::map(Dept::find()->orderBy('SORT')->asArray()->all(), 'DEP_ID','DEP_NM');
-	$Combo_Jab = ArrayHelper::map(Jabatan::find()->orderBy('SORT')->asArray()->all(), 'JAB_ID','JAB_NM');
-	$Combo_Status = ArrayHelper::map(Status::find()->orderBy('SORT')->asArray()->all(), 'STS_ID','STS_NM');
+	//$Combo_Corp = ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_ID','CORP_NM');
+	//$Combo_Dept = ArrayHelper::map(Dept::find()->orderBy('SORT')->asArray()->all(), 'DEP_ID','DEP_NM');
+	//$Combo_Jab = ArrayHelper::map(Jabatan::find()->orderBy('SORT')->asArray()->all(), 'JAB_ID','JAB_NM');
+	//$Combo_Status = ArrayHelper::map(Status::find()->orderBy('SORT')->asArray()->all(), 'STS_ID','STS_NM');
+	
+	$Combo_Corp = ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_NM','CORP_NM');
+	$Combo_Dept = ArrayHelper::map(Dept::find()->orderBy('SORT')->asArray()->all(), 'DEP_NM','DEP_NM');
+	$Combo_SubDept= ArrayHelper::map(Deptsub::find()->orderBy('SORT')->asArray()->all(), 'DEP_SUB_NM','DEP_SUB_NM');
+	$Combo_GrpFnc = ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_NM','GF_NM');
+	$Combo_Seq = ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_NM','SEQ_NM');
+	$Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_NM','JOBGRADE_NM');
+	$Combo_Status = ArrayHelper::map(Status::find()->orderBy('SORT')->asArray()->all(), 'STS_NM','STS_NM');
+	
 	$Corp_MDL = Corp::find()->where(['CORP_ID'=>$model->EMP_CORP_ID])->orderBy('SORT')->one();
 	$Dept_MDL = Dept::find()->where(['DEP_ID'=>$model->DEP_ID])->orderBy('SORT')->one();
-	$Jabatan_MDL = Jabatan::find()->where(['JAB_ID'=>$model->JAB_ID])->orderBy('SORT')->one();
+	$Jabatan_MDL = Jobgrade::find()->where(['JOBGRADE_ID'=>$model->JOBGRADE_ID])->orderBy('SORT')->one();
 	$Status_MDL = Status::find()->where(['STS_ID'=>$model->EMP_STS])->orderBy('SORT')->one();
 	$Val_Corp=$Corp_MDL->CORP_NM;
 	$Val_Dept=$Dept_MDL->DEP_NM;
-	$Val_Jabatan=$Jabatan_MDL->JAB_NM;
+	$Val_Jabatan=$Jabatan_MDL->JOBGRADE_NM;
 	$Val_Status=$Status_MDL->STS_NM;
 	
 	$attribute = [
@@ -103,7 +115,7 @@ $this->sideMenu = 'hrd_employee';
 			//'inputWidth'=>'40%'
 		],
 		[ // Department - Author: -ptr.nov-
-			'attribute' =>	'DEP_ID',
+			'attribute' =>'DEP_ID',
 			'format'=>'raw',
 			'value'=>Html::a($Val_Dept, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
@@ -116,7 +128,7 @@ $this->sideMenu = 'hrd_employee';
 		//	'inputContainer' => ['class'=>'col-sm-3'],
 		],				
 		[// Jabatan - Author: -ptr.nov-
-			'attribute' =>	'JAB_ID' ,
+			'attribute' =>'JOBGRADE_ID',
 			'format'=>'raw',
 			'value'=>Html::a($Val_Jabatan, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
@@ -129,7 +141,7 @@ $this->sideMenu = 'hrd_employee';
 			//'inputWidth'=>'40%'
 		],				
 		[// Jabatan - Author: -ptr.nov-
-			'attribute' =>	'EMP_STS',
+			'attribute' =>'EMP_STS',
 			'format'=>'raw',
 			'value'=>Html::a($Val_Status, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
@@ -143,7 +155,7 @@ $this->sideMenu = 'hrd_employee';
 			
 		],
 		[
-			'attribute' =>	'EMP_JOIN_DATE',
+			'attribute' =>'EMP_JOIN_DATE',
 			'format'=>'date',
 			'type'=>DetailView::INPUT_DATE,
 			'widgetOptions'=>[
@@ -153,7 +165,7 @@ $this->sideMenu = 'hrd_employee';
 			//'inputWidth'=>'40%'
 		],
 		[
-			'attribute' =>	'EMP_RESIGN_DATE',
+			'attribute' =>'EMP_RESIGN_DATE',
 			'format'=>'date',
 			'type'=>DetailView::INPUT_DATE,
 			'widgetOptions'=>[
@@ -230,40 +242,7 @@ $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
 				'confirm'=>Yii::t('app', 'Are you sure you want to delete this record?'),
 				'method'=>'post',
 			],
-		],
-		
-		
-		/*
-		
-		'attributes' => [
-			'EMP_ID',		
-			'EMP_NM',					
-			'EMP_NM_BLK',
-			'EMP_IMG',
-
-			// Employe Coorporation - Author: -ptr.nov-
-			'EMP_CORP_ID' ,
-			'DEP_ID',
-			'EMP_GENDER',
-			'EMP_STS',
-			'JAB_ID' ,
-			'EMP_IMG' ,
-			//Employe Profile - Author: -ptr.nov-
-			'EMP_KTP' ,
-			'EMP_ALAMAT' ,
-			'EMP_ZIP' ,
-			'EMP_TLP' ,
-			'EMP_HP' ,
-			'EMP_EMAIL' ,
-			'GRP_NM',
-			'EMP_JOIN_DATE',
-			//Join
-			//'corpOne.CORP_NM' ,
-			//'deptOne.DEP_NM' ,
-			//'jabOne.JAB_NM' ,
-			//'sttOne.STS_NM',	
-		],
-		*/
+		],		
 	]);		
 ActiveForm::end();	
 ?>

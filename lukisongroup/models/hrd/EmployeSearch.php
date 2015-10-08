@@ -94,20 +94,20 @@ class EmployeSearch extends Employe
 			];		
 			
 			/* SORTING Group Function Author -ptr.nov-*/
-			$dataProvider1->sort->attributes['groupfunction.GF_NM'] = [
+			$dataProvider->sort->attributes['groupfunction.GF_NM'] = [
 				'asc' => ['u0003a.GF_NM' => SORT_ASC],
 				'desc' => ['u0003a.GF_NM' => SORT_DESC],
 			];
 			
 			/* SORTING Group Seqment Author -ptr.nov-*/
-			$dataProvider1->sort->attributes['groupseqmen.SEQ_NM'] = [
-				'asc' => ['groupseqmen.SEQ_NM' => SORT_ASC],
-				'desc' => ['groupseqmen.SEQ_NM' => SORT_DESC],
+			$dataProvider->sort->attributes['groupseqmen.SEQ_NM'] = [
+				'asc' => ['u0003b.SEQ_NM' => SORT_ASC],
+				'desc' => ['u0003b.SEQ_NM' => SORT_DESC],
 			];
 			/* SORTING JOBGRADE Author -ptr.nov-*/
 			$dataProvider->sort->attributes['jobgrade.JOBGRADE_NM'] = [	
-				'asc' => ['jobgrade.JOBGRADE_NM' => SORT_ASC],
-				'desc' => ['jobgrade.JOBGRADE_NM' => SORT_DESC],
+				'asc' => ['u0003c.JOBGRADE_NM' => SORT_ASC],
+				'desc' => ['u0003c.JOBGRADE_NM' => SORT_DESC],
 			];
 			/* SORTING STATUS Author -ptr.nov-*/
 			$dataProvider->sort->attributes['sttOne.STS_NM'] = [	
@@ -197,11 +197,11 @@ class EmployeSearch extends Employe
         ];
 		
 		/* SORTING SUB DEPARTMENT Author -ptr.nov-*/
-			$dataProvider->sort->attributes['deptsub.DEP_SUB_NM'] = [	
+			$dataProvider1->sort->attributes['deptsub.DEP_SUB_NM'] = [	
 				'asc' => ['u0002b.DEP_SUB_NM' => SORT_ASC],
 				'desc' => ['u0002b.DEP_SUB_NM' => SORT_DESC],
-		];	
-			
+		];
+					
 		/* SORTING Group Function Author -ptr.nov-*/
 			$dataProvider1->sort->attributes['groupfunction.GF_NM'] = [
 				'asc' => ['u0003a.GF_NM' => SORT_ASC],
@@ -210,13 +210,13 @@ class EmployeSearch extends Employe
 			
 		/* SORTING Group Seqment Author -ptr.nov-*/
 			$dataProvider1->sort->attributes['groupseqmen.SEQ_NM'] = [
-            'asc' => ['groupseqmen.SEQ_NM' => SORT_ASC],
-            'desc' => ['groupseqmen.SEQ_NM' => SORT_DESC],
+            'asc' => ['u0003b.SEQ_NM' => SORT_ASC],
+            'desc' => ['u0003b.SEQ_NM' => SORT_DESC],
         ];
         /* SORTING JOBGRADE Author -ptr.nov-*/
         $dataProvider1->sort->attributes['jobgrade.JOBGRADE_NM'] = [
-            'asc' => ['Jobgrade.JOBGRADE_NM' => SORT_ASC],
-            'desc' => ['Jobgrade.JOBGRADE_NM' => SORT_DESC],
+            'asc' => ['u0003c.JOBGRADE_NM' => SORT_ASC],
+            'desc' => ['u0003c.JOBGRADE_NM' => SORT_DESC],
         ];
         /* SORTING STATUS Author -ptr.nov-*/
         $dataProvider1->sort->attributes['sttOne.STS_NM'] = [
