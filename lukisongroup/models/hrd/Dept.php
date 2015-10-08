@@ -19,13 +19,14 @@ class Dept extends \yii\db\ActiveRecord
     public static function getDb()
     {
         /* Author -ptr.nov- :UMUM */
-        return \Yii::$app->db4;
+        return \Yii::$app->db2;
     }
 	
 	/* [2] TABLE SELECT */
     public static function tableName()
     {
-        return '{{dbm000.a0002}}';
+        //return '{{dbm000.a0002}}';
+		return '{{u0002a}}';
     }
 
 	/* [3] RULE SCENARIO -> DetailView */
