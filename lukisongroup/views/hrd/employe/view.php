@@ -19,6 +19,8 @@ use kartik\builder\Form;
 use kartik\icons\Icon;
 use kartik\widgets\Growl;
 use kartik\widgets\FileInput;
+use yii\helpers\Url;
+use kartik\widgets\DepDrop;
 
 $this->sideCorp = 'HRM - Employee';             		/* Title Select Company pada header pasa sidemenu/menu samping kiri */
 $this->sideMenu = 'hrd_employee';               		/* kd_menu untuk list menu pada sidemenu, get from table of database */
@@ -36,14 +38,56 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 	$Jabatan_MDL = Jobgrade::find()->where(['JOBGRADE_ID'=>$model->JOBGRADE_ID])->orderBy('SORT')->one();
 	$Status_MDL = Status::find()->where(['STS_ID'=>$model->EMP_STS])->orderBy('SORT')->one();
 	
-	$Val_Corp=$Corp_MDL->CORP_NM;
-	$Val_Dept=$Dept_MDL->DEP_NM;	
-	$Val_DeptSub=$DeptSub_MDL->DEP_SUB_NM;
-	$Val_GF=$Gf_MDL->GF_NM;
-	$Val_SQMEN=$GSeqmen_MDL->SEQ_NM;
-	$Val_Jabatan=$Jabatan_MDL->JOBGRADE_NM;
-	$Val_Status=$Status_MDL->STS_NM;
+	/*COORPORATE*/
+	if (count($Corp_MDL)==0){
+		$Val_Corp='none';
+	}else{
+		$Val_Corp=$Corp_MDL->CORP_NM;
+	}
 	
+	/*DEPARTMENT*/
+	if (count($Dept_MDL)==0){
+		$Val_Dept='none';
+	}else{
+		$Val_Dept=$Dept_MDL->DEP_NM;
+	}
+	
+	/*DEPARTMENT-SUB*/
+	if (count($DeptSub_MDL)==0){
+		$Val_DeptSub='none';
+	}else{
+		$Val_DeptSub=$DeptSub_MDL->DEP_SUB_NM;
+	}
+	
+	/*GROUP-FUNCTION*/
+	if (count($Gf_MDL)==0){
+		$Val_GF='none';
+	}else{
+		$Val_GF=$Gf_MDL->GF_NM;
+	}
+	
+	/*GROUP-SEQUEN*/
+	if (count($GSeqmen_MDL)==0){
+		$Val_SQMEN='none';
+	}else{
+		$Val_SQMEN=$GSeqmen_MDL->SEQ_NM;
+	}
+	
+	/*JOBGRADE*/
+	if (count($Jabatan_MDL)==0){
+		$Val_Jabatan='none';
+	}else{
+		$Val_Jabatan=$Jabatan_MDL->JOBGRADE_NM;
+	}
+	
+	/*STATUS*/
+	if (count($Status_MDL)==0){
+		$Val_Status='none';
+	}else{
+		$Val_Status=$Status_MDL->STS_NM;
+	}
+		
+	echo Html::hiddenInput('selected-subdept',$model->DEP_SUB_ID, ['id'=>'selected-subdept']);
 	$attribute = [
 		[
 			'group'=>true,
@@ -76,6 +120,7 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 		],
 		[
 			'attribute' =>'EMP_ID',
+			'options'=>['readonly'=>true,],
 			//'inputWidth'=>'20%'
 			//'inputContainer' => ['class'=>'col-md-1'],
 		],	
@@ -108,31 +153,41 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 			],
 		],
 		
-		[ // DEPERTMENT - Author: -ptr.nov-
+		[
 			'label'=>'Department',
 			'attribute' =>'DEP_ID',
 			'format'=>'raw',
-			'value'=>Html::a($Val_Dept, '#', ['class'=>'kv-author-link']),
-			'type'=>DetailView::INPUT_SELECT2, 
-			'widgetOptions'=>[
-				'data'=> ArrayHelper::map(Dept::find()->orderBy('SORT')->asArray()->all(), 'DEP_ID','DEP_NM'),
-				'options'=>['placeholder'=>'Select ...'],
-				'pluginOptions'=>['allowClear'=>true],
-			],			
-		],			
+			'value'=>Html::a($Val_Dept, '#', ['class'=>'kv-author-link']),			
+			'type'=>DetailView::INPUT_SELECT2,
+			 'widgetOptions'=>[
+					'data'=>ArrayHelper::map(Dept::find()->orderBy('SORT')->asArray()->all(), 'DEP_ID','DEP_NM'),
+					'options' => [ 'id'=>'dept-id',],
+							
+			],
+		],
 		
-		[ // SUB DEPARTMENT - Author: -ptr.nov-
+		[
 			'label'=>'Department Sub',
 			'attribute' =>'DEP_SUB_ID',
 			'format'=>'raw',
 			'value'=>Html::a($Val_DeptSub, '#', ['class'=>'kv-author-link']),
-			'type'=>DetailView::INPUT_SELECT2, 
-			'widgetOptions'=>[
-				'data'=> ArrayHelper::map(Deptsub::find()->orderBy('SORT')->asArray()->all(), 'DEP_SUB_ID','DEP_SUB_NM'),
-				'options'=>['placeholder'=>'Select ...'],
-				'pluginOptions'=>['allowClear'=>true],
-			],			
-		],	
+			'type'=>DetailView::INPUT_DEPDROP,	
+			'widgetOptions' => [
+				'options'=>['id'=>'subdept-id'],//,'readonly'=>true,'selected'=>false], //PR VISIBLE DROP DOWN
+				'pluginOptions'=>[
+					'depends'=>['dept-id'],
+					//'placeholder'=>'Select...',
+					'url'=>Url::to(['/hrd/employe/subdept']),
+					'initialize'=>true, //loding First //
+					//'initDepends'=>$model->DEP_SUB_ID,
+					//'placeholder' => false, //disable select //
+					'params'=>['selected-subdept'],
+					'loadingText' => 'Sub Department ...',
+				],
+
+			],
+		],
+				
 		[ // GROUP FUNCTION - Author: -ptr.nov-
 			'label'=>'Group Function',
 			'attribute' =>'GF_ID',
@@ -141,8 +196,7 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=> ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_ID','GF_NM'),
-				'options'=>['placeholder'=>'Select ...'],
-				'pluginOptions'=>['allowClear'=>true],
+				'options' => [ 'id'=>'Groupfnc-id'],
 			],			
 		],	
 		[ // GROUP SEQMEN - Author: -ptr.nov-
@@ -153,8 +207,7 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=> ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_ID','SEQ_NM'),
-				'options'=>['placeholder'=>'Select ...'],
-				'pluginOptions'=>['allowClear'=>true],
+				'options' => [ 'id'=>'Groupseq-id'],
 			],			
 		],			
 	
@@ -163,11 +216,21 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 			'attribute' =>'JOBGRADE_ID',
 			'format'=>'raw',
 			'value'=>Html::a($Val_Jabatan, '#', ['class'=>'kv-author-link']),
-			'type'=>DetailView::INPUT_SELECT2, 
+			'type'=>DetailView::INPUT_DEPDROP, 
 			'widgetOptions'=>[
-				'data'=>ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_ID','JOBGRADE_NM'),
-				'options'=>['placeholder'=>'Select ...'],
-				'pluginOptions'=>['allowClear'=>true],
+				'options'=>['id'=>'grading-id'],
+				//'data'=>ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_ID','JOBGRADE_NM'),
+				//'options'=>['placeholder'=>'Select ...'],
+				//'pluginOptions'=>['allowClear'=>true],
+				'pluginOptions'=>[
+					'depends'=>['Groupfnc-id','Groupseq-id'],					
+					'url'=>Url::to(['/hrd/employe/grading']),
+					'initialize'=>true, //loding First //
+					//'initDepends'=>$model->DEP_SUB_ID,
+					//'placeholder' => false, //disable select //
+					//'params'=>['selected-subdept'],
+					'loadingText' => 'Sub Department ...',
+				],
 			],
 			//'inputContainer' => ['class'=>'col-sm-3'],
 			//'inputWidth'=>'40%'

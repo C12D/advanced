@@ -17,6 +17,8 @@ namespace lukisongroup\controllers\hrd;
 /* VARIABLE PRIMARY JOIN/SEARCH/FILTER/SORT Author: -ptr.nov- */
 	use lukisongroup\models\hrd\Employe;			/* TABLE CLASS JOIN */
 	use lukisongroup\models\hrd\EmployeSearch;	/* TABLE CLASS SEARCH */
+	use lukisongroup\models\hrd\Deptsub;
+	use lukisongroup\models\hrd\Jobgrademodul;
     use yii\helpers\Json;
 
 /* VARIABLE SIDE MENU Author: -Eka- */
@@ -46,6 +48,26 @@ class EmployeController extends Controller
     /**
      * ACTION INDEX
      */
+	public function beforeAction($action)
+	{
+
+		if (!parent::beforeAction($action)) {
+			return false;
+		}
+
+		// Check only when the user is logged in
+		if ( !Yii::$app->user->isGuest)  {
+			if (Yii::$app->session['userSessionTimeout'] < time()) {
+				Yii::$app->user->logout();
+			} else {
+				Yii::$app->session->set('userSessionTimeout', time() + Yii::$app->params['sessionTimeoutSeconds']);
+				return true; 
+			}
+		} else {
+			return true;
+		}
+	}
+	
     public function actionIndex()
     {
 		/*	variable content View Side Menu Author: -Eka- */
@@ -129,7 +151,7 @@ class EmployeController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);;
+        $model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())){
 			$upload_file=$model->uploadFile();
 			var_dump($model->validate());
@@ -147,6 +169,7 @@ class EmployeController extends Controller
                 'model' => $model,
             ]);
         }
+
     }
 
     /**
@@ -276,5 +299,58 @@ class EmployeController extends Controller
             echo Json::encode(['output'=>'', 'selected'=>'']);
         }
 	
+		public function actionSubdept() {
+             $out = [];
+			if (isset($_POST['depdrop_parents'])) {
+				$parents = $_POST['depdrop_parents'];
+				if ($parents != null) {
+					//if (!empty($_POST['depdrop_params'])) {
+						$params = $_POST['depdrop_params'];
+						$param1 = $params[0]; // get the value of input-type-1	
+					//	print_r($param1);
+					//}
+					
+					$DEP_ID = $parents[0];					
+					$model = Deptsub::find()->asArray()->where(['DEP_ID'=>$DEP_ID])->all();
+					
+						foreach ($model as $key => $value) {
+							   $out[] = ['id'=>$value['DEP_SUB_ID'],'name'=> $value['DEP_SUB_NM']];
+						   }					
+						
+					   echo json_encode(['output'=>$out, 'selected'=>$param1]);
+					   return;
+				   }
+			   }
+			   echo Json::encode(['output'=>'', 'selected'=>'']);
+        }
+		
+		/* JOBGRADE DEPDROP*/
+		public function actionGrading() {
+             $out = [];
+			if (isset($_POST['depdrop_parents'])) {
+				$parents = $_POST['depdrop_parents'];
+				if ($parents != null) {
+					//if (!empty($_POST['depdrop_params'])) {
+						//$params = $_POST['depdrop_params'];
+						//$param1 = $params[0]; // get the value of input-type-1	
+					//	print_r($param1);
+					//}
+					
+					$GRP_FNC = $parents[0];	
+					$GRP_SEQ = $parents[1];
+					$model = Jobgrademodul::find()->asArray()->where(['GF_ID'=>$GRP_FNC,'SEQ_ID'=>$GRP_SEQ])->all();
+					
+						foreach ($model as $key => $value) {
+							   $out[] = ['id'=>$value['JOBGRADE_ID'],'name'=> $value['JOBGRADE_NM']];
+						   }
+						   
+					   //echo json_encode(['output'=>$out, 'selected'=>$param1]);
+					   echo json_encode(['output'=>$out, 'selected'=>'']);
+					    
+					   return;
+				   }
+			   }
+			   echo Json::encode(['output'=>'', 'selected'=>'']);
+        }
 	
 }
