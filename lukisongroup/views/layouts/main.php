@@ -23,9 +23,6 @@ use mdm\admin\components\MenuHelper;
 use yii\bootstrap\Modal;
 //AppAsset::register($this);
 dmstr\web\AdminLteAsset::register($this);
-
-
-
 ?>
 <?php $this->beginPage() ?>
 	<!DOCTYPE html>
@@ -38,7 +35,9 @@ dmstr\web\AdminLteAsset::register($this);
             <!-- tambahan variable untuk template Author: --ptr.nov-- !-->
             <title><?= Html::encode($this->sideMenu) ?></title>
             <title><?= Html::encode($this->sideCorp) ?></title>
-
+			<?php if (!Yii::$app->user->isGuest) { ?>
+            <meta http-equiv="refresh" content="<?php echo Yii::$app->params['sessionTimeoutSeconds'];?>;"/>
+			<?php } ?>	
 			<?php $this->head() ?>
 		</head>
 

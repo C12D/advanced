@@ -5,6 +5,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
+use Yii\web\User;
 use yii\filters\VerbFilter;
 use lukisongroup\models\hrd\Employe;
 use lukisongroup\models\hrd\EmployeSearch;
@@ -77,9 +78,32 @@ class SiteController extends Controller
             ]);
         }
     }
+	
+	public function beforeAction($action)
+	{
 
+		if (!parent::beforeAction($action)) {
+			return false;
+		}
+		
+		if ( !Yii::$app->user->isGuest)  {
+			if (Yii::$app->session['userSessionTimeout'] < time()) {
+				Yii::$app->user->logout();
+				$this->redirect(array('/site/login'));
+			} else {
+				Yii::$app->session->set('userSessionTimeout', time() + Yii::$app->params['sessionTimeoutSeconds']);				
+				return true; 
+			}
+		} else {
+			return true;
+		}
+	}
+	
+	
+	
     public function actionLogin()
     {
+		Yii::$app->session->set('userSessionTimeout', time() + Yii::$app->params['sessionTimeoutSeconds']);
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -97,6 +121,11 @@ class SiteController extends Controller
         }
     }
 
+	 protected  function afterLogin(){
+		 
+		 yii::$app->user->setState('userSessionTimeout', time() + Yii::app()->params['sessionTimeoutSeconds']); 
+	 }
+	
     public function actionLogout()
     {
         Yii::$app->user->logout();
