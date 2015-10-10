@@ -472,6 +472,6 @@ use kartik\alert\Alert;
 		//'align'=>TabsX::ALIGN_LEFT,
 
 	]);
-
+	
 ?>
 
