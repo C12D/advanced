@@ -268,7 +268,7 @@ class EmployeController extends Controller
     }
 	
 	
-	//combo get 
+	   /*GENERATE CODE EMPLOYE DEPDROP*/
 	   public function actionSubcat() {
             $out = [];
             if (isset($_POST['depdrop_parents'])) {
@@ -298,19 +298,20 @@ class EmployeController extends Controller
             }
             echo Json::encode(['output'=>'', 'selected'=>'']);
         }
-	
+		
+		/*DEPARTMENT - SUB DEPARTMENT DEPDROP*/
 		public function actionSubdept() {
              $out = [];
 			if (isset($_POST['depdrop_parents'])) {
 				$parents = $_POST['depdrop_parents'];
-				if ($parents != null) {
-					//if (!empty($_POST['depdrop_params'])) {
+				if ($parents != null) {					
+					$DEP_ID = $parents[0];
+					$param1 = null;
+					if (!empty($_POST['depdrop_params'])) {
 						$params = $_POST['depdrop_params'];
-						$param1 = $params[0]; // get the value of input-type-1	
-					//	print_r($param1);
-					//}
-					
-					$DEP_ID = $parents[0];					
+						$param1 = $params[0]; // get the value of sub dept =js value/html							
+					}					
+										
 					$model = Deptsub::find()->asArray()->where(['DEP_ID'=>$DEP_ID])->all();
 					
 						foreach ($model as $key => $value) {
@@ -330,22 +331,21 @@ class EmployeController extends Controller
 			if (isset($_POST['depdrop_parents'])) {
 				$parents = $_POST['depdrop_parents'];
 				if ($parents != null) {
-					//if (!empty($_POST['depdrop_params'])) {
-						//$params = $_POST['depdrop_params'];
-						//$param1 = $params[0]; // get the value of input-type-1	
-					//	print_r($param1);
-					//}
-					
 					$GRP_FNC = $parents[0];	
 					$GRP_SEQ = $parents[1];
-					$model = Jobgrademodul::find()->asArray()->where(['GF_ID'=>$GRP_FNC,'SEQ_ID'=>$GRP_SEQ])->all();
+					$grd_param1 = null;
+					if (!empty($_POST['depdrop_params'])) {
+						$params = $_POST['depdrop_params'];
+						$grd_param1 = $params[0]; // get the value of grading_id  = js/html value								}
+					}
 					
+					$model = Jobgrademodul::find()->asArray()->where(['GF_ID'=>$GRP_FNC,'SEQ_ID'=>$GRP_SEQ])->all();					
 						foreach ($model as $key => $value) {
 							   $out[] = ['id'=>$value['JOBGRADE_ID'],'name'=> $value['JOBGRADE_NM']];
 						   }
 						   
-					   //echo json_encode(['output'=>$out, 'selected'=>$param1]);
-					   echo json_encode(['output'=>$out, 'selected'=>'']);
+					   echo json_encode(['output'=>$out, 'selected'=>$grd_param1]);
+					   //echo json_encode(['output'=>$out, 'selected'=>'']);
 					    
 					   return;
 				   }

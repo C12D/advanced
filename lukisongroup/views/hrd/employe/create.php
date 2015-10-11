@@ -2,18 +2,16 @@
 
 use yii\helpers\Html;
 
+$this->sideCorp = 'HRM - Data Employee';                   	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_employee';                           /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'HRD - Input Data Employee');  /* title pada header page */
 
-/* @var $this yii\web\View */
-/* @var $model app\models\maxi\Maxiprodak */
-
-//$this->title = Yii::t('app', 'Create Maxiprodak');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employe'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<h1><?php echo Html::encode($this->title) ?></h1>
-
-<?= $this->render('_form', [
-	'model' => $model,
-]) ?>
-	
+<div class="container">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-7">
+	<?= $this->render('_form', [
+		'model' => $model,
+	]) ?>
+	</div>
+</div>

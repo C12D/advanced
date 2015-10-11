@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use lukisongroup\models\hrd\Corp;
 use lukisongroup\models\hrd\Dept;
-//use lukisongroup\models\hrd\Jabatan;
 use lukisongroup\models\hrd\Status;
 use lukisongroup\models\hrd\Deptsub;
 use lukisongroup\models\hrd\Groupfunction;
@@ -22,9 +21,9 @@ use kartik\widgets\FileInput;
 use yii\helpers\Url;
 use kartik\widgets\DepDrop;
 
-$this->sideCorp = 'HRM - Employee';             		/* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'hrd_employee';               		/* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header page */
+$this->sideCorp = 'HRM - Data Employee';                   		/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_employee';                           	/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'HRD - Detail & Edit Employee');   /* title pada header page */
 
 ?>
 
@@ -86,8 +85,9 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 	}else{
 		$Val_Status=$Status_MDL->STS_NM;
 	}
-		
+    /*ADDITIONAL SELECTED DEPDOWN VALUE HTML FOR JS -Auth ptr.nov*/
 	echo Html::hiddenInput('selected-subdept',$model->DEP_SUB_ID, ['id'=>'selected-subdept']);
+	echo Html::hiddenInput('selected-grading',$model->JOBGRADE_ID, ['id'=>'selected-grading']);
 	$attribute = [
 		[
 			'group'=>true,
@@ -132,15 +132,16 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 			'attribute' =>	'EMP_NM_BLK',
 			//'inputWidth'=>'40%'
 		],
+		
+		/* SUB INPUT*/
 		[
 			'group'=>true,
 			'label'=>'Coorporate Information',
 			'rowOptions'=>['class'=>'info'],
 			//'groupOptions'=>['class'=>'text-center']
 		],
-		
-		[ 
-			// Coorporation - Author: -ptr.nov-
+		// COORPORATE - Author: -ptr.nov-
+		[ 			
 			'label'=>'Coorporate',
 			'attribute' =>'EMP_CORP_ID',
 			'format'=>'raw',
@@ -152,7 +153,7 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 				'pluginOptions'=>['allowClear'=>true],
 			],
 		],
-		
+		// DEPARTMENT - Author: -ptr.nov-
 		[
 			'label'=>'Department',
 			'attribute' =>'DEP_ID',
@@ -165,7 +166,7 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 							
 			],
 		],
-		
+		// SUB DEPARTMENT - Author: -ptr.nov-
 		[
 			'label'=>'Department Sub',
 			'attribute' =>'DEP_SUB_ID',
@@ -187,8 +188,8 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 
 			],
 		],
-				
-		[ // GROUP FUNCTION - Author: -ptr.nov-
+		// GROUP FUNCTION - Author: -ptr.nov-		
+		[ 
 			'label'=>'Group Function',
 			'attribute' =>'GF_ID',
 			'format'=>'raw',
@@ -199,7 +200,8 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 				'options' => [ 'id'=>'Groupfnc-id'],
 			],			
 		],	
-		[ // GROUP SEQMEN - Author: -ptr.nov-
+		// GROUP SEQMEN - Author: -ptr.nov-
+		[
 			'label'=>'Group Seqmen',
 			'attribute' =>'SEQ_ID',
 			'format'=>'raw',
@@ -210,8 +212,8 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 				'options' => [ 'id'=>'Groupseq-id'],
 			],			
 		],			
-	
-		[// JOBGRADE - Author: -ptr.nov-
+		// JOBGRADE - Author: -ptr.nov-
+		[
 			'label'=>'Grading',
 			'attribute' =>'JOBGRADE_ID',
 			'format'=>'raw',
@@ -228,14 +230,15 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 					'initialize'=>true, //loding First //
 					//'initDepends'=>$model->DEP_SUB_ID,
 					//'placeholder' => false, //disable select //
-					//'params'=>['selected-subdept'],
+					'params'=>['selected-grading'],
 					'loadingText' => 'Sub Department ...',
 				],
 			],
 			//'inputContainer' => ['class'=>'col-sm-3'],
 			//'inputWidth'=>'40%'
-		],				
-		[// STATUS - Author: -ptr.nov-
+		],	
+		// STATUS - Author: -ptr.nov-
+		[
 			'attribute' =>'EMP_STS',
 			'format'=>'raw',
 			'value'=>Html::a($Val_Status, '#', ['class'=>'kv-author-link']),
@@ -269,6 +272,8 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 			//'inputWidth'=>'40%'
 		//	'inputContainer' => ['class'=>'col-sm-3'],
 		],
+		
+		/* SUB INPUT*/
 		[
 			'group'=>true,
 			'label'=>'Employee Data Information',
@@ -314,32 +319,36 @@ $this->title = Yii::t('app', 'DetalView - Employee');   /* title pada header pag
 		*/
 		
 	];
-	
-
-$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
-
-	echo DetailView::widget([
-		'model' => $model,
-		'condensed'=>true,
-		'hover'=>true,
-		'mode'=>DetailView::MODE_VIEW,
-		'panel'=>[
-			'heading'=>$model->EMP_NM . ' '.$model->EMP_NM_BLK,
-			'type'=>DetailView::TYPE_INFO,
-		],	
-		
-			'attributes'=>$attribute,
-		
-		
-		'deleteOptions'=>[
-			'url'=>['delete', 'id' => $model->EMP_ID],
-			'data'=>[
-				'confirm'=>Yii::t('app', 'Are you sure you want to delete this record?'),
-				'method'=>'post',
-			],
-		],		
-	]);		
-ActiveForm::end();	
 ?>
+<div class="container">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-7">
+	<?php
+		$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
+			echo DetailView::widget([
+				'model' => $model,
+				'condensed'=>true,
+				'hover'=>true,
+				'mode'=>DetailView::MODE_VIEW,
+				'panel'=>[
+					'heading'=>$model->EMP_NM . ' '.$model->EMP_NM_BLK,
+					'type'=>DetailView::TYPE_INFO,
+				],	
+				
+					'attributes'=>$attribute,
+				
+				
+				'deleteOptions'=>[
+					'url'=>['delete', 'id' => $model->EMP_ID],
+					'data'=>[
+						'confirm'=>Yii::t('app', 'Are you sure you want to delete this record?'),
+						'method'=>'post',
+					],
+				],		
+			]);		
+		ActiveForm::end();	
+	?>
+	</div>
+</div>
 	
 
