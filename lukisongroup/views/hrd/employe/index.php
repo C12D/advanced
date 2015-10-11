@@ -32,9 +32,10 @@ use kartik\sidenav\SideNav;
 //AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
 
 /*Title page Modul*/
-$this->sideMenu = 'hrd_employee';
-$this->title = Yii::t('app', 'Employe');
-$this->params['breadcrumbs'][] = $this->title;
+$this->sideCorp = 'HRM - Data Employee';                   	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_employee';                           /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'HRD - List Data Employee');  /* title pada header page */
+
 
 /*variable Dropdown*/
 $Combo_Corp = ArrayHelper::map(Corp::find()->orderBy('SORT')->asArray()->all(), 'CORP_NM','CORP_NM');
