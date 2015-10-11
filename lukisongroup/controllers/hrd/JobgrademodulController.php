@@ -30,6 +30,27 @@ class JobgrademodulController extends Controller
      * Lists all Jobgrademodul models.
      * @return mixed
      */
+	/* -- Created By ptr.nov --*/
+	public function beforeAction(){
+			if (Yii::$app->user->isGuest)  {
+				 Yii::$app->user->logout();
+                   $this->redirect(array('/site/login'));  //
+			}
+            // Check only when the user is logged in
+            if (!Yii::$app->user->isGuest)  {
+               if (Yii::$app->session['userSessionTimeout']< time() ) {
+                   // timeout
+                   Yii::$app->user->logout();
+                   $this->redirect(array('/site/login'));  //
+               } else {
+                   //Yii::$app->user->setState('userSessionTimeout', time() + Yii::app()->params['sessionTimeoutSeconds']) ;
+				   Yii::$app->session->set('userSessionTimeout', time() + Yii::$app->params['sessionTimeoutSeconds']);
+                   return true; 
+               }
+            } else {
+                return true;
+            }
+    }
     public function actionIndex()
     {
         $searchModel = new JobgrademodulSearch();
@@ -48,9 +69,18 @@ class JobgrademodulController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())){		
+			if($model->validate()){
+				if($model->save()){
+					return $this->redirect(['view', 'id' => $model->ID]);	
+				} 
+			}
+		}else {
+            return $this->render('view', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -61,7 +91,7 @@ class JobgrademodulController extends Controller
     public function actionCreate()
     {
         $model = new Jobgrademodul();
-
+		/*
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->ID]);
         } else {
@@ -69,6 +99,20 @@ class JobgrademodulController extends Controller
                 'model' => $model,
             ]);
         }
+		*/
+		if ($model->load(Yii::$app->request->post())){		
+				$model->CREATED_BY=Yii::$app->user->identity->username;
+				$model->save();
+				if($model->save()){
+					 return $this->redirect(['view', 'id' => $model->ID]);	
+				} 
+		}else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+		
+		
     }
 
     /**
@@ -98,11 +142,16 @@ class JobgrademodulController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+      	$model = $this->findModel($id);
+		$model->JOBGRADE_STS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
-
+	
+	
+	
     /**
      * Finds the Jobgrademodul model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

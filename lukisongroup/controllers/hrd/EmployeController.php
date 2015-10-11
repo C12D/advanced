@@ -48,7 +48,7 @@ class EmployeController extends Controller
     /**
      * ACTION INDEX
      */
-	 /* -- Created By ptr.nov --*/
+	/* -- Created By ptr.nov --*/
 	public function beforeAction(){
 			if (Yii::$app->user->isGuest)  {
 				 Yii::$app->user->logout();
@@ -155,6 +155,7 @@ class EmployeController extends Controller
     {
         $model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
 			$upload_file=$model->uploadFile();
 			var_dump($model->validate());
 			if($model->validate()){
@@ -181,11 +182,13 @@ class EmployeController extends Controller
     {		
         $model = new Employe();
 
-        if ($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())){			
 			$upload_file=$model->uploadFile();
 			var_dump($model->validate());
 			if($model->validate()){
 				if($model->save()) {
+					$model->CREATED_BY=Yii::$app->user->identity->username;
+					$model->save();
 					if ($upload_file !== false) {
 						$path=$model->getUploadedFile();
 						$upload_file->saveAs($path);
@@ -221,8 +224,11 @@ class EmployeController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
 
@@ -239,7 +245,7 @@ class EmployeController extends Controller
         }
     }
 
-
+/*
     public function actionEditableDemo() {
         $model = new Employe; // your model can be loaded here
 
@@ -268,7 +274,7 @@ class EmployeController extends Controller
         // Else return to rendering a normal view
         //return $this->render('view', ['model'=>$model]);
     }
-	
+	*/
 	
 	   /*GENERATE CODE EMPLOYE DEPDROP*/
 	   public function actionSubcat() {
