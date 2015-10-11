@@ -33,7 +33,17 @@ class Jobgrademodul extends \yii\db\ActiveRecord
     {
         return Yii::$app->get('db2');
     }
-
+	/* Join Class Group Function */
+	public function getGroupfunction()
+	{
+		return $this->hasOne(Groupfunction::className(), ['GF_ID' => 'GF_ID']);
+	}		
+			
+	/* Join Class Group Seqmen bisnis dan support */
+	public function getGroupseqmen()
+	{
+		return $this->hasOne(Groupseqmen::className(), ['SEQ_ID' => 'SEQ_ID']);
+	}	
     /**
      * @inheritdoc
      */
@@ -44,7 +54,9 @@ class Jobgrademodul extends \yii\db\ActiveRecord
             [['SEQ_ID', 'JOBGRADE_ID'], 'required'],
             [['JOBGRADE_DCRP'], 'string'],
             [['JOBGRADE_ID'], 'string', 'max' => 5],
-            [['JOBGRADE_NM'], 'string', 'max' => 100]
+            [['JOBGRADE_NM'], 'string', 'max' => 100],
+			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
+			[['UPDATED_TIME'], 'date','format' => 'yyyy-mm-dd'],			
         ];
     }
 
@@ -62,6 +74,9 @@ class Jobgrademodul extends \yii\db\ActiveRecord
             'SORT' => 'Sort',
             'JOBGRADE_STS' => 'Jobgrade  Sts',
             'JOBGRADE_DCRP' => 'Jobgrade  Dcrp',
+			'CREATED_BY'=> 'Created',
+			'UPDATED_BY'=> 'Updated',
+			'UPDATED_TIME'=> 'DateTime',
         ];
     }
 }

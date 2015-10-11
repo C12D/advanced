@@ -50,6 +50,8 @@ class Employe extends \yii\db\ActiveRecord
 		    [['EMP_ZIP'], 'string', 'max' => 50],
             [['EMP_IMG'], 'string', 'max' => 50],    
 			[['upload_file'], 'file', 'skipOnEmpty' => true,'extensions'=>'jpg,png', 'mimeTypes'=>'image/jpeg, image/png',],
+			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
+			[['UPDATED_TIME'], 'date','format' => 'yyyy-mm-dd'],
         ];
     }
 
@@ -82,7 +84,10 @@ class Employe extends \yii\db\ActiveRecord
             'EMP_HP' => Yii::t('app', 'Handphone'),
 			'EMP_TGL_LAHIR' => Yii::t('app', ' BridthDay'),
             'EMP_EMAIL' => Yii::t('app', 'Email'),
-			
+			/*LOG HRD*/
+			'CREATED_BY'=> Yii::t('app','Created'),
+			'UPDATED_BY'=> Yii::t('app','Updated'),
+			'UPDATED_TIME'=> Yii::t('app','DateTime'),
 			/*Modul HRD*/
             'GRP_NM' => Yii::t('app', 'Modul'),
 			
@@ -99,7 +104,8 @@ class Employe extends \yii\db\ActiveRecord
 			//UMUM
 			//'jabOne.JAB_NM' => Yii::t('app', 'Position'),
 			//UMUM
-            'sttOne.STS_NM' => Yii::t('app', 'Status'),      
+            'sttOne.STS_NM' => Yii::t('app', 'Status'), 
+			
         ];
     }
 	 
