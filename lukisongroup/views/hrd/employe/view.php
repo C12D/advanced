@@ -286,13 +286,13 @@ $this->title = Yii::t('app', 'HRD - Detail & Edit Employee');   /* title pada he
 			'attribute' =>	'EMP_KTP' ,
 		],
 		[	
-			'attribute' =>	'EMP_ALAMAT' ,
+			'attribute' =>	'EMP_ALAMAT',
 		],
 		[
-			'attribute' =>	'EMP_ZIP' ,
+			'attribute' =>	'EMP_ZIP',
 		],
 		[
-			'attribute' =>	'EMP_TLP' ,
+			'attribute' =>	'EMP_TLP',
 		],
 		[
 			'attribute' =>	'EMP_HP' ,
@@ -324,14 +324,14 @@ $this->title = Yii::t('app', 'HRD - Detail & Edit Employee');   /* title pada he
 	<div class="col-sm-2"></div>
 	<div class="col-sm-7">
 	<?php
-		$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
+		$form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL,'options'=>['enctype'=>'multipart/form-data']]);
 			echo DetailView::widget([
 				'model' => $model,
 				'condensed'=>true,
 				'hover'=>true,
 				'mode'=>DetailView::MODE_VIEW,
 				'panel'=>[
-					'heading'=>$model->EMP_NM . ' '.$model->EMP_NM_BLK,
+					'heading'=>'#' . $model->EMP_NM . ' '.$model->EMP_NM_BLK,
 					'type'=>DetailView::TYPE_INFO,
 				],	
 				
