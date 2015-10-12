@@ -35,11 +35,11 @@ class Employe extends \yii\db\ActiveRecord
     {
         return [
             [['EMP_ID'], 'required'],
-            [['EMP_ID','EMP_ZIP','EMP_CORP_ID'], 'string', 'max' => 15],
+            [['EMP_ID','EMP_ZIP','EMP_CORP_ID'], 'string', 'max' => 20],
             [['EMP_NM','EMP_NM_BLK','EMP_IMG','EMP_KTP','GRP_NM'], 'string', 'max' => 20], 
 			[['DEP_ID','JOBGRADE_ID'], 'string', 'max' => 5], 
-			[['GF_ID','DEP_SUB_ID'], 'string', 'max' => 6], 
-			[['EMP_STS','SEQ_ID'], 'integer'],
+			[['DEP_SUB_ID'], 'string', 'max' => 6], 
+			[['GF_ID','EMP_STS','SEQ_ID'], 'integer'],
 			[['EMP_JOIN_DATE','EMP_TGL_LAHIR','EMP_RESIGN_DATE'], 'safe'],
 			[['EMP_JOIN_DATE','EMP_TGL_LAHIR','EMP_RESIGN_DATE'], 'date','format' => 'yyyy-mm-dd'], 
 			[['EMP_ALAMAT'],  'filter', 'filter' => function($value) {
@@ -51,7 +51,7 @@ class Employe extends \yii\db\ActiveRecord
             [['EMP_IMG'], 'string', 'max' => 50],    
 			[['upload_file'], 'file', 'skipOnEmpty' => true,'extensions'=>'jpg,png', 'mimeTypes'=>'image/jpeg, image/png',],
 			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
-			[['UPDATED_TIME'], 'date','format' => 'yyyy-mm-dd'],
+			//[['UPDATED_TIME'], 'date'], errot message bool false
         ];
     }
 
