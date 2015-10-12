@@ -19,7 +19,11 @@ $this->title = Yii::t('app', 'LG - Administrator');         /* title pada header
      <div class="panel-body">
 		<?php	
 			$Emp_MDL = Employe::find()->where(['EMP_ID'=>$model->EMP_ID])->orderBy('EMP_NM')->one();
-			$Val_Emp=$Emp_MDL->EMP_NM;
+			if (count($Emp_MDL)==0){
+				$Val_Emp='none';
+			}else{
+				$Val_Emp=$Emp_MDL->EMP_NM;
+			}			
 			$attribute = [
 				[
 					'attribute' =>'id',
