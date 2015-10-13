@@ -164,15 +164,40 @@ class EmployeController extends Controller
 						$path=$model->getUploadedFile();
 						$upload_file->saveAs($path);
 					}
-					return $this->redirect(['view', 'id' => $model->EMP_ID]);	
+					//return $this->redirect(['view', 'id' => $model->EMP_ID]);
+					return $this->redirect(['index']);
 				} 
 			}
 		}else {
-            return $this->render('view', [
+            //return $this->render('view', [
+            return $this->renderAjax('_view_del', [
                 'model' => $model,
             ]);
         }
-
+    }
+	public function actionViewedit($id)
+    {
+        $model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
+			$upload_file=$model->uploadFile();
+			var_dump($model->validate());
+			if($model->validate()){
+				if($model->save()) {
+					if ($upload_file !== false) {
+						$path=$model->getUploadedFile();
+						$upload_file->saveAs($path);
+					}
+					//return $this->redirect(['view', 'id' => $model->EMP_ID]);
+					return $this->redirect(['index']);
+				} 
+			}
+		}else {
+            //return $this->render('view', [
+            return $this->renderAjax('_view_edit', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -193,11 +218,14 @@ class EmployeController extends Controller
 						$path=$model->getUploadedFile();
 						$upload_file->saveAs($path);
 					}
-					return $this->redirect(['view', 'id' => $model->EMP_ID]);	
+					//return $this->redirect(['view', 'id' => $model->EMP_ID]);	
+					return $this->redirect(['index']);	
 				} 
 			}
 		}else {
-            return $this->render('create', [
+            //return $this->render('create', [
+            //return $this->renderAjax('create', [
+            return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
         }

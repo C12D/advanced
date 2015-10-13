@@ -7,6 +7,9 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\Breadcrumbs;
+use kartik\detail\DetailView;
+use yii\bootstrap\Modal;
+use yii\widgets\Pjax;
 
 /* TABLE CLASS DEVELOPE -> |DROPDOWN,PRIMARYKEY-> ATTRIBUTE */
 use lukisongroup\models\hrd\Employe;
@@ -53,12 +56,34 @@ $tab_employe= GridView::widget([
         'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'], 
-			[
+			/*[
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{view}',
 				//'template' => '{view} {update}',
 				//Yii::t('app', 'Emplo'),
-			],			
+			],	
+			*/			
+			['class' => 'yii\grid\ActionColumn', 
+					'template' => '{view}{edit}',
+					'header'=>'Action',
+					'buttons' => [
+						'view' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:50px">View </button>',['view','id'=>$model->EMP_ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-emp",
+															'data-title'=> $model->EMP_ID,
+															]);
+						},
+					
+						'edit' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-success btn-xs" style="width:50px">EDIT</button>',['viewedit','id'=>$model->EMP_ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-emp",
+															'data-title'=> $model->EMP_ID,
+															]);
+						}
+					],
+			],
 			[
 				/*Author -ptr.nov- image*/
                'attribute' => 'PIC',
@@ -161,9 +186,17 @@ $tab_employe= GridView::widget([
             //'after'=> Html::a('<i class="glyphicon glyphicon-plus"></i> Add', '#', ['class'=>'btn btn-success']) . ' ' .
                 //Html::submitButton('<i class="glyphicon glyphicon-floppy-disk"></i> Save', ['class'=>'btn btn-primary']) . ' ' .
             //    Html::a('<i class="glyphicon glyphicon-remove"></i> Delete  ', '#', ['class'=>'btn btn-danger'])
+			/*
 			'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create {modelClass}',
 					['modelClass' => 'Employe',]),
 					['create'], ['class' => 'btn btn-success']),
+			*/
+			'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create ',
+						['modelClass' => 'Employe',]),'employe/create',[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-emp",
+															'class' => 'btn btn-success'
+															])
         ],
         'pjax'=>true,
         'pjaxSettings'=>[
@@ -203,12 +236,26 @@ $tab_employe_resign= GridView::widget([
     'filterModel' => $searchModel1,
     'columns' => [
         //['class' => 'yii\grid\SerialColumn'],
-        [
+        /*[
             'class' => 'yii\grid\ActionColumn',
             'template' => '{view}',
             //'template' => '{view} {update}',
             //Yii::t('app', 'Emplo'),
         ],
+		*/
+		['class' => 'yii\grid\ActionColumn', 
+					'template' => '{view}',// {delete}',
+					'header'=>'Action',
+					'buttons' => [
+						'view' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-primary btn-xs">View</button>',['view','id'=>$model->EMP_ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-emp",
+															'data-title'=> $model->EMP_ID,
+															]);
+						}
+					],
+		],
         [
             /*Author -ptr.nov- image*/
             'attribute' => 'PIC',
@@ -308,9 +355,11 @@ $tab_employe_resign= GridView::widget([
         //'after'=> Html::a('<i class="glyphicon glyphicon-plus"></i> Add', '#', ['class'=>'btn btn-success']) . ' ' .
         //Html::submitButton('<i class="glyphicon glyphicon-floppy-disk"></i> Save', ['class'=>'btn btn-primary']) . ' ' .
         //    Html::a('<i class="glyphicon glyphicon-remove"></i> Delete  ', '#', ['class'=>'btn btn-danger'])
+		/*
         'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create {modelClass}',
                     ['modelClass' => 'Employe',]),
                 ['create'], ['class' => 'btn btn-success']),
+		*/
     ],
     'pjax'=>true,
     'pjaxSettings'=>[
@@ -473,6 +522,26 @@ use kartik\alert\Alert;
 		//'align'=>TabsX::ALIGN_LEFT,
 
 	]);
+	
+	 $this->registerJs("
+		    $('#activity-emp').on('show.bs.modal', function (event) {
+		        var button = $(event.relatedTarget)
+		        var modal = $(this)
+		        var title = button.data('title') 
+		        var href = button.attr('href') 
+		        //modal.find('.modal-title').html(title)
+		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
+		        $.post(href)
+		            .done(function( data ) {
+		                modal.find('.modal-body').html(data)
+		            });
+		        })
+		");
+		Modal::begin([
+		    'id' => 'activity-emp',
+		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
+		]);
+		Modal::end()
 	
 ?>
 
