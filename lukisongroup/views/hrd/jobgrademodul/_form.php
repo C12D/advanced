@@ -71,7 +71,8 @@ $form = ActiveForm::begin(['id' => 'grading-form-id','type' => ActiveForm::TYPE_
 								'type'=>Form::INPUT_RAW, 
 								'value'=>  '<div style="text-align: right; margin-top: 20px">' . 
 									Html::resetButton('Reset', ['class'=>'btn btn-default']) . ' ' .
-									Html::submitButton('Submit', ['class'=>'btn btn-primary']) . 
+									//Html::submitButton('Submit', ['class'=>'btn btn-primary']) . 
+									Html::a('<button type="button" class="btn btn-primary btn-xs">Submit</button>', ['/hrd/jobgrademodul/create'], [ 'data' => [ 'method' => 'post', 'params' => [ 'action' => 'create' ] ] ]) .
 									'</div>'
 						],
 					],

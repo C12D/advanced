@@ -53,12 +53,14 @@ class JobgrademodulController extends Controller
     }
     public function actionIndex()
     {
+		 $model = new Jobgrademodul(); //create
         $searchModel = new JobgrademodulSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+		
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			// 'model'=> $model,
         ]);
     }
 
@@ -73,11 +75,13 @@ class JobgrademodulController extends Controller
 		if ($model->load(Yii::$app->request->post())){		
 			if($model->validate()){
 				if($model->save()){
-					return $this->redirect(['view', 'id' => $model->ID]);	
+					//return $this->redirect(['_view', 'id' => $model->ID]);	
+					 return $this->renderAjax('_view', ['id' => $model->ID]);
 				} 
 			}
 		}else {
-            return $this->render('view', [
+            return $this->renderAjax('_view', [
+            //return $this->render('_view', [
                 'model' => $model,
             ]);
         }
@@ -104,10 +108,12 @@ class JobgrademodulController extends Controller
 				$model->CREATED_BY=Yii::$app->user->identity->username;
 				$model->save();
 				if($model->save()){
-					 return $this->redirect(['view', 'id' => $model->ID]);	
+					 //return $this->redirect(['view', 'id' => $model->ID]);	
+					 return $this->redirect('index');
 				} 
 		}else {
-            return $this->render('create', [
+            //return $this->render('_form', [ 
+			return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
         }
