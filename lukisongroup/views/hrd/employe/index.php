@@ -192,7 +192,7 @@ $tab_employe= GridView::widget([
 					['create'], ['class' => 'btn btn-success']),
 			*/
 			'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create ',
-						['modelClass' => 'Employe',]),'employe/create',[
+						['modelClass' => 'Employe',]),'create',[
 															'data-toggle'=>"modal",
 															'data-target'=>"#activity-emp",
 															'class' => 'btn btn-success'
