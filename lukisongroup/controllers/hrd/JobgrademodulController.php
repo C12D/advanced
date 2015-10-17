@@ -127,7 +127,7 @@ class JobgrademodulController extends Controller
     {
       	$model = $this->findModel($id);
 		$model->JOBGRADE_STS = 3;
-		//$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
 		$model->save();
 		
         return $this->redirect(['index']);
