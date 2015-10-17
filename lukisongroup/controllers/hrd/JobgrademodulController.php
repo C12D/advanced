@@ -8,6 +8,7 @@ use lukisongroup\models\hrd\JobgrademodulSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\datecontrol\DateControl;
 
 /**
  * JobgrademodulController implements the CRUD actions for Jobgrademodul model.
@@ -26,10 +27,6 @@ class JobgrademodulController extends Controller
         ];
     }
 
-    /**
-     * Lists all Jobgrademodul models.
-     * @return mixed
-     */
 	/* -- Created Session Time Author By ptr.nov --*/
 	public function beforeAction(){
 			if (Yii::$app->user->isGuest)  {
@@ -51,6 +48,8 @@ class JobgrademodulController extends Controller
                 return true;
             }
     }
+	
+	/*Index render normal*/
     public function actionIndex()
     {
 		 $model = new Jobgrademodul(); //create
@@ -63,64 +62,15 @@ class JobgrademodulController extends Controller
 			// 'model'=> $model,
         ]);
     }
-
-    /**
-     * Displays a single Jobgrademodul model.
-     * @param integer $id
-     * @return mixed
-     */
-	 public function actionViewdel($id)
-    {
-		$model = $this->findModel($id);
-		return $this->renderAjax('_view_delete', [
-            //return $this->render('_view_delete', [
-                'model' => $model,
-            ]);
-       
-    }
-    public function actionViewedit($id)
-    {
-		$model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post())){		
-			if($model->validate()){
-				if($model->save()){
-					//return $this->redirect(['_view', 'id' => $model->ID]);	
-					//return $this->renderAjax('_view', ['id' => $model->ID]);
-					//return $this->renderAjax('_view', ['model' => $model]);
-					//$searchModel = new JobgrademodulSearch(['ID'=>$id]);			
-					//$dataProvider = $searchModel->search(Yii::$app->request->queryParams);					
-					//return $this->redirect(['index','searchModel' =>$searchModel,'dataProvider' => $dataProvider,]);
-					return $this->redirect(['index']);
-				} 
-			}
-		}else {
-            return $this->renderAjax('_view_edit', [
-            //return $this->render('_view', [
-                'model' => $model,
-            ]);
-        }
-    }
 	
-	
-    /**
-     * Creates a new Jobgrademodul model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+	/*Index render Ajax*/
     public function actionCreate()
     {
         $model = new Jobgrademodul();
-		/*
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-		*/
+		
 		if ($model->load(Yii::$app->request->post())){		
-				$model->CREATED_BY=Yii::$app->user->identity->username;
+				$model->CREATED_BY=Yii::$app->user->identity->username;		
+				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
 				$model->save();
 				if($model->save()){
 					 //return $this->redirect(['view', 'id' => $model->ID]);	
@@ -131,10 +81,58 @@ class JobgrademodulController extends Controller
 			return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
-        }
-		
-		
+        }	
     }
+	
+	/*Index View untuk Delete status -> actionDeletestt */
+	public function actionViewdel($id)
+    {
+		$model = $this->findModel($id);
+		return $this->renderAjax('_view_delete', [
+            //return $this->render('_view_delete', [
+                'model' => $model,
+            ]);
+       
+    }
+	
+	/*Index View untuk update */
+    public function actionViewedit($id)
+    {
+		$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
+			if($model->validate()){
+				if($model->save()){
+					//--- PR Setelah edit menuju index short data location in index
+					//return $this->redirect(['_view', 'id' => $model->ID]);	
+					//return $this->renderAjax('_view', ['id' => $model->ID]);
+					//return $this->renderAjax('_view', ['model' => $model]);
+					//$searchModel = new JobgrademodulSearch(['ID'=>$id]);			
+					//$dataProvider = $searchModel->search(Yii::$app->request->queryParams);					
+					//return $this->redirect(['index','searchModel' =>$searchModel,'dataProvider' => $dataProvider,]);
+					return $this->redirect(['index']);
+					//return $this->redirect('http://lukisongroup.int/hrd/jobgrademodul');
+				} 
+			}
+		}else {
+            return $this->renderAjax('_view_edit', [
+            //return $this->render('_view', [
+                'model' => $model,
+            ]);
+        }
+    }
+	
+	/*Index Delete data by Status */
+	public function actionDeletestt($id)
+    {
+      	$model = $this->findModel($id);
+		$model->JOBGRADE_STS = 3;
+		//$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
+        return $this->redirect(['index']);
+    }
+   
 
     /**
      * Updates an existing Jobgrademodul model.
@@ -154,32 +152,8 @@ class JobgrademodulController extends Controller
             ]);
         }
     }
-
-    /**
-     * Deletes an existing Jobgrademodul model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDeletestt($id)
-    {
-      	$model = $this->findModel($id);
-		$model->JOBGRADE_STS = 3;
-		$model->UPDATED_BY = Yii::$app->user->identity->username;
-		$model->save();
-		
-        return $this->redirect(['index']);
-    }
 	
-	
-	
-    /**
-     * Finds the Jobgrademodul model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Jobgrademodul the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+	/* Find Model self $this */
     protected function findModel($id)
     {
         if (($model = Jobgrademodul::findOne($id)) !== null) {
