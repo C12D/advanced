@@ -115,8 +115,9 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 						[
 				*/
 				/*Create Controller renderAjax*/
+				/* harus path /hrd/jobgrademodul/create' -> index case error*/
 				'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create ',
-						['modelClass' => 'Employe',]),'jobgrademodul/create',[
+						['modelClass' => 'Employe',]),'/hrd/jobgrademodul/create',[  
 															'data-toggle'=>"modal",
 															'data-target'=>"#activity-model-gradingmdl",
 															'class' => 'btn btn-success'
