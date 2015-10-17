@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * ProggresjobdetailController implements the CRUD actions for Proggresjobdetail model.
  */
-class ProggresjobdetailController extends Controller
+class ProgrammerdetailController extends Controller
 {
     public function behaviors()
     {

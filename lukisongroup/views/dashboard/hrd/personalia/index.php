@@ -13,10 +13,10 @@ use scotthuangzl\googlechart\GoogleChart;
 //use backend\assets\AppAsset; 	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
 //AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
 
-$this->sideCorp = 'PT. Lukisongroup';                                   /* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'hrd_employee';                                       /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'HRM - Employee Dashboard');             /* title pada header page */
-$this->params['breadcrumbs'][] = $this->title;                          /* belum di gunakan karena sudah ada list sidemenu, on plan next*/
+$this->sideCorp = 'PT. Lukisongroup';                                   	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
+$this->sideMenu = 'hrd_personalia';                                       	/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'HRM - Personalia Dashboard');             		/* title pada header page */
+$this->params['breadcrumbs'][] = $this->title;                          	/* belum di gunakan karena sudah ada list sidemenu, on plan next*/
 
 				$pertama= GoogleChart::widget(array('visualization' => 'PieChart',
 					'data' => array(

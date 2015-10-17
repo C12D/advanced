@@ -15,6 +15,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter; 	
 use yii\helpers\Html;
 use yii\helpers\Url;
+use zyx\phpmailer\Mailer;
+use yii\widgets\ActiveForm;
+use yii\base\DynamicModel;
 /* VARIABLE PRIMARY JOIN/SEARCH/FILTER/SORT Author: -ptr.nov- */
 //use app\models\hrd\Dept;			/* TABLE CLASS JOIN */
 //use app\models\hrd\DeptSearch;		/* TABLE CLASS SEARCH */
@@ -43,7 +46,7 @@ class MarketingController extends Controller
      */
     public function actionIndex()
     {
-		/*	variable content View Employe Author: -ptr.nov- */
+		/*	variable content View Employe Author: -ptr.nov- 
        // $searchModel_Dept = new DeptSearch();
 		//$dataProvider_Dept = $searchModel_Dept->search(Yii::$app->request->queryParams);
 		Yii::$app->Mailer->compose()
@@ -54,6 +57,26 @@ class MarketingController extends Controller
 		//->setHtmlBody('<b>HTML content</b>')
 		->send();
 		//return $this->render('index');
+		*/
+		
+		$form = ActiveForm::begin();
+		$model = new DynamicModel([
+			'TextBody', 'Subject'
+		]);
+		 $model->addRule(['TextBody', 'Subject'], 'required');
+		$ok='Test LG ERP FROM HOME .... GOOD NIGHT ALL, SEE U LATER ';
+		
+		 $form->field($model, 'Subject')->textInput();
+		  ActiveForm::end(); 
+		  Yii::$app->mailer->compose()
+		 ->setFrom(['postman@lukison.com' => 'LG-ERP-POSTMAN'])
+		 //->setTo(['piter@lukison.com'])
+		 ->setTo(['it-dept@lukison.com'])
+		 ->setSubject('ERP TEST EMAIL')
+		 ->setTextBody($ok)
+		 ->send();
+		 
+		
     }
 	
 	public function actionChat()

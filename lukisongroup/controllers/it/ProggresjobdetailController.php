@@ -3,7 +3,7 @@
 namespace lukisongroup\controllers\it;
 
 use Yii;
-use lukisongroup\models\it\Proggresjobdetail;
+//use lukisongroup\models\it\Proggresjobdetail;
 use lukisongroup\models\it\ProggresjobdetailSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

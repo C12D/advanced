@@ -22,8 +22,8 @@ use yii\helpers\Url;
 use kartik\widgets\DepDrop;
 
 $this->sideCorp = 'HRM - Data Employee';                   		/* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'hrd_employee';                           	/* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'HRD - Detail & Edit Employee');   /* title pada header page */
+$this->sideMenu = 'hrd_personalia';                           	/* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Personalia - Detail & Edit Employee');   /* title pada header page */
 
 ?>
 

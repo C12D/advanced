@@ -36,8 +36,8 @@ use kartik\sidenav\SideNav;
 
 /*Title page Modul*/
 $this->sideCorp = 'HRM - Data Employee';                   	/* Title Select Company pada header pasa sidemenu/menu samping kiri */
-$this->sideMenu = 'hrd_employee';                           /* kd_menu untuk list menu pada sidemenu, get from table of database */
-$this->title = Yii::t('app', 'HRD - List Data Employee');  /* title pada header page */
+$this->sideMenu = 'hrd_personalia';                           /* kd_menu untuk list menu pada sidemenu, get from table of database */
+$this->title = Yii::t('app', 'Personalia - List Data Employee');  /* title pada header page */
 
 
 /*variable Dropdown*/
