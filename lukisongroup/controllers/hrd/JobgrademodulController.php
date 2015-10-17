@@ -30,7 +30,7 @@ class JobgrademodulController extends Controller
      * Lists all Jobgrademodul models.
      * @return mixed
      */
-	/* -- Created By ptr.nov --*/
+	/* -- Created Session Time Author By ptr.nov --*/
 	public function beforeAction(){
 			if (Yii::$app->user->isGuest)  {
 				 Yii::$app->user->logout();
@@ -69,24 +69,39 @@ class JobgrademodulController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+	 public function actionViewdel($id)
+    {
+		$model = $this->findModel($id);
+		return $this->renderAjax('_view_delete', [
+            //return $this->render('_view_delete', [
+                'model' => $model,
+            ]);
+       
+    }
+    public function actionViewedit($id)
     {
 		$model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())){		
 			if($model->validate()){
 				if($model->save()){
 					//return $this->redirect(['_view', 'id' => $model->ID]);	
-					 return $this->renderAjax('_view', ['id' => $model->ID]);
+					//return $this->renderAjax('_view', ['id' => $model->ID]);
+					//return $this->renderAjax('_view', ['model' => $model]);
+					//$searchModel = new JobgrademodulSearch(['ID'=>$id]);			
+					//$dataProvider = $searchModel->search(Yii::$app->request->queryParams);					
+					//return $this->redirect(['index','searchModel' =>$searchModel,'dataProvider' => $dataProvider,]);
+					return $this->redirect(['index']);
 				} 
 			}
 		}else {
-            return $this->renderAjax('_view', [
+            return $this->renderAjax('_view_edit', [
             //return $this->render('_view', [
                 'model' => $model,
             ]);
         }
     }
-
+	
+	
     /**
      * Creates a new Jobgrademodul model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -146,7 +161,7 @@ class JobgrademodulController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDeletestt($id)
     {
       	$model = $this->findModel($id);
 		$model->JOBGRADE_STS = 3;
