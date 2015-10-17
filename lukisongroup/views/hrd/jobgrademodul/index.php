@@ -1,5 +1,4 @@
 <?php
-	
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use kartik\detail\DetailView;
@@ -28,59 +27,22 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 			'dataProvider' => $dataProvider,
 			'filterModel' => $searchModel,
 			'columns' => [
-				/*
-				[
-					'format'=>'raw',					
-					'value'=>function($model){
-						return  Html::a('<button type="button" class="btn btn-primary btn-xs">View</button>',['view','id'=>$model->ID],[
-															'data-toggle'=>"modal",
-															'data-target'=>"#activity-modal1",
-															'data-title'=> $model->ID,
-															]);                           
-                        },							
-				],	
-				*/
-				[
-					'attribute' =>'ID',
-					//'Header'=>$id_direct,
-				],
-				['class' => 'yii\grid\SerialColumn'],
-				/*Author -ptr.nov- GRADIND ID */
-				[				
-					'label'=>'Grading ID',
-					'attribute' =>'JOBGRADE_ID',					
-				],
-				/*Author -ptr.nov- GRADING NAME*/
-				[				
-					'label'=>'Grading NM',
-					'attribute' =>'JOBGRADE_NM',
-				],
-				/*Author -ptr.nov- GROUP FINCTION */
-				[				
-					'label'=>'Group Function',
-					'attribute' =>'groupfunction.GF_NM',
-					'filter' => ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_NM','GF_NM'),
-				],	
-				/*Author -ptr.nov- GROUP SEQWEN */
-				[				
-					'label'=>'Group Seqmen',
-					'attribute' =>'groupseqmen.SEQ_NM',
-					'filter' => ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_NM','SEQ_NM'),
-				],					
-				/*Author -ptr.nov- GRADING NAME*/
-				[				
-					'label'=>'Description',
-					'attribute' =>'JOBGRADE_DCRP',
-				],
 				[   
 					'class' => 'yii\grid\ActionColumn', 
-					'template' => '{view}',// {delete}',
+					'template' => '{view} {edit}',
 					'header'=>'Action',
 					'buttons' => [
 						'view' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-primary btn-xs">View</button>',['view','id'=>$model->ID],[
+								return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:35px">View </button>',['viewdel','id'=>$model->ID],[
 															'data-toggle'=>"modal",
-															'data-target'=>"#activity-modal1",
+															'data-target'=>"#activity-model-gradingmdl",
+															'data-title'=> $model->ID,
+															]);
+						},
+						'edit' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-success btn-xs" style="width:35px">EDIT</button>',['viewedit','id'=>$model->ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-model-gradingmdl",
 															'data-title'=> $model->ID,
 															]);
 						}
@@ -102,15 +64,46 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 								//'class' =>'$(.activity-view-link).click(function() {var elementId = $(this).closest(tr).data(key)}',
 								'title' => Yii::t('yii', 'View'),
 								'data-toggle' => 'modal',
-								'data-target' => '#activity-modal1',
+								'data-target' => '#activity-model-gradingmdl',
 								//'data-id' => $key,
 								//'data-pjax' => '1',
 							]);
 						},
 					],
 					*/
-
-				],				
+				],
+				
+				['class' => 'yii\grid\SerialColumn'],
+				/*Author -ptr.nov- GROUP SEQWEN */
+				[				
+					'label'=>'Group Seqmen',
+					'attribute' =>'groupseqmen.SEQ_NM',
+					'filter' => ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_NM','SEQ_NM'),
+				],			
+				/*Author -ptr.nov- GROUP FINCTION */
+				[				
+					'label'=>'Group Function',
+					'attribute' =>'groupfunction.GF_NM',
+					'filter' => ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_NM','GF_NM'),
+				],
+				/*Author -ptr.nov- GRADIND ID */
+				[				
+					'label'=>'Grading ID',
+					'attribute' =>'JOBGRADE_ID',					
+				],
+				/*Author -ptr.nov- GRADING NAME*/
+				[				
+					'label'=>'Grading NM',
+					'attribute' =>'JOBGRADE_NM',
+				],
+					
+						
+				/*Author -ptr.nov- GRADING NAME*/
+				[				
+					'label'=>'Description',
+					'attribute' =>'JOBGRADE_DCRP',
+				],
+								
 			],
 			'panel'=>[
 				//'heading' =>true,// $hdr,//<div class="col-lg-4"><h8>'. $hdr .'</h8></div>',
@@ -125,7 +118,7 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 				'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create ',
 						['modelClass' => 'Employe',]),'jobgrademodul/create',[
 															'data-toggle'=>"modal",
-															'data-target'=>"#activity-modal1",
+															'data-target'=>"#activity-model-gradingmdl",
 															'class' => 'btn btn-success'
 															])
 			],
@@ -151,7 +144,7 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 		 //Pjax::end(); 
 		 
 		 $this->registerJs("
-		    $('#activity-modal1').on('show.bs.modal', function (event) {
+		    $('#activity-model-gradingmdl').on('show.bs.modal', function (event) {
 		        var button = $(event.relatedTarget)
 		        var modal = $(this)
 		        var title = button.data('title') 
@@ -167,7 +160,7 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 		//,$this::POS_END);
 		/*
 		//$this->registerJs("
-		 //   $(#activity-modal1);
+		 //   $(#activity-model-gradingmdl);
 		//");//,$this::POS_END);
 		*/
 			
@@ -180,16 +173,15 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 						},
 						function (data) {
 							$('.modal-body').html(data);
-							$('#activity-modal1').modal();
+							$('#activity-model-gradingmdl').modal();
 						}  
 					);
 				})
 			");
-		*/
-		
+		*/		
 		
 		Modal::begin([
-		    'id' => 'activity-modal1',
+		    'id' => 'activity-model-gradingmdl',
 		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
 		]);
 		Modal::end();
