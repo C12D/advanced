@@ -140,10 +140,15 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 										'badge' => '14'
 									],
 									[
-										'content' => 'Request/Sales Order',
+										'content' => 'Request Order',
+										'url' => 'esm/requestorder',
+										'badge' => '14'
+									],	
+									[
+										'content' => 'Sales Order',
 										'url' => '/widget/rso',
 										'badge' => '14'
-									],									
+									],											
 									[
 										'content' => 'Purchase',
 										'url' => '/widget/po',
