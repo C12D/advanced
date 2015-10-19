@@ -56,7 +56,7 @@ class Jobgrademodul extends \yii\db\ActiveRecord
             [['JOBGRADE_ID'], 'string', 'max' => 5],
             [['JOBGRADE_NM'], 'string', 'max' => 100],
 			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
-			[['UPDATED_TIME'], 'date','format' => 'yyyy-mm-dd'],			
+			[['UPDATED_TIME'],'safe'],			
         ];
     }
 

@@ -536,6 +536,7 @@ use kartik\alert\Alert;
 		                modal.find('.modal-body').html(data)
 		            });
 		        })
+				$().datepicker('disable');
 		");
 		Modal::begin([
 		    'id' => 'activity-emp',
