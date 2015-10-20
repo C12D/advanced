@@ -61,6 +61,23 @@ $form = ActiveForm::begin(['id' => 'grading-form-id','type' => ActiveForm::TYPE_
 						'options'=>['placeholder'=>'Enter Last Name...'],
 						'columnOptions'=>['colspan'=>6],
 					],
+					
+					'UPDATED_TIME'=>[
+							'id'=>'tgl1',
+							'type'=>Form::INPUT_WIDGET,
+							'widgetClass'=>'\kartik\widgets\DatePicker',
+							'options' => [
+								//'placeholder' => 'Input Join Date  ...',
+								'pluginOptions' => [
+									'autoclose'=>true,
+									'format' => 'yyyy-mm-dd',
+									'todayHighlight' => true
+								],
+							],
+							'hint'=>'Enter Join Date (yyyy-mm-dd)',
+							'columnOptions'=>['colspan'=>6],
+					],
+					
 				],
 			],
 			[
@@ -70,13 +87,14 @@ $form = ActiveForm::begin(['id' => 'grading-form-id','type' => ActiveForm::TYPE_
 						'actions'=>[    // embed raw HTML content
 								'type'=>Form::INPUT_RAW, 
 								'value'=>  '<div style="text-align: right; margin-top: 20px">' . 
-									Html::resetButton('Reset', ['class'=>'btn btn-default']) . ' ' .
-									//Html::submitButton('Submit', ['class'=>'btn btn-primary']) . 
-									Html::a('<button type="button" class="btn btn-primary btn-xs">Submit</button>', ['/hrd/jobgrademodul/create'], [ 'data' => [ 'method' => 'post', 'params' => [ 'action' => 'create' ] ] ]) .
+									Html::resetButton('Reset', ['class'=>'btn btn-info']) . ' ' .
+									Html::submitButton('Save', ['class'=>'btn btn-success']) . ' ' . 
+									Html::submitButton('Close', ['class'=>'btn btn-primary']) . 
+									//Html::a('<button type="button" class="btn btn-primary btn-xs">Submit</button>', ['/hrd/jobgrademodul/create'], [ 'data' => [ 'method' => 'post', 'params' => [ 'action' => 'create' ] ] ]) .' '.
+									//Html::a('<button type="button" class="btn btn-primary btn-xs">Close</button>', ['/hrd/jobgrademodul/create'], 'data-dismiss'='modal') .
 									'</div>'
 						],
-					],
-				
+					],				
 				
 			],
 			
@@ -86,9 +104,9 @@ $form = ActiveForm::begin(['id' => 'grading-form-id','type' => ActiveForm::TYPE_
 	/*Panel List Group*/
 	echo Html::listGroup([
 		 [
-			 'content' => 'INPUT GRADING MODUL',
+			 'content' => ['heading' => 'INPUT - GRADING MODULE'],
 			 'url' => '#',
-			 'badge' => '',
+			 'badge' => '@LukisonGroup',
 			 'active' => true
 		 ],
 		 [

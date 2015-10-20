@@ -48,11 +48,12 @@ class RequestorderSearch extends Requestorder
 		$empId = Yii::$app->user->identity->EMP_ID;
 		$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
 		$crp = $dt[0]['EMP_CORP_ID'];
+		$depId = $dt[0]['DEP_ID'];
 		
-		if($dt[0]['JOBGRADE_ID'] == 'M'){
-			$query = Requestorder::find()->where("r0001.status <> 3 and r0001.KD_CORP = '$crp' ");
+		if($dt[0]['GF_ID'] == '3'){
+			$query = Requestorder::find()->where("r0001.status <> 3 and r0001.KD_CORP = '$crp' and r0001.KD_DEP = '$depId' ");
 		} else {
-			$query = Requestorder::find()->where("r0001.status <> 3 and r0001.KD_CORP = '$crp' and r0001.ID_USER = '$empId' ");
+			$query = Requestorder::find()->where("r0001.status <> 3 and r0001.KD_CORP = '$crp' and r0001.ID_USER = '$empId'  and r0001.KD_DEP = '$depId' ");
 		}
 		
 		$query->joinWith(['employe' => function ($q) {

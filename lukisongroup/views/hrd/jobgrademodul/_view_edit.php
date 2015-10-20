@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use kartik\helpers\Html;
 use yii\helpers\ArrayHelper;
 use kartik\detail\DetailView;
 use kartik\widgets\ActiveForm;
@@ -38,13 +38,14 @@ $this->title = Yii::t('app', 'Detail View Modul JobGrade');     /* title pada he
 ?>
 
 <?php
+$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
 $attribute = [
 		// GROUP FUNCTION - Author: -ptr.nov-		
 		[ 
 			'label'=>'Group Function',
 			'attribute' =>'GF_ID',
 			'format'=>'raw',
-			'value'=>Html::a($Val_GF, '#', ['class'=>'kv-author-link']),
+			'value'=>Html::decode($Val_GF),//, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=> ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_ID','GF_NM'),
@@ -56,7 +57,7 @@ $attribute = [
 			'label'=>'Group Seqmen',
 			'attribute' =>'SEQ_ID',
 			'format'=>'raw',
-			'value'=>Html::a($Val_SQMEN, '#', ['class'=>'kv-author-link']),
+			'value'=>Html::decode($Val_SQMEN),//, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=> ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_ID','SEQ_NM'),
@@ -68,7 +69,7 @@ $attribute = [
 			'label'=>'JobGrading',
 			'attribute' =>'JOBGRADE_ID',
 			'format'=>'raw',
-			'value'=>Html::a($Val_GRADING, '#', ['class'=>'kv-author-link']),
+			'value'=>Html::decode($Val_GRADING),
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=>ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_ID','JOBGRADE_NM'),
@@ -103,13 +104,14 @@ $attribute = [
 
 
 		<?php
-			$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
-				echo DetailView::widget([
+			
+				$viewdel= DetailView::widget([
+					'id'=>'view-edit',
 					'model' => $model,
 					//'pjax'=>true,
 					'condensed'=>true,
 					'hover'=>true,
-					'mode'=>DetailView::MODE_EDIT,
+					'mode'=>DetailView::MODE_VIEW,
 					'panel'=>[
 						'heading'=>'FORMULA MODUL GRADING',
 						'type'=>DetailView::TYPE_INFO,
@@ -125,7 +127,22 @@ $attribute = [
 							'method'=>'post',
 						],
 					],										
-				]);		
+				]);
+				//echo $viewdel;
+				/*Panel List Group*/
+				echo Html::listGroup([
+					 [
+						 'content' => 'VIEW - GRADING MODUL',
+						 'url' => '#',
+						 'badge' =>'@LukisonGroup',
+						 'active' => true
+					 ],
+					 [
+						 'content' => $viewdel,
+
+					 ],
+				]);				
+				
 			ActiveForm::end();	
 		?>
 

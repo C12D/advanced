@@ -267,6 +267,12 @@ class PurchaseorderController extends Controller
         $po->STATUS = '101';
         $po->PAJAK = $post['pajak'];
         $po->DISC = $post['disc'];
+        $po->NOTE = $post['note'];
+        $po->ETA = $post['eta'];
+        $po->ETD = $post['etd'];
+        $po->SHIPPING = $post['shipping'];
+        $po->BILLING = $post['billing'];
+        $po->DELIVERY_COST = $post['delvCost'];
         $po->save();
 
         return $this->redirect([' ']);

@@ -16,6 +16,8 @@ use lukisongroup\models\esm\ro\RodetailSearch;
 use lukisongroup\models\master\Barangumum;
 use lukisongroup\models\master\Suplier;
 
+use lukisongroup\models\master\Nmperusahaan;
+
 use lukisongroup\models\esm\po\Podetail;
 
 ?>
@@ -83,28 +85,78 @@ use lukisongroup\models\esm\po\Podetail;
 	</div>
 
 
-	<div class="col-xs-12 col-md-9">
-		  <?= Yii::$app->session->getFlash('error'); ?>
+	<!-- ?php
+	$form = ActiveForm::begin([
+	    'method' => 'post',
+	    'action' => ['esm/purchaseorder/createpo'],
+	    'id' => 'cpo',
+	]);
+	? -->
+<form  id="cpo" method="post" action="../purchaseorder/createpo">
 
-		<h2 style="margin-top:0px;">&nbsp;&nbsp;&nbsp; 
+	<div class="col-xs-12 col-md-9">
+	  	<?= Yii::$app->session->getFlash('error'); ?>
 		<?php 
-			$brg = Suplier::find('NM_SUPPLIER')->where(['KD_SUPPLIER'=>$quer->KD_SUPPLIER])->one(); 
-			echo $brg->NM_SUPPLIER;
+			$brg = Suplier::find()->where(['KD_SUPPLIER'=>$quer->KD_SUPPLIER])->one(); 		
+			$kdpo = $_GET['kdpo'];
 		?>
-		</h2>
+	  	<br/>
+		<div class="row">
+		  	<div class="col-xs-6 col-sm-6 col-md-6">
+		  	<b><?= $brg->NM_SUPPLIER; ?></b><br/>
+		  	<?= $brg->ALAMAT; ?><br/>
+		  	<?= $brg->KOTA; ?><br/>
+		  		<table>
+		  			<tr>
+		  				<td>Telp / Fax</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<?= $brg->TLP; ?> / <?= $brg->FAX; ?></td>
+		  			</tr>
+		  			<tr>
+		  				<td>Email</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<?= $brg->EMAIL; ?></td>
+		  			</tr>
+		  		</table>
+		  	</div>
+
+		  	<div class="col-xs-6 col-sm-6 col-md-6">
+		  		<table>
+		  			<tr>
+		  				<td>Date</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<?= date("d F Y") ?></td>
+		  			</tr>
+		  			<tr>
+		  				<td>No. Order</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<?= $kdpo; ?></td>
+		  			</tr>
+		  			<tr>
+		  				<td>Order By</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<?= Yii::$app->user->identity->username; ?></td>
+		  			</tr>
+		  			<tr>
+		  				<td title="Estimasi Pengiriman Barang">ETD</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<input type="date" name="etd" id="etd" min="<?= date("Y-m-d"); ?>" value="<?php echo $quer->ETD; ?>"></td>
+		  			</tr>
+		  			<tr>
+		  				<td title="Estimasi Kedatangan Barang">ETA</td>
+		  				<td>&nbsp;:&nbsp;</td>
+		  				<td>&nbsp;<input type="date" name="eta" id="eta" min="<?= date("Y-m-d"); ?>" value="<?php echo $quer->ETA; ?>"></td>
+		  			</tr>
+		  		</table>
+		  	</div>
+		</div>
 
 <hr/>	
-<?php
-$kdpo = $_GET['kdpo'];
-
-$form = ActiveForm::begin([
-    'method' => 'post',
-    'action' => ['esm/purchaseorder/createpo'],
-]);
-?>
 
 
 
+
+<input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
 	<table class="table table-bordered table-striped"  style="border-collapse:collapse;">
 		<thead style="background-color:orange;">
 			<tr>
@@ -121,6 +173,7 @@ $form = ActiveForm::begin([
 		<tbody>
 			<?php $a=0; foreach ($podet as $po => $rows) { $a=$a+1; ?>
 			
+			<?php if($a == 1){ echo "</form>"; } ?>
 			<tr style="cursor:pointer;">
 
 			<?php 
@@ -162,6 +215,13 @@ $form = ActiveForm::begin([
 	            <td colspan="7"  class="hiddenRow"  style="padding:0px;">
             	<div class="accordian-body collapse" id="demo<?php echo $a; ?>" style="padding:10px;">
         		
+					<?php
+						$form = ActiveForm::begin([
+						    'method' => 'post',
+						    'action' => ['esm/purchaseorder/spo?kdpo='.$kdpo],
+						    'id' => 'detpo'.$a,
+						]);
+					?>
         		<table class="table table-hover">
 					<thead style="background-color:#FF8533;">
 						<tr>
@@ -172,13 +232,6 @@ $form = ActiveForm::begin([
 						</tr>
 					</thead>
 
-					<?php
-						$form = ActiveForm::begin([
-						    'method' => 'post',
-						    'action' => ['esm/purchaseorder/spo?kdpo='.$kdpo],
-						    'id' => 'detpo'.$a,
-						]);
-					?>
 					<tbody>
 						<?php 
 							$pod = Podetail::find()->where(['ID_DET_PO'=>$rows->ID])->andWhere('STATUS <> 3')->all(); 
@@ -218,9 +271,7 @@ $form = ActiveForm::begin([
         			<button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('detpo<?php echo $a; ?>').submit();">Ubah Qty</button>
         		</div>
 
-				<?php
-					ActiveForm::end(); 
-				?>
+				<?php ActiveForm::end(); ?>
 
             	</div>  
 	            </td>
@@ -237,7 +288,9 @@ $form = ActiveForm::begin([
 			</tr>
 
 			<tr>
-				<td colspan="5"></td>
+				<td colspan="5" rowspan="4"><b>Notes :</b>
+					<textarea class="form-control" rows="6" style="resize:vertical;" name="note" id="note"><?php echo $quer->NOTE; ?></textarea>
+				</td>
 				<td style="text-align:right; font-size:13pt; font-weight:bold;">Disc.</td>
 				<td>
 					<input type="text" name="disc" id="disc" value="<?php echo $quer->DISC; ?>" onchange="hrga()" onkeypress="hrga()" onkeyup="hrga()" />
@@ -246,7 +299,6 @@ $form = ActiveForm::begin([
 
 			<?php if($quer->PAJAK == 0){ $pjk = '10'; }else{ $pjk = $quer->PAJAK; } ?>
 			<tr>
-				<td colspan="5"></td>
 				<td style="text-align:right; font-size:13pt; font-weight:bold;">Pajak 
 					<input type="number" id="pajak" name="pajak" style="width:60px;" value="<?php echo $pjk; ?>" min="0" onchange="hrga()" onkeypress="hrga()" onkeyup="hrga()" /> %
 				</td>
@@ -256,7 +308,13 @@ $form = ActiveForm::begin([
 			</tr>
 
 			<tr>
-				<td colspan="5"></td>
+				<td style="text-align:right; font-size:13pt; font-weight:bold;">Delv. Cost</td>
+				<td>
+					<input type="text" name="delvCost" id="delvCost" value="<?php echo $quer->DELIVERY_COST ?>" onchange="hrga()" onkeypress="hrga()" onkeyup="hrga()"/>
+				</td>
+			</tr>
+
+			<tr>
 				<td style="text-align:right; font-size:13pt; font-weight:bold;">Total</td>
 				<td>
 					<input type="text" name="ttlHrgPjk" id="ttlHrgPjk" value="" disabled />
@@ -266,14 +324,46 @@ $form = ActiveForm::begin([
 		</tbody>
 	</table>	
 
+	<?php 	$nmpr = Nmperusahaan::find()->all(); ?>
+<div class="row form-horizontal">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-2 control-label">Shipping Address</label>
+	    <div class="col-sm-5">
+			<select class="form-control" name="shipping" required>
+					<option value=""> -- PILIH --</option>
+				<?php foreach($nmpr as $nm){ ?>
+					<option value="<?php echo $nm->ID; ?>" <?php if($quer->SHIPPING == $nm->ID){ echo "selected"; } ?> ><?php echo $nm->NM_ALAMAT; ?></option>
+				<?php } ?>
+			</select>
+		</div>
+	  </div>
+  </div>
+  
+  <div class="col-xs-12 col-sm-12 col-md-12">
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-2 control-label">Billing Address</label>
+	    <div class="col-sm-5">
+			<select class="form-control" name="billing" required>
+					<option value=""> -- PILIH --</option>
+				<?php foreach($nmpr as $nm){ ?>
+					<option value="<?php echo $nm->ID; ?>"  <?php if($quer->BILLING == $nm->ID){ echo "selected"; } ?> ><?php echo $nm->NM_ALAMAT; ?></option>
+				<?php } ?>
+			</select>
+	    </div>
+	  </div>
+  </div>
+
+</div>
+
+
+	<br/><br/>
 	<input type="hidden" name="kdpo" id="kdpo" value="<?php echo $kdpo; ?>" required/>
-
-	<button type="submit" class="btn btn-warning btn-sm">Buat PO</button>
-
-
+	<button type="button" class="btn btn-warning btn-sm" onclick="document.getElementById('cpo').submit();">Buat PO</button>
 	<input type="hidden" name="ttlLop" id="ttlLop" value="<?php echo $a; ?>" required/>
 
-<?php ActiveForm::end(); ?>
+<!-- ?php ActiveForm::end(); ? -->
+</form>
 		<script>
 		window.onload = function(){ hrga(); }
 
@@ -281,6 +371,7 @@ $form = ActiveForm::begin([
 			lop = document.getElementById('ttlLop').value;
 			pjk = document.getElementById('pajak').value / 100;
 			disc = document.getElementById('disc').value;
+			delvCost = document.getElementById('delvCost').value;
 
 			var b = 0;
 			for(a=1; a<=lop; a++){
@@ -295,7 +386,7 @@ $form = ActiveForm::begin([
 
 			var hrgPjk = pjk * hrgDsc;
 			document.getElementById('hrgPjk').value = hrgPjk;
-			document.getElementById('ttlHrgPjk').value = hrgDsc + hrgPjk;
+			document.getElementById('ttlHrgPjk').value = parseInt(hrgDsc) + parseInt(hrgPjk) + parseInt(delvCost);
 		}
 
 

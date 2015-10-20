@@ -27,7 +27,7 @@ use lukisongroup\models\system\side_menu\M1000;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
 use kartik\tabs\TabsX;
-use kartik\date\DatePicker;
+//use kartik\date\DatePicker;
 use kartik\builder\Form;
 use kartik\sidenav\SideNav;
 
@@ -55,35 +55,7 @@ $tab_employe= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'], 
-			/*[
-				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view}',
-				//'template' => '{view} {update}',
-				//Yii::t('app', 'Emplo'),
-			],	
-			*/			
-			['class' => 'yii\grid\ActionColumn', 
-					'template' => '{view}{edit}',
-					'header'=>'Action',
-					'buttons' => [
-						'view' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:50px">View </button>',['view','id'=>$model->EMP_ID],[
-															'data-toggle'=>"modal",
-															'data-target'=>"#activity-emp",
-															'data-title'=> $model->EMP_ID,
-															]);
-						},
-					
-						'edit' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-success btn-xs" style="width:50px">EDIT</button>',['viewedit','id'=>$model->EMP_ID],[
-															'data-toggle'=>"modal",
-															'data-target'=>"#activity-emp",
-															'data-title'=> $model->EMP_ID,
-															]);
-						}
-					],
-			],
+            ['class' => 'yii\grid\SerialColumn'], 			
 			[
 				/*Author -ptr.nov- image*/
                'attribute' => 'PIC',
@@ -177,6 +149,26 @@ $tab_employe= GridView::widget([
 				]),
 				
 			],
+			/*[
+				'class' => 'yii\grid\ActionColumn',
+				'template' => '{view}',
+				//'template' => '{view} {update}',
+				//Yii::t('app', 'Emplo'),
+			],	
+			*/			
+			['class' => 'yii\grid\ActionColumn', 
+					'template' => '{view}{edit}',
+					'header'=>'Action',
+					'buttons' => [
+						'view' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:50px; height:50px">View </button>',['/hrd/employe/view','id'=>$model->EMP_ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-emp",													
+															'data-title'=> $model->EMP_ID,
+															]);
+						},					
+					],
+			],
             //['class' => 'yii\grid\CheckboxColumn'],
             //['class' => '\kartik\grid\RadioColumn'],
         ],
@@ -192,7 +184,7 @@ $tab_employe= GridView::widget([
 					['create'], ['class' => 'btn btn-success']),
 			*/
 			'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create ',
-						['modelClass' => 'Employe',]),'create',[
+						['modelClass' => 'Employe',]),'/hrd/employe/create',[
 															'data-toggle'=>"modal",
 															'data-target'=>"#activity-emp",
 															'class' => 'btn btn-success'
@@ -209,7 +201,7 @@ $tab_employe= GridView::widget([
                // ],
         ],
         'hover'=>true, //cursor select
-        //'responsive'=>true,
+        'responsive'=>true,
         'responsiveWrap'=>true,
         'bordered'=>true,
         'striped'=>'4px',
@@ -248,7 +240,7 @@ $tab_employe_resign= GridView::widget([
 					'header'=>'Action',
 					'buttons' => [
 						'view' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-primary btn-xs">View</button>',['view','id'=>$model->EMP_ID],[
+								return  Html::a('<button type="button" class="btn btn-warning btn-xs" style="width:50px; height:50px">View </button>',['view','id'=>$model->EMP_ID],[
 															'data-toggle'=>"modal",
 															'data-target'=>"#activity-emp",
 															'data-title'=> $model->EMP_ID,
@@ -512,8 +504,9 @@ use kartik\alert\Alert;
 	];
 
 
-
+	
 	echo TabsX::widget([
+		'id'=>'tab-emp',
 		'items'=>$items,
 		'position'=>TabsX::POS_ABOVE,
 		//'height'=>'tab-height-xs',
@@ -522,8 +515,8 @@ use kartik\alert\Alert;
 		//'align'=>TabsX::ALIGN_LEFT,
 
 	]);
-	
-	 $this->registerJs("
+	 
+	 $this->registerJs("			
 		    $('#activity-emp').on('show.bs.modal', function (event) {
 		        var button = $(event.relatedTarget)
 		        var modal = $(this)
@@ -532,17 +525,51 @@ use kartik\alert\Alert;
 		        //modal.find('.modal-title').html(title)
 		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
 		        $.post(href)
-		            .done(function( data ) {
+		            .done(function( data ) {						
 		                modal.find('.modal-body').html(data)
-		            });
-		        })
-				$().datepicker('disable');
-		");
+					   
+						
+		            });		
+				 
+		    })				
+			//$(#activity-emp).datepicker('disable');
+		",$this::POS_READY);
 		Modal::begin([
 		    'id' => 'activity-emp',
 		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
 		]);
-		Modal::end()
-	
+		Modal::end();
+		
+		/*ViewDelate
+		$this->registerJs("
+		    $('#view-emp').on('show.bs.modal', function (event) {
+		        var button = $(event.relatedTarget)
+		        var modal = $(this)
+		        var title = button.data('title') 				
+		        var href = button.attr('href') 
+		        modal.find('.modal-title').html(title)
+		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
+				$.post(href)
+		            .done(function( data ) {
+		                modal.find('.modal-body').html(data)
+												
+					});						
+		    });
+			//$(this).datepicker();
+			//$('#my_datepicker').datepicker('destroy')
+			
+		",$this::POS_READY);
+		
+		$js='$("#view-emp").modal("show")';
+		$this->registerJs($js);
+		
+		Modal::begin([
+		    'id' => 'view-emp',
+		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
+		]);
+		
+		Modal::end();
+*/
+			
 ?>
 

@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 use lukisongroup\models\master\Suplier;
 use lukisongroup\models\master\Barangumum;
+use lukisongroup\models\master\Nmperusahaan;
 use lukisongroup\models\esm\po\Purchasedetail;
 use lukisongroup\models\esm\Barang;
 /* @var $this yii\web\View */
@@ -36,62 +37,51 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-6">
 
-        <table>
-            <tr>
-                <td>Company</td><td>:</td>
-                <td>
-                    <strong>PT. Efenbi Sukses Makmur</strong>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Address</td><td>:</td>
-                <td>
-                    <strong>
-                        Ruko Demansion Blok C-12
-                    </strong>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Phone</td><td>:</td>
-                <td>
-                    <strong>
-                        Ruko Demansion Blok C-12
-                    </strong>
-                </td>
-            </tr>
-        </table>
+            <b><?= $sup->NM_SUPPLIER; ?></b><br/>
+            <?= $sup->ALAMAT; ?><br/>
+            <?= $sup->KOTA; ?><br/>
+                <table>
+                    <tr>
+                        <td>Telp / Fax</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?= $sup->TLP; ?> / <?= $sup->FAX; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?= $sup->EMAIL; ?></td>
+                    </tr>
+                </table>
       </div>
 
       <div class="col-xs-12 col-sm-6 col-md-6">
 
-        <table>
-            <tr>
-                <td>Bill To</td><td>:</td>
-                <td>
-                    <strong><?= $sup->NM_SUPPLIER ?></strong>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Address</td><td>:</td>
-                <td><?= $sup->ALAMAT ?></td>
-            </tr>
-
-            <tr>
-                <td>Phone</td><td>:</td>
-                <td><?= $sup->TLP ?>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Fax</td><td>:</td>
-                <td><?= $sup->FAX ?>
-                </td>
-            </tr>
-
-        </table>
+                <table>
+                    <tr>
+                        <td>Date</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?php $tgl = explode(' ', $model->CREATE_AT); echo $tgl[0]; ?></td>
+                    </tr>
+                    <tr>
+                        <td>No. Order</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?= $model->KD_PO; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Order By</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?= Yii::$app->user->identity->username; ?></td>
+                    </tr>
+                    <tr>
+                        <td title="Estimasi Pengiriman Barang">ETD</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?= $model->ETD; ?></td>
+                    <tr>
+                        <td title="Estimasi Kedatangan Barang">ETA</td>
+                        <td>&nbsp;:&nbsp;</td>
+                        <td>&nbsp;<?= $model->ETA; ?></td>
+                    </tr>
+                </table>
       </div>
     </div>
 
@@ -153,14 +143,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 $pjk = $model->PAJAK;
                 $disc = $model->DISC;
+                $devCost = $model->DELIVERY_COST;
                 $hslPjk = ($pjk / 100) * ($total - $disc);
 
-                $hsl = $total - $disc + $hslPjk ;
+                $hsl = $total - $disc + $devCost + $hslPjk ;
             ?>
 
 
             <tr  style="border:0px !important;">
-                <td colspan="5" rowspan="4" style="border:1px solid #333; font-size:15pt;">Terbilang : <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>
+                <td colspan="5" rowspan="5" style="border:1px solid #333; font-size:15pt;">Terbilang : <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>
                     <?php 
                         $kd = Yii::$app->mastercode->Terbilang($hsl); 
                         echo $kd;
@@ -179,6 +170,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td style="text-align:right; background-color:#f2f2f2; border:1px solid #333;"><b>PPN <?= $pjk; ?> %</b></td>
                 <td style="border:1px solid #333; background-color:#f2f2f2;"><b><?= Yii::$app->mastercode->Rupiah($hslPjk) ?></b></td>
             </tr>
+            <tr  style="border:0px !important;">
+                <td style="text-align:right; background-color:#f2f2f2; border:1px solid #333;"><b>Delv. Cost</b></td>
+                <td style="border:1px solid #333; background-color:#f2f2f2;"><b><?= Yii::$app->mastercode->Rupiah($devCost) ?></b></td>
+            </tr>
 
             <tr  style="border:0px !important;">
                 <td style="text-align:right; background-color:#f2f2f2; border:1px solid #333;"><b>Grand Total</b></td>
@@ -188,6 +183,38 @@ $this->params['breadcrumbs'][] = $this->title;
         </tbody>
     </table>
 
+<br/><br/>
+<?php 
+    $ship = Nmperusahaan::find()->where(['ID' => $model->SHIPPING])->one(); 
+    $bill = Nmperusahaan::find()->where(['ID' => $model->BILLING])->one(); 
+?>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3><u>&nbsp;&nbsp;Shipping Address :&nbsp;&nbsp;</u></h3>
+            <?php
+                echo '<b>'.$ship->NM_ALAMAT.'</b></br>';
+                echo $ship->ALAMAT_LENGKAP.'</br></br>';
+                echo 'Tlp : '.$ship->TLP.'</br>';
+                echo 'Fax : '.$ship->FAX.'</br>';
+                echo 'CP&nbsp; : '.$ship->CP.'</br>';
+            ?>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3><u>&nbsp;&nbsp;Billing Address :&nbsp;&nbsp;</u></h3>
+            <?php
+                echo '<b>'.$bill->NM_ALAMAT.'</b></br>';
+                echo $bill->ALAMAT_LENGKAP.'</br></br>';
+                echo 'Tlp : '.$bill->TLP.'</br>';
+                echo 'Fax : '.$bill->FAX.'</br>';
+                echo 'CP&nbsp; : '.$bill->CP.'</br>';
+            ?>
+        </div>
+    </div>
+
+    <br/><br/>
+    <b>Note :</b><br/><?= $model->NOTE; ?>
+
+    <br/><br/>
     <br/><br/>
     <?php 
         echo Html::a('<i class="fa fa-print fa-fw"></i> Cetak', ['cetakpdf','kdpo'=>$model->KD_PO], ['target' => '_blank', 'class' => 'btn btn-success']);

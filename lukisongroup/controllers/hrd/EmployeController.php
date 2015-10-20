@@ -139,12 +139,14 @@ class EmployeController extends Controller
         }
 		//$generate_key_emp= Yii::$app->ambilkonci->getKey_Employe('GSN');
 		//print_r($generate_key_emp);
+		 $model = $this->findModel('ALG.2015.000056');
 		return $this->render('index', [
 			//'side_menu'=>$side_menu,			/* Content variable Array -SideMenu- */
             'searchModel' => $searchModel, 		/* Content variable Array -Filter Search- */
             'dataProvider' => $dataProvider,	/* Content variable Array -Class Table Join- */
             'searchModel1' => $searchModel1,
             'dataProvider1' => $dataProvider1,  /* Content variable Array Aditional -Class Table Join- */
+			 'model' => $model,
         ]);
     }
 
@@ -153,7 +155,7 @@ class EmployeController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
+		$model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())){
 			$model->UPDATED_BY=Yii::$app->user->identity->username;
 			$upload_file=$model->uploadFile();
@@ -169,12 +171,31 @@ class EmployeController extends Controller
 				} 
 			}
 		}else {
+			 $js1="$('#view-emp').on('show.bs.modal', function (event) {
+		        var button = $(event.relatedTarget)
+		        var modal = $(this)
+		        var title = button.data('title') 				
+		        var href = button.attr('href') 
+		        modal.find('.modal-title').html(title)
+		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
+				$.post(href)
+		            .done(function( data ) {
+		                modal.find('.modal-body').html(data)						
+					});				
+				})";
+				$this->enableCsrfValidation = false; 
+			//$js='$("#view-emp").modal("show")';
+			//$this->getView(['index'])->registerJs($js);
             //return $this->render('view', [
-            return $this->renderAjax('_view_del', [
-                'model' => $model,
+            //return $this->renderAjax('_view', [
+
+            return $this->renderAjax('_view', [
+                'model' => $model,				
             ]);
         }
     }
+	
+	/*
 	public function actionViewedit($id)
     {
         $model = $this->findModel($id);
@@ -199,7 +220,7 @@ class EmployeController extends Controller
             ]);
         }
     }
-
+	*/
     /**
      * ACTION CREATE note | $id=PrimaryKey -> TRIGER FROM VIEW  -ptr.nov-
      */
@@ -223,6 +244,8 @@ class EmployeController extends Controller
 				} 
 			}
 		}else {
+			//$js='$("#create-emp").modal("show")';
+			//$this->getView()->registerJs($js);
             //return $this->render('create', [
             //return $this->renderAjax('create', [
             return $this->renderAjax('_form', [

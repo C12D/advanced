@@ -45,7 +45,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
         return [
 			['KD_SUPPLIER', 'required', 'message' => 'Please choose a username.'],
             [['KD_PO', 'CREATE_BY', 'CREATE_AT', 'APPROVE_BY', 'APPROVE_AT', 'STATUS', 'NOTE'], 'safe'],
-            [['CREATE_AT', 'APPROVE_AT','PAJAK','DISC'], 'safe'],
+            [['CREATE_AT', 'APPROVE_AT','PAJAK','DISC', 'ETD', 'ETA', 'SHIPPING', 'BILLING', 'DELIVERY_COST'], 'safe'],
             [['STATUS'], 'integer'],
             [['NOTE'], 'string'],
             [['KD_PO'], 'string', 'max' => 30],
@@ -67,6 +67,8 @@ class Purchaseorder extends \yii\db\ActiveRecord
             'APPROVE_BY' => 'Approve  By',
             'APPROVE_AT' => 'Approve  At',
             'STATUS' => 'Status',
+            'ETA' => 'ETA',
+            'ETD' => 'ETD',
             'NOTE' => 'Note',
         ];
     }

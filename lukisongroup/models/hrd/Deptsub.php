@@ -54,9 +54,9 @@ class Deptsub extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'DEP_SUB_ID' => 'Dep  Sub  ID',
+            'DEP_SUB_ID' => 'DepSub.ID',
             'DEP_ID' => 'Dep  ID',
-            'DEP_SUB_NM' => 'Dep  Sub  Nm',
+            'DEP_SUB_NM' => 'Dept.Sub',
             'DEP_SUB_STS' => 'Dep  Sub  Sts',
             'DEP_SUB_AVATAR' => 'Dep  Sub  Avatar',
             'DEP_SUB_DCRP' => 'Dep  Sub  Dcrp',

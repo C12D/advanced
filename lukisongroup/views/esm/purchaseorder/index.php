@@ -11,7 +11,7 @@ use lukisongroup\models\master\Suplier;
 /* @var $searchModel lukisongroup\models\esm\po\PurchaseorderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Purchaseorders';
+$this->title = 'Purchaseorder';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -49,7 +49,7 @@ function submitform()
 		'buttons' => [
 			'link' => function ($url,$model) { return Html::a('', ['view','kd'=>$model->KD_PO],['class'=>'glyphicon glyphicon-eye-open', 'title'=>'Detail']);},
 
-			'edit' => function ($url,$model) { return Html::a('', ['buatro','id'=>$model->KD_PO],['class'=>'glyphicon glyphicon-pencil', 'title'=>'Ubah RO']); },
+			'edit' => function ($url,$model) { return Html::a('', ['create','kdpo'=>$model->KD_PO],['class'=>'glyphicon glyphicon-pencil', 'title'=>'Ubah RO']); },
 
 			],
         ],
@@ -124,7 +124,7 @@ function submitform()
 				  <div class="modal-body">
 					
 				<?php $drop = ArrayHelper::map(Suplier::find()->where(['STATUS' => 1])->all(), 'KD_SUPPLIER', 'NM_SUPPLIER'); ?>
-			    <?= $form->field($model, 'KD_SUPPLIER')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Supplier') ?>
+			    <?= $form->field($model, 'KD_SUPPLIER')->dropDownList($drop,['prompt'=>' -- Pilih Salah Satu --'])->label('Supplier'); ?>
 				  </div>
 				  <div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

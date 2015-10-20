@@ -63,8 +63,8 @@ class Employe extends \yii\db\ActiveRecord
 			// Employe Identity - Author: -ptr.nov-
 			'EMP_IMG' => Yii::t('app', 'Pic'),
             'EMP_ID' => Yii::t('app', 'Employee.ID'),
-            'EMP_NM' => Yii::t('app', 'First Name'),
-            'EMP_NM_BLK' => Yii::t('app', 'Last Name'),
+            'EMP_NM' => Yii::t('app', 'First.Name'),
+            'EMP_NM_BLK' => Yii::t('app', 'Last.Name'),
             
 			
 			// Employe Coorporation - Author: -ptr.nov-
@@ -73,8 +73,8 @@ class Employe extends \yii\db\ActiveRecord
 			'EMP_GENDER' => Yii::t('app', 'Jenis Kelamin'),
 			'EMP_STS' => Yii::t('app', 'Status'),
 			'JOBGRADE_ID' => Yii::t('app', 'Jabatan'),
-			'EMP_JOIN_DATE' => Yii::t('app', 'Join Date'),
-			'EMP_RESIGN_DATE' => Yii::t('app', 'Resign Date'),		
+			'EMP_JOIN_DATE' => Yii::t('app', 'Join.Date'),
+			'EMP_RESIGN_DATE' => Yii::t('app', 'Resign.Date'),		
 						
 			//Employe Profile - Author: -ptr.nov-
             'EMP_KTP' => Yii::t('app', 'No.KTP'),

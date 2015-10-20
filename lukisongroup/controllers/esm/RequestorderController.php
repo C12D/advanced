@@ -114,11 +114,12 @@ class RequestorderController extends Controller
 		$model->KD_DEP = $dt[0]['DEP_ID'];
 		$model->KD_CORP = $dt[0]['EMP_CORP_ID'];
 		$model->CREATED_AT = date("Y-m-d H:i:s");
-		/*
+		
+
 		$jab = $dt[0]['DEP_ID'];
-		$que = "SELECT EMP_ID FROM a0001 WHERE (DEP_ID='GA' OR DEP_ID='$jab' ) AND (JAB_ID='MGR' OR JAB_ID='SVR') AND EMP_STS<>'3'";
-		$modelss = $connection->createCommand($que);
-		$users = $modelss->queryAll();
+        $que = "SELECT EMP_ID FROM a0001 WHERE (DEP_ID='$jab' ) AND (GF_ID='3') AND EMP_STS<>'3'";
+        $modelss = $connection->createCommand($que);
+        $users = $modelss->queryAll();
 
         if(count($users) != 0){
     		foreach($users as $usr){ 
@@ -129,7 +130,7 @@ class RequestorderController extends Controller
     		$cons->createCommand()->batchInsert( Requestorderstatus::tableName(), ['KD_RO', 'ID_USER', 'STATUS'], $isi )->execute();	
             return $this->redirect(['buatro','id'=>$kode]);
 		}
-		*/
+		
         return $this->redirect([' ']);
 	//	print_r(Yii::$app->user->identity);
     }
@@ -205,11 +206,13 @@ class RequestorderController extends Controller
 		
 		$empId = Yii::$app->user->identity->EMP_ID;
 		$dt = Employe::find()->where(['EMP_ID'=>$empId])->all();
-		if($dt[0]['JAB_ID'] != 'MGR'){ return $this->redirect(['esm/requestorder']); }
+
+		if($dt[0]['GF_ID'] != '3'){ return $this->redirect(['esm/requestorder']); }
 
         $rostat = Requestorderstatus::find()->where(['KD_RO' => $kd,'ID_USER' => $empId])->one();
-        if(count($rostat) == 0){
-            return $this->redirect([' ']);
+
+        if(count($rostat) == 1){
+            $rostat->delete();
         }
 		
     	$ro = new Requestorder();
@@ -217,9 +220,6 @@ class RequestorderController extends Controller
 		$detro = $reqro->detro;
         $employ = $reqro->employe;
     	
-		//$ro = new Requestorderstatus();
-        $rostat->STATUS =  1;
-		$rostat->save();
 
         return $this->render('proses', [
             'reqro' => $reqro,

@@ -228,7 +228,11 @@ $EmployeeInput= FormGrid::widget([
 								'pluginOptions' => [
 									'autoclose'=>true,
 									'format' => 'yyyy-mm-dd',
+									'enableonreadonly'=>false,
 									'todayHighlight' => true
+								],
+								'pluginEvents'=>[
+									'show' => "function(e) {show}",
 								],
 							],
 							'hint'=>'Enter Join Date (yyyy-mm-dd)',
@@ -243,6 +247,9 @@ $EmployeeInput= FormGrid::widget([
 									'autoclose'=>true,
 									'format' => 'yyyy-mm-dd',
 									'todayHighlight' => true
+								],
+								'pluginEvents'=>[
+									'show' => "function(e) {show}",
 								],
 							],
 							'hint'=>'Enter Resign Date (yyyy-mm-dd)',
@@ -294,7 +301,11 @@ $EmployeeInput= FormGrid::widget([
 								'pluginOptions' => [
 									'autoclose'=>true,
 									'format' => 'yyyy-mm-dd',
-									'todayHighlight' => true
+									//'todayHighlight' => true,
+									'startView'=>true
+								],
+								'pluginEvents'=>[
+									'show' => "function(e) {show}",
 								],
 							],
 							'hint'=>'Enter birthday  (yyyy-mm-dd)',
@@ -309,7 +320,7 @@ $EmployeeInput= FormGrid::widget([
 						'EMP_EMAIL'=>[
 							'type'=>Form::INPUT_TEXT, 
 							'options'=>[
-								'placeholder'=>'acount@domain.com...',
+								'placeholder'=>'acount@lukison.com',
 								'addon' => ['prepend' => ['content'=>'@']],
 							],
 							'columnOptions'=>['colspan'=>6],
