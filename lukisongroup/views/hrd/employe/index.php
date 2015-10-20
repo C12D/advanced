@@ -240,7 +240,7 @@ $tab_employe_resign= GridView::widget([
 					'header'=>'Action',
 					'buttons' => [
 						'view' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-warning btn-xs" style="width:50px; height:50px">View </button>',['view','id'=>$model->EMP_ID],[
+								return  Html::a('<button type="button" class="btn btn-danger btn-xs" style="width:50px; height:50px">View </button>',['view','id'=>$model->EMP_ID],[
 															'data-toggle'=>"modal",
 															'data-target'=>"#activity-emp",
 															'data-title'=> $model->EMP_ID,
@@ -522,7 +522,7 @@ use kartik\alert\Alert;
 		        var modal = $(this)
 		        var title = button.data('title') 
 		        var href = button.attr('href') 
-		        //modal.find('.modal-title').html(title)
+		        modal.find('.modal-title').html(title)
 		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
 		        $.post(href)
 		            .done(function( data ) {						

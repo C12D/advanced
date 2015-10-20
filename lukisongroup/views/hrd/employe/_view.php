@@ -332,7 +332,7 @@ $this->title = Yii::t('app', 'Personalia - Detail & Edit Employee');   /* title 
 				'hover'=>true,
 				'mode'=>DetailView::MODE_VIEW,
 				'panel'=>[
-					'heading'=>'#' . $model->EMP_NM . ' '.$model->EMP_NM_BLK,
+					'heading'=>$model->EMP_NM . ' '.$model->EMP_NM_BLK,
 					'type'=>DetailView::TYPE_INFO,
 				],	
 				
@@ -340,16 +340,14 @@ $this->title = Yii::t('app', 'Personalia - Detail & Edit Employee');   /* title 
 				
 				
 				'deleteOptions'=>[
-					'url'=>['delete', 'id' => $model->EMP_ID],
+					'url'=>['delete', 'id' => $model->EMP_NM],
 					'data'=>[
-						'confirm'=>Yii::t('app', 'Are you sure you want to delete this record?'),
+						'confirm'=>Yii::t('app', 'Are you sure to deleted this record Name =' . $model->EMP_NM .'?'),
 						'method'=>'post',
 					],
 				],		
 			]);		
 		ActiveForm::end();	
-		//$this->registerJs("$('#my_datepicker').datepicker('destroy');
-		//				   $('#my_datepicker').datepicker();
-		//",$this::POS_READY);
+		
 	
 
