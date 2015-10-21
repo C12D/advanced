@@ -115,9 +115,9 @@ class JobgrademodulController extends Controller
     }
 	
 	/*Index Delete data by Status */
-	public function actionDeletestt($id)
+	public function actionDeletestt($ID)
     {
-      	$model = $this->findModel($id);
+      	$model = $this->findModel($ID);
 		$model->JOBGRADE_STS = 3;
 		$model->UPDATED_BY = Yii::$app->user->identity->username;
 		$model->save();

@@ -39,7 +39,7 @@ class DeptSearch extends Dept
     public function search($params)
     {	
 		/*[5.1] JOIN TABLE */
-		$query = Dept::find()->Where('u0002a.DEP_STS<>3');;
+		$query = Dept::find()->Where('u0002a.DEP_STS<>3');
         $dataProvider_Dept = new ActiveDataProvider([
             'query' => $query,
         ]);

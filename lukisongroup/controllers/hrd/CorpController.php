@@ -3,16 +3,16 @@
 namespace lukisongroup\controllers\hrd;
 
 use Yii;
-use lukisongroup\models\hrd\Groupseqmen;
-use lukisongroup\models\hrd\GroupseqmenSearch;
+use lukisongroup\models\hrd\Corp;
+use lukisongroup\models\hrd\CorpSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GroupseqmenController implements the CRUD actions for Groupseqmen model.
+ * CorpController implements the CRUD actions for Corp model.
  */
-class GroupseqmenController extends Controller
+class CorpController extends Controller
 {
     public function behaviors()
     {
@@ -25,7 +25,6 @@ class GroupseqmenController extends Controller
             ],
         ];
     }
-	
 	/* -- Created Session Time Author By ptr.nov --*/
 	public function beforeAction(){
 			if (Yii::$app->user->isGuest)  {
@@ -50,7 +49,7 @@ class GroupseqmenController extends Controller
 	
     public function actionIndex()
     {
-        $searchModel = new GroupseqmenSearch();
+        $searchModel = new CorpSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,8 +59,9 @@ class GroupseqmenController extends Controller
     }
    
     public function actionView($id)
-    {
-        $model = $this->findModel($id);
+    {       
+		$model = $this->findModel($id);
+		
 		if ($model->load(Yii::$app->request->post())){
 			$model->UPDATED_BY=Yii::$app->user->identity->username;
 			if($model->validate()){
@@ -70,18 +70,17 @@ class GroupseqmenController extends Controller
 				} 
 			}
 		}else {
-            return $this->renderAjax('view', [
-            //return $this->render('_view', [
+            return $this->renderAjax('view', [          
                 'model' => $model,
             ]);
         }
     }
-
+    
     public function actionCreate()
     {
-        $model = new Groupseqmen();
-
-       if ($model->load(Yii::$app->request->post())){		
+        $model = new Corp();
+        
+		if ($model->load(Yii::$app->request->post())){		
 				$model->CREATED_BY=Yii::$app->user->identity->username;		
 				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
 				$model->save();
@@ -90,27 +89,27 @@ class GroupseqmenController extends Controller
 					 return $this->redirect('index');
 				} 
 		}else {
-            //return $this->render('_form', [ 
-			return $this->renderAjax('_form', [
+           	return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
-        }	
+        }			
     }
 
-    /*Index Delete data by Status */
+    
+   /*Index Delete data by Status */
 	public function actionDeletestt($id)
     {
       	$model = $this->findModel($id);
-		$model->STATUS = 3;
+		$model->CORP_STS = 3;
 		$model->UPDATED_BY = Yii::$app->user->identity->username;
 		$model->save();
 		
         return $this->redirect(['index']);
     }
-
+	
     protected function findModel($id)
     {
-        if (($model = Groupseqmen::findOne($id)) !== null) {
+        if (($model = Corp::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
