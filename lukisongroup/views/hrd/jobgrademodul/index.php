@@ -24,31 +24,11 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 	<?php //Pjax::begin(['id'=>'pjax-users']); ?>
     <?php
 		echo GridView::widget([
-			//'id'=>'gv-grading-mdl',
 			'dataProvider' => $dataProvider,
 			'filterModel' => $searchModel,
 			'columns' => [
-				[   
-					'class' => 'yii\grid\ActionColumn', 
-					'template' => '{view} {edit}',
-					'header'=>'Action',
-					'buttons' => [
-						'view' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:35px">View </button>',['viewdel','id'=>$model->ID],[
-															'data-toggle'=>"modal",
-															'data-target'=>"#view-model-gradingmdl",
-															'data-title'=> $model->ID,
-															]);
-						},
-						'edit' =>function($url, $model, $key){
-								return  Html::a('<button type="button" class="btn btn-success btn-xs" style="width:35px">EDIT</button>',['viewedit','id'=>$model->ID],[
-															'data-toggle'=>"modal",
-															'data-target'=>"#viewedit-model-gradingmdl",
-															'data-title'=> $model->ID,
-															]);
-						}
-					],
-					/*
+				/*
+				[					
 					'class' => 'yii\grid\ActionColumn', 
 					'template' => '{view} {delete}',
 					'headerOptions' => ['width' => '20%', 'class' => 'activity-view-link',],        
@@ -70,10 +50,9 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 								//'data-pjax' => '1',
 							]);
 						},
-					],
-					*/
+					],					
 				],
-				
+				*/
 				['class' => 'yii\grid\SerialColumn'],
 				/*Author -ptr.nov- GROUP SEQWEN */
 				[				
@@ -104,7 +83,29 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 					'label'=>'Description',
 					'attribute' =>'JOBGRADE_DCRP',
 				],
-								
+				[   
+					'class' => 'yii\grid\ActionColumn', 
+					'template' => '{view} {edit}',
+					'header'=>'Action',
+					'buttons' => [
+						'view' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:35px">View </button>',['view','id'=>$model->ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-model-gradingmdl",
+															'data-title'=> $model->ID,
+															]);
+						},
+						/*
+						'edit' =>function($url, $model, $key){
+								return  Html::a('<button type="button" class="btn btn-success btn-xs" style="width:35px">EDIT</button>',['viewedit','id'=>$model->ID],[
+															'data-toggle'=>"modal",
+															'data-target'=>"#activity-model-gradingmdl",
+															'data-title'=> $model->ID,
+															]);
+						}
+						*/
+					],	
+				],
 			],
 			'panel'=>[
 				//'heading' =>true,// $hdr,//<div class="col-lg-4"><h8>'. $hdr .'</h8></div>',
@@ -144,80 +145,50 @@ $Combo_Jab = ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(
 			],
 		]); 
 		 //Pjax::end(); 
-		
-		/*CREATE*/
-		$this->registerJs("
+		 
+		 $this->registerJs("
 		    $('#activity-model-gradingmdl').on('show.bs.modal', function (event) {
 		        var button = $(event.relatedTarget)
 		        var modal = $(this)
-		        var title = button.data('title') 				
-		        var href = button.attr('href') 
-		        modal.find('.modal-title').html(title)
-		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
-				$.post(href)
-		            .done(function( data ) {
-		                modal.find('.modal-body').html(data)						
-						}					
-					);				
-		    })	
-			//$(#activity-model-gradingmdl).datepicker('disable');
-			$('#activity-model-gradingmdl').parent().datepicker('remove');
-		",$this::POS_END);
-		Modal::begin([		
-			'id' => 'activity-model-gradingmdl',		
-		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
-			'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>',
-			'closeButton' => ['id' => 'close-button'],
-		]);
-		Modal::end();
-		
-		/*ViewDelate*/
-		$this->registerJs("
-		    $('#view-model-gradingmdl').on('show.bs.modal', function (event) {
-		        var button = $(event.relatedTarget)
-		        var modal = $(this)
-		        var title = button.data('title') 				
-		        var href = button.attr('href') 
-		        modal.find('.modal-title').html(title)
-		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
-				$.post(href)
-		            .done(function( data ) {
-		                modal.find('.modal-body').html(data)						
-					});				
-		    })
-			//$('#view-model-gradingmdl').datepicker('disable');			
-		",$this::POS_READY);
-		
-		Modal::begin([
-		    'id' => 'view-model-gradingmdl',
-		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
-		]);
-		Modal::end();
-		
-		/*ViewEdit
-		$this->registerJs("
-		    $('#viewedit-model-gradingmdl').on('show.bs.modal', function (event) {
-		        var button = $(event.relatedTarget)
-		        var modal = $(this)
-		        var title = button.data('title') 				
+		        var title = button.data('title') 
 		        var href = button.attr('href') 
 		        //modal.find('.modal-title').html(title)
 		        modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
-				$.post(href)
+		        $.post(href)
 		            .done(function( data ) {
-		                modal.find('.modal-body').html(data)						
-						}					
-					);				
-		    })	
-			//$('#viewedit-model-gradingmdl').datepicker('disable');
+		                modal.find('.modal-body').html(data)
+		            });
+		        })
 		",$this::POS_READY);
+		//,$this::POS_END);
+		/*
+		//$this->registerJs("
+		 //   $(#activity-model-gradingmdl);
+		//");//,$this::POS_END);
+		*/
+			
+		/*
+			$(".activity-view-link").click(function() {
+					$.get(
+						.../view // Add missing part of link here        
+						{
+							id: $(this).closest('tr').data('key')
+						},
+						function (data) {
+							$('.modal-body').html(data);
+							$('#activity-model-gradingmdl').modal();
+						}  
+					);
+				})
+			");
+		*/		
 		
 		Modal::begin([
-		    'id' => 'viewedit-model-gradingmdl',
+		    'id' => 'activity-model-gradingmdl',
 		    'header' => '<h4 class="modal-title">LukisonGroup</h4>',
 		]);
 		Modal::end();
-		*/
+		
 	?>
 
 </div>

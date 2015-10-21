@@ -26,10 +26,6 @@ class GroupseqmenController extends Controller
         ];
     }
 
-    /**
-     * Lists all Groupseqmen models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new GroupseqmenSearch();
@@ -40,76 +36,56 @@ class GroupseqmenController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
-    /**
-     * Displays a single Groupseqmen model.
-     * @param integer $id
-     * @return mixed
-     */
+   
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
+			if($model->validate()){
+				if($model->save()){					
+					return $this->redirect(['index']);					
+				} 
+			}
+		}else {
+            return $this->renderAjax('view', [
+            //return $this->render('_view', [
+                'model' => $model,
+            ]);
+        }
     }
 
-    /**
-     * Creates a new Groupseqmen model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Groupseqmen();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->SEQ_ID]);
-        } else {
-            return $this->render('create', [
+       if ($model->load(Yii::$app->request->post())){		
+				$model->CREATED_BY=Yii::$app->user->identity->username;		
+				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
+				$model->save();
+				if($model->save()){
+					 //return $this->redirect(['view', 'id' => $model->ID]);	
+					 return $this->redirect('index');
+				} 
+		}else {
+            //return $this->render('_form', [ 
+			return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
-        }
+        }	
     }
 
-    /**
-     * Updates an existing Groupseqmen model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
+    /*Index Delete data by Status */
+	public function actionDeletestt($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->SEQ_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing Groupseqmen model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
+      	$model = $this->findModel($id);
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Groupseqmen model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Groupseqmen the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Groupseqmen::findOne($id)) !== null) {

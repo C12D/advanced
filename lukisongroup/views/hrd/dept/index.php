@@ -1,25 +1,8 @@
 <?php
-/*
- * By ptr.nov
- * Load Config CSS/JS
- */
-/* YII CLASS */
+
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\widgets\Breadcrumbs;
-
-/* TABLE CLASS DEVELOPE -> |DROPDOWN,PRIMARYKEY-> ATTRIBUTE */
-use lukisongroup\models\hrd\Dept;
-/*	KARTIK WIDGET -> Penambahan componen dari yii2 dan nampak lebih cantik*/
 use kartik\grid\GridView;
-use kartik\widgets\ActiveForm;
-use kartik\tabs\TabsX;
-use kartik\date\DatePicker;
-use kartik\builder\Form;
-
-//use backend\assets\AppAsset; 	/* CLASS ASSET CSS/JS/THEME Author: -ptr.nov-*/
-//AppAsset::register($this);		/* INDEPENDENT CSS/JS/THEME FOR PAGE  Author: -ptr.nov-*/
-
+use yii\bootstrap\Modal;
 
 $this->sideCorp = 'Modul HRM';                        /* Title Select Company pada header pasa sidemenu/menu samping kiri */
 $this->sideMenu = 'hrd_modul';                        /* kd_menu untuk list menu pada sidemenu, get from table of database */
@@ -27,9 +10,8 @@ $this->title = Yii::t('app', 'Department');           /* title pada header page 
 ?>
 
 <?php
-	/*DEPARTMENT Author: -ptr.nov */
-	//print_r($dataProvider);
-	echo GridView::widget([
+  $gvDept= GridView::widget([
+		'id'=>'gv-dept',
 		'dataProvider' => $dataProvider_Dept,
 		'filterModel' => $searchModel_Dept,
 		'columns' => [
@@ -41,19 +23,67 @@ $this->title = Yii::t('app', 'Department');           /* title pada header page 
 			[
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{view}',
+						'header'=>'Action',
+						'buttons' => [
+							'view' =>function($url, $model, $key){
+									return  Html::a('<button type="button" class="btn btn-primary btn-xs" style="width:35px">View </button>',['view','id'=>$model->DEP_ID],[
+																'data-toggle'=>"modal",
+																'data-target'=>"#modal-dept",
+																'data-title'=> $model->DEP_ID,
+																]);
+							},
+				],
 			],
 		],
-		'panel'=>[
-			'heading' =>false,// $hdr,//<div class="col-lg-4"><h8>'. $hdr .'</h8></div>',
-			'type' =>GridView::TYPE_SUCCESS,//TYPE_WARNING, //TYPE_DANGER, //GridView::TYPE_SUCCESS,//GridView::TYPE_INFO, //TYPE_PRIMARY, TYPE_INFO
-			'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create {modelClass}',
-			['modelClass' => 'Department',]),
-			['create'], ['class' => 'btn btn-success']),
+		'panel'=>[			
+				'type' =>GridView::TYPE_SUCCESS,
+				'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app', 'Create ',
+						['modelClass' => 'Department',]),'/hrd/dept/create',[  
+															'data-toggle'=>"modal",
+															'data-target'=>"#modal-dept",
+															'class' => 'btn btn-success'
+															])
 		],
-		'hover'=>true, //cursor selec
-		'responsive'=>true,
+		'pjax'=>true,
+		'pjaxSettings'=>[
+			'options'=>[
+				'enablePushState'=>false,
+				'id'=>'gv-dept',
+			],
+		],
+		'hover'=>true, //cursor select
+		//'responsive'=>true,
+		'responsiveWrap'=>true,
 		'bordered'=>true,
-		'striped'=>true,
+		'striped'=>'4px',
+		'autoXlFormat'=>true,
+		'export'=>[//export like view grid --ptr.nov-
+			'fontAwesome'=>true,
+			'showConfirmAlert'=>false,
+			'target'=>GridView::TARGET_BLANK
+		],
 	]);
+	echo $gvDept;
+	
+	$this->registerJs("
+		$('#modal-dept').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget)
+			var modal = $(this)
+			var title = button.data('title') 
+			var href = button.attr('href') 
+			//modal.find('.modal-title').html(title)
+			modal.find('.modal-body').html('<i class=\"fa fa-spinner fa-spin\"></i>')
+			$.post(href)
+				.done(function( data ) {
+					modal.find('.modal-body').html(data)
+				});
+			})
+	",$this::POS_READY);
+	
+	Modal::begin([
+		'id' => 'modal-dept',
+		'header' => '<h4 class="modal-title">LukisonGroup</h4>',
+	]);
+	Modal::end();
 ?>
 

@@ -26,10 +26,6 @@ class GroupfunctionController extends Controller
         ];
     }
 
-    /**
-     * Lists all Groupfunction models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new GroupfunctionSearch();
@@ -41,75 +37,55 @@ class GroupfunctionController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Groupfunction model.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+       	$model = $this->findModel($id);
+		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
+			if($model->validate()){
+				if($model->save()){					
+					return $this->redirect(['index']);					
+				} 
+			}
+		}else {
+            return $this->renderAjax('view', [           
+                'model' => $model,
+            ]);
+        }
     }
 
-    /**
-     * Creates a new Groupfunction model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Groupfunction();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->GF_ID]);
-        } else {
-            return $this->render('create', [
+       if ($model->load(Yii::$app->request->post())){		
+				$model->CREATED_BY=Yii::$app->user->identity->username;		
+				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
+				$model->save();
+				if($model->save()){
+					 //return $this->redirect(['view', 'id' => $model->ID]);	
+					 return $this->redirect('index');
+				} 
+		}else {
+            //return $this->render('_form', [ 
+			return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
-        }
+        }	
     }
 
-    /**
-     * Updates an existing Groupfunction model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
+    
+	/*Index Delete data by Status */
+	public function actionDeletestt($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->GF_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing Groupfunction model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
+      	$model = $this->findModel($id);
+		$model->STATUS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
-
-    /**
-     * Finds the Groupfunction model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Groupfunction the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+	
     protected function findModel($id)
     {
         if (($model = Groupfunction::findOne($id)) !== null) {

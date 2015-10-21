@@ -1,6 +1,6 @@
 <?php
 
-use kartik\helpers\Html;
+use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use kartik\detail\DetailView;
 use kartik\widgets\ActiveForm;
@@ -38,18 +38,17 @@ $this->title = Yii::t('app', 'Detail View Modul JobGrade');     /* title pada he
 ?>
 
 <?php
-$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
-$attribute1 = [
+$attribute = [
 		// GROUP FUNCTION - Author: -ptr.nov-		
 		[ 
 			'label'=>'Group Function',
 			'attribute' =>'GF_ID',
 			'format'=>'raw',
-			'value'=>Html::decode($Val_GF),//, '#', ['class'=>'kv-author-link']),
+			'value'=>Html::a($Val_GF, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=> ArrayHelper::map(Groupfunction::find()->orderBy('SORT')->asArray()->all(), 'GF_ID','GF_NM'),
-				//'options' => [ 'id'=>'groupfnc-id'],
+				'options' => [ 'id'=>'groupfnc-id'],
 			],			
 		],	
 		// GROUP SEQMEN - Author: -ptr.nov-
@@ -57,11 +56,11 @@ $attribute1 = [
 			'label'=>'Group Seqmen',
 			'attribute' =>'SEQ_ID',
 			'format'=>'raw',
-			'value'=>Html::decode($Val_SQMEN),//, '#', ['class'=>'kv-author-link']),
+			'value'=>Html::a($Val_SQMEN, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=> ArrayHelper::map(Groupseqmen::find()->orderBy('SEQ_NM')->asArray()->all(), 'SEQ_ID','SEQ_NM'),
-				//'options' => [ 'id'=>'groupseq-id'],
+				'options' => [ 'id'=>'groupseq-id'],
 			],			
 		],			
 		// JOBGRADE - Author: -ptr.nov-
@@ -69,11 +68,11 @@ $attribute1 = [
 			'label'=>'JobGrading',
 			'attribute' =>'JOBGRADE_ID',
 			'format'=>'raw',
-			'value'=>Html::decode($Val_GRADING),
+			'value'=>Html::a($Val_GRADING, '#', ['class'=>'kv-author-link']),
 			'type'=>DetailView::INPUT_SELECT2, 
 			'widgetOptions'=>[
 				'data'=>ArrayHelper::map(Jobgrade::find()->orderBy('SORT')->asArray()->all(), 'JOBGRADE_ID','JOBGRADE_NM'),
-				//'options' => [ 'id'=>'Grading-id'],
+				'options' => [ 'id'=>'Grading-id'],
 			],			
 		],			
 		//SORT - Author: -ptr.nov-
@@ -98,30 +97,14 @@ $attribute1 = [
 		[
 			'attribute' =>	'UPDATED_TIME',
 			'options'=>['readonly'=>true,],
-		],
-		'UPDATED_TIME'=>[
-			'id'=>'tgl1',
-			'type'=>Form::INPUT_WIDGET,
-			'widgetClass'=>'\kartik\widgets\DatePicker',
-			'options' => [
-				//'placeholder' => 'Input Join Date  ...',
-				'pluginOptions' => [
-					'autoclose'=>true,
-					'format' => 'yyyy-mm-dd',
-					'todayHighlight' => true
-				],
-			],
-			'hint'=>'Enter Join Date (yyyy-mm-dd)',
-			'columnOptions'=>['colspan'=>6],
 		],		
 	];
 ?>
 
 
 		<?php
-			
-				$viewdel= DetailView::widget([
-					'id'=>'view-del',
+			$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
+				echo DetailView::widget([
 					'model' => $model,
 					//'pjax'=>true,
 					'condensed'=>true,
@@ -132,7 +115,7 @@ $attribute1 = [
 						'type'=>DetailView::TYPE_INFO,
 					],	
 					
-						'attributes'=>$attribute1,
+						'attributes'=>$attribute,
 					
 					
 					'deleteOptions'=>[
@@ -142,23 +125,7 @@ $attribute1 = [
 							'method'=>'post',
 						],
 					],										
-				]);
-				//echo $viewdel;
-				/*Panel List Group*/
-				echo Html::listGroup([
-					 [	
-						'id'=>'grp_1',
-						 'content' => 'VIEW - GRADING MODUL',
-						 'url' => '#',
-						 'badge' =>'@LukisonGroup',
-						 'active' => true
-					 ],
-					 [
-						 'content' => $viewdel,
-
-					 ],
-				]);				
-				
+				]);		
 			ActiveForm::end();	
 		?>
 

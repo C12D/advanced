@@ -34,10 +34,29 @@ class DeptController extends Controller
             ],
         ];
     }
-
-    /**
-     * ACTION INDEX
-     */
+	
+	/* -- Created Session Time Author By ptr.nov --*/
+	public function beforeAction(){
+			if (Yii::$app->user->isGuest)  {
+				 Yii::$app->user->logout();
+                   $this->redirect(array('/site/login'));  //
+			}
+            // Check only when the user is logged in
+            if (!Yii::$app->user->isGuest)  {
+               if (Yii::$app->session['userSessionTimeout']< time() ) {
+                   // timeout
+                   Yii::$app->user->logout();
+                   $this->redirect(array('/site/login'));  //
+               } else {
+                   //Yii::$app->user->setState('userSessionTimeout', time() + Yii::app()->params['sessionTimeoutSeconds']) ;
+				   Yii::$app->session->set('userSessionTimeout', time() + Yii::$app->params['sessionTimeoutSeconds']);
+                   return true; 
+               }
+            } else {
+                return true;
+            }
+    }
+	
     public function actionIndex()
     {
 		/*	variable content View Employe Author: -ptr.nov- */
@@ -50,74 +69,52 @@ class DeptController extends Controller
         ]);
     }
 
-    /**
-	 * ACTION VIEW -> $id=PrimaryKey
-     */
     public function actionView($id)
     {
-        $model = $this->findModel($id);;
+        $model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
 			if($model->validate()){
-				if($model->save()) {
-					return $this->redirect(['view', 'id' => $model->DEP_ID]);	
+				if($model->save()){					
+					return $this->redirect(['index']);					
 				} 
 			}
 		}else {
-            return $this->render('view', [
+            return $this->renderAjax('view', [          
                 'model' => $model,
             ]);
         }
     }
 
-    /**
-     * ACTION CREATE note | $id=PrimaryKey -> TRIGER FROM VIEW  -ptr.nov-
-     */
     public function actionCreate()
     {		
         $model = new Dept();
-        if ($model->load(Yii::$app->request->post())){
-				if($model->validate()){
-				if($model->save()) {
-					return $this->redirect(['view', 'id' => $model->DEP_ID]);	
+        if ($model->load(Yii::$app->request->post())){		
+				$model->CREATED_BY=Yii::$app->user->identity->username;		
+				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
+				$model->save();
+				if($model->save()){
+					 //return $this->redirect(['view', 'id' => $model->ID]);	
+					 return $this->redirect('index');
 				} 
-			}
 		}else {
-            return $this->render('create', [
+           	return $this->renderAjax('_form', [
                 'model' => $model,
             ]);
-        }
+        }			
     }
 
-    /**
-     * ACTION UPDATE -> $id=PrimaryKey
-     */
-    public function actionUpdate($id)
+    /*Index Delete data by Status */
+	public function actionDeletestt($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->DEP_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * ACTION DELETE -> $id=PrimaryKey | CHANGE STATUS -> lihat Standart table status | Jangan dihapus dari record
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
+      	$model = $this->findModel($id);
+		$model->DEP_STS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
-
-    /**
-     * CLASS TABLE FIND PrimaryKey
-     * Example:  Employe::find()
-     */
+	
     protected function findModel($id)
     {
         if (($model = Dept::findOne($id)) !== null) {

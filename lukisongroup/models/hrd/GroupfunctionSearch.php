@@ -18,7 +18,7 @@ class GroupfunctionSearch extends Groupfunction
     public function rules()
     {
         return [
-            [['GF_ID', 'SORT'], 'integer'],
+            [['GF_ID'], 'integer'],
             [['GF_NM'], 'safe'],
         ];
     }
@@ -41,7 +41,7 @@ class GroupfunctionSearch extends Groupfunction
      */
     public function search($params)
     {
-        $query = Groupfunction::find();
+        $query = Groupfunction::find()->Where('u0003a.STATUS<>3');;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -41,7 +41,7 @@ class GroupseqmenSearch extends Groupseqmen
      */
     public function search($params)
     {
-        $query = Groupseqmen::find();
+        $query = Groupseqmen::find()->Where('u0003b.STATUS<>3');;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
