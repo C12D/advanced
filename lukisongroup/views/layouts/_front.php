@@ -19,7 +19,7 @@ AppAsset_front::register($this);
 						<div class="col-md-11">
 							<strong>Email: </strong>info@lukison.com
 							&nbsp;&nbsp;
-							<strong>Support: </strong>+90-897-678-44
+							<strong>Support: </strong>(021) 3044-85-98/99
 						</div>
 					</div>
 								
@@ -54,7 +54,7 @@ AppAsset_front::register($this);
 				// echo  \yii\helpers\Json::encode($menuItems);
 				if (Yii::$app->user->isGuest) {
 					//$menuItemsNoLogin[] = ['label' => '<a data-toggle="modal" data-target="#modal" style="cursor: pointer">Click me gently!</a>' , 'url'=> ['/site/login5']];
-					$menuItemsNoLogin[] = ['label' => Icon::show('home').'Home', 'url' => ['/site/']];
+					$menuItemsNoLogin[] = ['label' => Icon::show('home').'Perusahaan', 'url' => ['/site/']];
 					$menuItemsNoLogin[] = [
 						'label' => Icon::show('shopping-cart') .'e-Procurement', 'url' => ['/site/loginc'],
 							'items' => [
@@ -91,12 +91,7 @@ AppAsset_front::register($this);
 			</div>
 		<!-- MENU SECTION END-->
 		<div class="content">
-			<div class="content">	
-				 <div class="row">
-					<div class="col-md-12">
-						<h4 class="page-head-line">HOME</h4>
-					</div>
-				</div>
+			<div class="content">					
 				<div class="row">
 					 <div class="col-md-3 col-sm-3 col-xs-6">
 						<div class="dashboard-div-wrapper bk-clr-one">
@@ -131,23 +126,33 @@ AppAsset_front::register($this);
 							<div class="progress progress-striped active">
 							<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>												   
 						</div>
-							 <h5>News</h5>
+							 <h5>Karir</h5>
 						</div>
 					</div>
 				</div>
 				 <div class="row">
 					<div class="col-md-12">
-						<h4 class="page-head-line">Container</h4>
+						<h4 class="page-head-line">Perusahaan</h4>
 						<?php echo $content; ?>
 					</div>
 				</div>
 				 <div class="row">
 					<div class="col-md-12">
-						<h4 class="page-head-line">CONTACT</h4>
+						<h4 class="page-head-line">CONTACT</h4>					
+						<?php
+							echo Html::well(Html::address(
+							'Ruko De Mansion Blok C No.12',
+							 ['Jl. Jalur Sutera, Alam Sutera, Serpong','Tangerang Selatan.'],
+							 ['Tel ' => '(021) 3044-85-98/99'],
+							 ['Fax ' => '(021) 3044 85 97'],
+							 ['Website : ' => 'www.lukison.com', 'Email' => 'info@lukison.com']
+							), Html::SIZE_TINY);
+						?>		
 					</div>
-				</div>
-			</div>						
-		</div>			
+				</div>				
+			</div>				
+		</div>
+			
 	</div>		
 		<footer class="footer bg-black" style="height: 50px">
 			<br>
