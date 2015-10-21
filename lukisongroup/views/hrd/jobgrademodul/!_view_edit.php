@@ -105,12 +105,11 @@ $attribute = [
 		<?php
 			$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
 				echo DetailView::widget([
-					'id'=>'dv-grading-mdl',
 					'model' => $model,
 					//'pjax'=>true,
 					'condensed'=>true,
 					'hover'=>true,
-					'mode'=>DetailView::MODE_VIEW,
+					'mode'=>DetailView::MODE_EDIT,
 					'panel'=>[
 						'heading'=>'FORMULA MODUL GRADING',
 						'type'=>DetailView::TYPE_INFO,

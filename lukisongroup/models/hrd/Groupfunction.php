@@ -34,9 +34,12 @@ class Groupfunction extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['SORT'], 'integer'],
-            [['GF_NM'], 'string', 'max' => 30]
+        return [          
+            [['GF_NM'], 'string', 'max' => 30],
+			[['SORT', 'STATUS'], 'integer'],
+            [['GF_DCRP'], 'string'],            
+			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
+			[['UPDATED_TIME'],'safe'],
         ];
     }
 
@@ -46,9 +49,14 @@ class Groupfunction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'GF_ID' => 'Gf  ID',
-            'GF_NM' => 'Grp.Fnction',
-            'SORT' => 'Sort',
+            'GF_ID' => 'Group Function.ID',
+            'GF_NM' => 'GRoup.Function',
+            'SORT' => 'Sort',		
+            'STATUS' => 'Status',
+            'GF_DCRP' => 'Discription',
+			'CREATED_BY'=> 'Created',
+			'UPDATED_BY'=> 'Updated',
+			'UPDATED_TIME'=> 'DateTime',
         ];
     }
 }

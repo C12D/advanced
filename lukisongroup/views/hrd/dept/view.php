@@ -14,11 +14,7 @@ use kartik\widgets\Growl;
 $this->sideCorp = 'Modul HRM';                        			/* Title Select Company pada header pasa sidemenu/menu samping kiri */
 $this->sideMenu = 'hrd_modul';                        			/* kd_menu untuk list menu pada sidemenu, get from table of database */
 $this->title = Yii::t('app', 'Detail View Department');         /* title pada header page */
-?>
 
-<?php	
-	$Dept_MDL = Dept::find()->where(['DEP_ID'=>$model->DEP_ID])->orderBy('SORT')->one();
-	$Val_Jabatan=$Dept_MDL->DEP_NM;
 	$attribute = [
 		[
 			'attribute' =>'DEP_ID',
@@ -45,6 +41,7 @@ $this->title = Yii::t('app', 'Detail View Department');         /* title pada he
 		],			
 	];
 	echo DetailView::widget([
+		'id'=>'dv-dept',
 		'model' => $model,				
 		'condensed'=>true,
 		'hover'=>true,
@@ -54,6 +51,13 @@ $this->title = Yii::t('app', 'Detail View Department');         /* title pada he
 			'type'=>DetailView::TYPE_INFO,
 		],	
 		'attributes'=>$attribute,
+		'deleteOptions'=>[
+				'url'=>['deletestt', 'id' => $model->DEP_ID],
+				'data'=>[
+					'confirm'=>Yii::t('app', 'Are you sure you want to delete this record?'),
+					'method'=>'post',
+				],
+			],		
 	]);			
 ?>
 

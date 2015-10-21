@@ -96,26 +96,18 @@ class JobgrademodulController extends Controller
     }
 	
 	/*Index View untuk update */
-    public function actionViewedit($id)
+    public function actionView($id)
     {
 		$model = $this->findModel($id);
 		if ($model->load(Yii::$app->request->post())){
 			$model->UPDATED_BY=Yii::$app->user->identity->username;
 			if($model->validate()){
-				if($model->save()){
-					//--- PR Setelah edit menuju index short data location in index
-					//return $this->redirect(['_view', 'id' => $model->ID]);	
-					//return $this->renderAjax('_view', ['id' => $model->ID]);
-					//return $this->renderAjax('_view', ['model' => $model]);
-					//$searchModel = new JobgrademodulSearch(['ID'=>$id]);			
-					//$dataProvider = $searchModel->search(Yii::$app->request->queryParams);					
-					//return $this->redirect(['index','searchModel' =>$searchModel,'dataProvider' => $dataProvider,]);
-					return $this->redirect(['index']);
-					//return $this->redirect('http://lukisongroup.int/hrd/jobgrademodul');
+				if($model->save()){					
+					return $this->redirect(['index']);					
 				} 
 			}
 		}else {
-            return $this->renderAjax('_view_edit', [
+            return $this->renderAjax('_view', [
             //return $this->render('_view', [
                 'model' => $model,
             ]);

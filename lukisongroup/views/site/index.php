@@ -50,7 +50,7 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 				<?php
 					echo Html::panel([
 							'id'=>'home1',
-							'heading' => 'Reminder',
+							'heading' => 'Widget',
 							'postBody' => Html::listGroup([
 									[
 										'content' => 'Berita Acara ',
@@ -150,7 +150,7 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 										'badge' => '14'
 									],											
 									[
-										'content' => 'Purchase',
+										'content' => 'Purchase Order',
 										'url' => '/widget/po',
 										'badge' => '2'
 									],

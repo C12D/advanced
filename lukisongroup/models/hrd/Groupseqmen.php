@@ -34,7 +34,11 @@ class Groupseqmen extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['SEQ_NM'], 'string', 'max' => 25]
+            [['SEQ_NM'], 'string', 'max' => 25],
+			[['SORT', 'STATUS'], 'integer'],
+			[['SEQ_DCRP'], 'string'],
+			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
+			[['UPDATED_TIME'],'safe'],
         ];
     }
 
@@ -44,8 +48,14 @@ class Groupseqmen extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'SEQ_ID' => 'Seq  ID',
+            'SEQ_ID' => 'Seq.ID',
             'SEQ_NM' => 'Seqmen',
+			'SEQ_DCRP' => 'Discription',
+			'SORT' => 'Sort',
+            'STATUS' => 'Status',            
+			'CREATED_BY'=> 'Created',
+			'UPDATED_BY'=> 'Updated',
+			'UPDATED_TIME'=> 'DateTime',
         ];
     }
 }

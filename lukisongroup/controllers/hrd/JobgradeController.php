@@ -26,10 +26,28 @@ class JobgradeController extends Controller
         ];
     }
 
-    /**
-     * Lists all Jobgrade models.
-     * @return mixed
-     */
+   /* -- Created Session Time Author By ptr.nov --*/
+	public function beforeAction(){
+			if (Yii::$app->user->isGuest)  {
+				 Yii::$app->user->logout();
+                   $this->redirect(array('/site/login'));  //
+			}
+            // Check only when the user is logged in
+            if (!Yii::$app->user->isGuest)  {
+               if (Yii::$app->session['userSessionTimeout']< time() ) {
+                   // timeout
+                   Yii::$app->user->logout();
+                   $this->redirect(array('/site/login'));  //
+               } else {
+                   //Yii::$app->user->setState('userSessionTimeout', time() + Yii::app()->params['sessionTimeoutSeconds']) ;
+				   Yii::$app->session->set('userSessionTimeout', time() + Yii::$app->params['sessionTimeoutSeconds']);
+                   return true; 
+               }
+            } else {
+                return true;
+            }
+    }
+	
     public function actionIndex()
     {
         $searchModel = new JobgradeSearch();
@@ -41,28 +59,33 @@ class JobgradeController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Jobgrade model.
-     * @param integer $ID
-     * @param string $JOBGRADE_ID
-     * @return mixed
-     */
     public function actionView($ID, $JOBGRADE_ID)
     {
+		/*
         return $this->render('view', [
             'model' => $this->findModel($ID, $JOBGRADE_ID),
         ]);
+		*/
+		$model = $this->findModel($ID, $JOBGRADE_ID);
+		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
+			if($model->validate()){
+				if($model->save()){					
+					return $this->redirect(['index']);					
+				} 
+			}
+		}else {
+            return $this->renderAjax('view', [
+            //return $this->render('_view', [
+                'model' => $model,
+            ]);
+        }
     }
 
-    /**
-     * Creates a new Jobgrade model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Jobgrade();
-
+		/*
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'ID' => $model->ID, 'JOBGRADE_ID' => $model->JOBGRADE_ID]);
         } else {
@@ -70,15 +93,25 @@ class JobgradeController extends Controller
                 'model' => $model,
             ]);
         }
+		*/
+		
+		if ($model->load(Yii::$app->request->post())){		
+				$model->CREATED_BY=Yii::$app->user->identity->username;		
+				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
+				$model->save();
+				if($model->save()){
+					 //return $this->redirect(['view', 'id' => $model->ID]);	
+					 return $this->redirect('index');
+				} 
+		}else {
+            //return $this->render('_form', [ 
+			return $this->renderAjax('_form', [
+                'model' => $model,
+            ]);
+        }	
+		
     }
 
-    /**
-     * Updates an existing Jobgrade model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $ID
-     * @param string $JOBGRADE_ID
-     * @return mixed
-     */
     public function actionUpdate($ID, $JOBGRADE_ID)
     {
         $model = $this->findModel($ID, $JOBGRADE_ID);
@@ -92,20 +125,17 @@ class JobgradeController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing Jobgrade model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $ID
-     * @param string $JOBGRADE_ID
-     * @return mixed
-     */
-    public function actionDelete($ID, $JOBGRADE_ID)
+    
+   /*Index Delete data by Status */
+	public function actionDeletestt($ID, $JOBGRADE_ID)
     {
-        $this->findModel($ID, $JOBGRADE_ID)->delete();
-
+      	$model = $this->findModel($ID, $JOBGRADE_ID);
+		$model->JOBGRADE_STS = 3;
+		$model->UPDATED_BY = Yii::$app->user->identity->username;
+		$model->save();
+		
         return $this->redirect(['index']);
     }
-
     /**
      * Finds the Jobgrade model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

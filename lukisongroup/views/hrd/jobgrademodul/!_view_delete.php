@@ -105,7 +105,6 @@ $attribute = [
 		<?php
 			$form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]);
 				echo DetailView::widget([
-					'id'=>'dv-grading-mdl',
 					'model' => $model,
 					//'pjax'=>true,
 					'condensed'=>true,

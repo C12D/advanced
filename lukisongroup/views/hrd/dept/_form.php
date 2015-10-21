@@ -1,17 +1,15 @@
 <?php 
-use yii\helpers\Html;
-use lukisongroup\models\hrd\Dept;
-use kartik\widgets\ActiveForm;
+use kartik\helpers\Html;
 use kartik\builder\Form;
+use kartik\widgets\ActiveForm;
 use kartik\builder\FormGrid;
-use kartik\widgets\FileInput;
 use yii\helpers\ArrayHelper;
-//$this->sideMenu = 'hrd_employee';
+use kartik\markdown\Markdown;
 
-$form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]);
-$nlDigit= (Dept::find()->count())+1;
-$nl='LG'.$nlDigit;
-echo FormGrid::widget([
+$form = ActiveForm::begin(['id' => 'dept-id','type' => ActiveForm::TYPE_HORIZONTAL]);
+
+$DeptInput= FormGrid::widget([
+	'id'=>'fg-dept',
 	'model'=>$model,
 	'form'=>$form,
 	'autoGenerateColumns'=>true,
@@ -73,4 +71,19 @@ echo FormGrid::widget([
 	]
   
 ]);
+
+
+/*Panel List Group*/
+	echo Html::listGroup([
+		 [
+			 'content' => 'DEPARTMENT',
+			 'url' => '#',
+			 'badge' => '',
+			 'active' => true
+		 ],
+		 [
+			 'content' => $DeptInput,
+
+		 ],
+	]);
 ActiveForm::end();

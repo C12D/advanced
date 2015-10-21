@@ -41,7 +41,7 @@ class JobgradeSearch extends Jobgrade
      */
     public function search($params)
     {
-        $query = Jobgrade::find();
+        $query = Jobgrade::find()->Where('u0003c.JOBGRADE_STS<>3');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

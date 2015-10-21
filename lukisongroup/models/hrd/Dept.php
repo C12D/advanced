@@ -38,6 +38,8 @@ class Dept extends \yii\db\ActiveRecord
             [['DEP_NM'], 'string', 'max' => 30],
 			[['DEP_DCRP'], 'string'],
 			[['SORT'], 'integer'],
+			[['CREATED_BY','UPDATED_BY'], 'string', 'max' => 50],
+			[['UPDATED_TIME'],'safe'],
         ];
     }
 
@@ -51,6 +53,9 @@ class Dept extends \yii\db\ActiveRecord
             'DEP_AVATAR' => Yii::t('app', 'Avatar'),
             'DEP_DCRP' => Yii::t('app', 'Description'),
             'SORT' => Yii::t('app', 'Sorting'),
+			'CREATED_BY'=> Yii::t('app','Created'),
+			'UPDATED_BY'=> Yii::t('app','Updated'),
+			'UPDATED_TIME'=> Yii::t('app','DateTime'),
         ];
     }
 }
