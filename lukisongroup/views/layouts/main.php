@@ -1,12 +1,7 @@
 <?php
-
-//use yii\helpers\Html;
-//use yii\helpers\Html;
 use kartik\helpers\Html;
 use yii\bootstrap\Carousel;
-
 use kartik\form\ActiveForm;
-/*use yii\bootstrap\Nav;*/
 use kartik\nav\NavX;
 use kartik\sidenav\SideNav;
 use yii\bootstrap\NavBar;
@@ -14,10 +9,7 @@ use yii\widgets\Breadcrumbs;
 use kartik\icons\Icon;
 use dmstr\widgets\Alert;
 use lukisongroup\models\system\user\UserloginSearch;
-/* @var $this \yii\web\View */
-/* @var $content string */
-/* VARIABLE SIDE MENU Author: -Eka- */
-use lukisongroup\models\system\side_menu\M1000;			/* TABLE CLASS */
+use lukisongroup\models\system\side_menu\M1000;			
 use lukisongroup\assets\AppAsset;
 use mdm\admin\components\MenuHelper;
 use yii\bootstrap\Modal;
@@ -79,91 +71,7 @@ dmstr\web\AdminLteAsset::register($this);
 		
 		<! - NOT LOGIN- Author : -ptr.nov- >
 		<?php if (Yii::$app->user->isGuest) { ?>
-			<body class="skin-blue sidebar-mini">
-				<!Refrensi:skin-blue|skin-blue-light|skin-green|skin-yellow|skin-purple|skin-red|skin-black>
-				<?php $this->beginBody(); ?>  
-					<div class="wrapper bg-olive">
-						<!Refrensi:bg-light-blue|bg-green|bg-yellow|bg-red|bg-aqua|bg-purple|bg-blue|bg-navy|bg-teal|bg-maroon|bg-black|bg-gray|bg-olive|bg-lime|bg-orange|bg-fuchsia>
-						<header class="main-header">
-							<a  class="logo bg-red">
-								<!-- LOGO -->
-								LukisonGroup
-							</a>
-
-							<?php
-								// echo  \yii\helpers\Json::encode($menuItems);
-								if (Yii::$app->user->isGuest) {
-									//$menuItemsNoLogin[] = ['label' => '<a data-toggle="modal" data-target="#modal" style="cursor: pointer">Click me gently!</a>' , 'url'=> ['/site/login5']];
-                                    $menuItemsNoLogin[] = ['label' => Icon::show('home').'Home', 'url' => ['/site/']];
-									$menuItemsNoLogin[] = [
-										'label' => Icon::show('shopping-cart') .'e-Procurement', 'url' => ['/site/loginc'],
-											'items' => [
-												['label' => Icon::show('book') .'Catalog', 'url' => '#'],
-												['label' => Icon::show('bar-chart-o') .'Supplier', 'url' => '#'],
-											],
-									];
-									$menuItemsNoLogin[] = ['label' => Icon::show('sitemap') .'e-Recruitment', 'url' => ['/site/login7']];
-									$menuItemsNoLogin[] = ['label' => Icon::show('comments') .'e-Helpdesk', 'url' => ['/site/login8']];
-									$menuItemsNoLogin[] = ['label' => Icon::show('info-circle') .'FAQ', 'url' => ['/site/login8']];
-                                    $menuItemsNoLogin[] = ['label' => Icon::show('user').'User', 'url' => ['/site/login']];
-
-                                    NavBar::begin([
-										//'brandLabel' => 'LukisonGroup',
-										//'brandUrl' => Yii::$app->homeUrl,
-										'options' => [
-											//'class' => 'navbar-inverse navbar-fixed-top',
-										   //'class' =>  'navbar navbar-inverse navbar-static-top',
-											'class' => 'navbar-inverse navbar-static-top',
-										   // 'class' => 'navbar navbar-inverse',
-											'role'=>'navigation'//,'style'=>'margin-bottom: 0'
-										],
-									]);
-
-									echo NavX::widget([
-										'options' => ['class' => 'navbar-nav navbar-left'],
-										'items' => $menuItemsNoLogin,
-										'activateParents' => true,
-										'encodeLabels' => false,
-									]);
-									NavBar::end();
-								};
-
-							?>
-						 </header>
-                            <!-- CROUSEL Author: -ptr.nov- !-->
-						 	<?php
-								echo Carousel::widget([
-								  'items' => [
-									 // equivalent to the above
-									  [
-										'content' => '<img src="'.Yii::getAlias('@path_carousel') . '/test1.jpg" style="width:100%; height:100%"/>',
-									//	'options' =>[ 'style' =>'width: 100%; height: 300px;'],
-									  ],
-									[
-										'content' => '<img src="'.Yii::getAlias('@path_carousel') . '/test2.jpg" style="width:100%; height:100%"/>',
-										//'options' =>[ 'style' =>'width: 100% ; height: 300px;'],
-									  ],
-
-									  // the item contains both the image and the caption
-									  [
-										  'content' => '<img src="'.Yii::getAlias('@path_carousel') . '/test1.jpg" style="width:100%;height:100%"/>',
-										  //'caption' => '<h4>This is title</h4><p>This is the caption text</p>',
-										// 'options' =>[ 'style' =>'width: 100%; height: 300px;'],
-
-									  ],
-								  ],
-								   //'options' =>[ 'style' =>'width: 100%!important; height: 300px;'],
-								]);
-							?>
-						<?php echo $content; ?>
-					</div>
-                    <footer class="footer bg-black" style="height: 50px">
-                        <br>
-                            <?php echo $corp . date('Y') ?>
-                        </br>
-                    </footer>
-				<?php $this->endBody() ?>
-			</body>
+			<?php include('_front.php');?>
 		<?php }; ?>
 
 		<! -LOGIN- Author : -ptr.nov- >
