@@ -12,11 +12,12 @@ AppAsset_front::register($this);
 
 <?php $this->beginBody(); ?>  
 		<!--<div class="container">!-->
-		<div class="container">
+		<div class="">
 			<!Refrensi:bg-light-blue|bg-green|bg-yellow|bg-red|bg-aqua|bg-purple|bg-blue|bg-navy|bg-teal|bg-maroon|bg-black|bg-gray|bg-olive|bg-lime|bg-orange|bg-fuchsia>
 			<header >			
 					<div class="row">
 						<div class="col-md-11">
+							Under Construction !
 							<strong>Email: </strong>info@lukison.com
 							&nbsp;&nbsp;
 							<strong>Support: </strong>(021) 3044-85-98/99
