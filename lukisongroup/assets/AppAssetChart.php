@@ -21,12 +21,12 @@ class AppAssetChart extends AssetBundle
 		'angular/chart/angular-chart.css',
    ];
     public $js = [        
-		'angular/app/ChartAll.js',
-        'angular/chart/fusioncharts.js',
-        'angular/chart/angular-fusioncharts.js', 
 		//'angular/app/ChartAll.js',
-		'angular/chart/Chart.js',
-		'angular/chart/angular-chart.js'				
+        'angular/chart/fusioncharts.js',
+        //'angular/chart/angular-fusioncharts.js', 
+		'angular/chart/fusioncharts.widgets.js',
+		//'angular/chart/Chart.js',
+		//'angular/chart/angular-chart.js'				
     ];
     public $depends = [
 		//'yii\bootstrap\BootstrapAsset',
