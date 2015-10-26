@@ -16,7 +16,8 @@ use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
-use api\modules\chart\models\Cnfweek;
+use api\modules\chart\models\Cnfweek; 
+use api\modules\chart\models\Cnfmonth; 
 use api\modules\chart\models\Hrd_persona;
 use api\modules\chart\models\DeptSearch;
 use yii\web\HttpException;
@@ -81,6 +82,7 @@ class PilotpController extends ActiveController
 		 return $actions;
 	 }
 	
+	/*HRADER CHART*/
 	protected function parent1(){
 		$prn1='
 			"chart": {
@@ -98,6 +100,7 @@ class PilotpController extends ActiveController
 		return $prn1;
 	}
 	
+	/*HEADER MONTH WEEK*/
 	protected function parent2(){
 		$prn2='
 			"categories": [
@@ -119,128 +122,7 @@ class PilotpController extends ActiveController
 						"align": "middle",
 						"fontcolor": "#ffffff",						
 						"fontsize": "16",
-						"category": [
-							{
-								"start": "1/1/2015",
-								"end": "31/1/2015",
-								"label": "January 15"                            
-							},
-							{
-								"start": "1/2/2015",
-								"end": "28/2/2015",
-								"label": "February 15"                            
-							},
-							{
-								"start": "1/3/2015",
-								"end": "21/3/2015",
-								"label": "Maret 15"                            
-							},
-							{
-								"start": "1/4/2015",
-								"end": "30/4/2015",
-								"label": "April 15"                            
-							},
-							{
-								"start": "1/5/2015",
-								"end": "31/5/2015",
-								"label": "May 15"
-							},
-							{
-								"start": "1/6/2015",
-								"end": "30/6/2015",
-								"label": "June 15"
-							},
-							{
-								"start": "1/7/2015",
-								"end": "31/7/2015",
-								"label": "Juli 15"
-							},
-							{
-								"start": "1/8/2015",
-								"end": "31/8/2015",
-								"label": "Agustus 15"
-							},
-							{
-								"start": "1/9/2015",
-								"end": "30/9/2015",
-								"label": "September 15"
-							},
-							{
-								"start": "1/10/2015",
-								"end": "31/10/2015",
-								"label": "Okober 15"
-							},
-							{
-								"start": "1/11/2015",
-								"end": "30/11/2015",
-								"label": "November 15"
-							},
-							{
-								"start": "1/12/2015",
-								"end": "31/12/2015",
-								"label": "Desember 15"
-							},
-							{
-								"start": "1/1/2016",
-								"end": "31/1/2016",
-								"label": "January 16"                            
-							},
-							{
-								"start": "1/2/2016",
-								"end": "29/2/2016",
-								"label": "February 16"                            
-							},
-							{
-								"start": "1/3/2016",
-								"end": "21/3/2016",
-								"label": "Maret 16"                            
-							},
-							{
-								"start": "1/4/2016",
-								"end": "30/4/2016",
-								"label": "April 16"                            
-							},
-							{
-								"start": "1/5/2016",
-								"end": "31/5/2016",
-								"label": "May 16"
-							},
-							{
-								"start": "1/6/2016",
-								"end": "30/6/2016",
-								"label": "June 16"
-							},
-							{
-								"start": "1/7/2016",
-								"end": "31/7/2016",
-								"label": "Juli 16"
-							},
-							{
-								"start": "1/8/2016",
-								"end": "31/8/2016",
-								"label": "Agustus 16"
-							},
-							{
-								"start": "1/9/2016",
-								"end": "30/9/2016",
-								"label": "September 16"
-							},
-							{
-								"start": "1/10/2016",
-								"end": "31/10/2016",
-								"label": "Okober 16"
-							},
-							{
-								"start": "1/11/2016",
-								"end": "30/11/2016",
-								"label": "November 16"
-							},
-							{
-								"start": "1/12/2016",
-								"end": "31/12/2016",
-								"label": "Desember 16"
-							}
-						]
+						"category": '. $this->prnt2category_month() . '
 					},
 					{
 						"bgcolor": "#ffffff",
@@ -248,17 +130,18 @@ class PilotpController extends ActiveController
 						"fontsize": "12",
 						"isbold": "1",
 						"align": "center",
-						"category": '. $this->prnt2category_week() .
-					'}
+						"category": '. $this->prnt2category_week() . '
+					}
 				]
 		';
 		return $prn2;
 	}
 	
+	/*HEADER TASK */
 	protected function parent3(){
 		$prn3='
 			"processes": {
-                "headertext": "Task",
+                "headertext": "Pilot Task",
                 "fontcolor": "#000000",
                 "fontsize": "11",
                 "isanimated": "1",
@@ -388,6 +271,7 @@ class PilotpController extends ActiveController
 		return $prn3;
 	}
 	
+	/* HEADER TASK Planned/Actual/Delay */
 	protected function parent4(){
 		$prn4='
 			"tasks": {
@@ -1067,6 +951,20 @@ class PilotpController extends ActiveController
          $query = $modelClass::find();
 		 $ctg= new ActiveDataProvider([
              'query' => $query			 
+         ]);
+		 return Json::encode($ctg->getModels());
+	}
+	
+	
+	/*Author ptr.nov Model Json*/
+	protected function prnt2category_month()
+	{
+		 $query = Cnfmonth::find();
+		 $ctg= new ActiveDataProvider([
+            'query' => $query,
+			'pagination' => [
+					'pageSize' => 24,
+				],			 
          ]);
 		 return Json::encode($ctg->getModels());
 	}

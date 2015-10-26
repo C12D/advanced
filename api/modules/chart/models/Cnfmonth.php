@@ -1,10 +1,11 @@
 <?php
 
 namespace api\modules\chart\models;
+
 use Yii;
 
 /**
- * This is the model class for table "cnfweek".
+ * This is the model class for table "cnfmonth".
  *
  * @property string $id
  * @property string $label
@@ -13,14 +14,14 @@ use Yii;
  * @property integer $bulan
  * @property integer $tahun
  */
-class Cnfweek extends \yii\db\ActiveRecord
+class Cnfmonth extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'cnfweek';
+        return 'cnfmonth';
     }
 
     /**
@@ -38,13 +39,13 @@ class Cnfweek extends \yii\db\ActiveRecord
     {
         return [
             [['label', 'start', 'end', 'bulan', 'tahun'], 'required'],
-            [['label',], 'string'],
-            [['start', 'end','TITLE1'], 'date'],
+            [['label'], 'string'],
+            [['start', 'end'], 'date'],
             [['bulan', 'tahun'], 'integer']
         ];
     }
 
-    public function fields()
+     public function fields()
 	{
 		return [
 			'start'=>function($model){
@@ -61,14 +62,11 @@ class Cnfweek extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            //'label' => 'Labelxxss',
-            'start' => 'Start s',
+            'label' => 'Label',
+            'start' => 'Start',
             'end' => 'End',
             'bulan' => 'Bulan',
             'tahun' => 'Tahun',
-			 'label' =>Yii::t('app', 'LABEL'),
         ];
     }
-	
-	
 }
