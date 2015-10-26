@@ -3,6 +3,7 @@
 namespace api\modules\chart\controllers;
 
 use yii;
+use kartik\datecontrol\Module;
 use yii\helpers\Json;
 use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
@@ -15,6 +16,7 @@ use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
+use api\modules\chart\models\Cnfweek;
 use api\modules\chart\models\Hrd_persona;
 use api\modules\chart\models\DeptSearch;
 use yii\web\HttpException;
@@ -47,24 +49,23 @@ class PilotpController extends ActiveController
 					'en',
 					'de',
 				],
-			],
+			],			
 			'corsFilter' => [
-            'class' => \yii\filters\Cors::className(),
-            'cors' => [
-                // restrict access to
-                'Origin' => ['http://lukisongroup.int', 'http://lukisongroup.com'],
-                'Access-Control-Request-Method' => ['POST', 'PUT','GET'],
-                // Allow only POST and PUT methods
-                'Access-Control-Request-Headers' => ['X-Wsse'],
-                // Allow only headers 'X-Wsse'
-                'Access-Control-Allow-Credentials' => true,
-                // Allow OPTIONS caching
-                'Access-Control-Max-Age' => 3600,
-                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-                'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
-            ],
-
-        ],
+				'class' => \yii\filters\Cors::className(),
+				'cors' => [
+					// restrict access to
+					'Origin' => ['http://lukisongroup.int', 'http://lukisongroup.int'],
+					'Access-Control-Request-Method' => ['POST', 'PUT','GET'],
+					// Allow only POST and PUT methods
+					'Access-Control-Request-Headers' => ['X-Wsse'],
+					// Allow only headers 'X-Wsse'
+					'Access-Control-Allow-Credentials' => true,
+					// Allow OPTIONS caching
+					'Access-Control-Max-Age' => 3600,
+					// Allow the X-Pagination-Current-Page header to be exposed to the browser.
+					'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
+				]		
+			],
             //'exceptionFilter' => [
             //    'class' => ErrorToExceptionFilter::className()            
 			//],
@@ -89,8 +90,7 @@ class PilotpController extends ActiveController
                 "outputdateformat": "ddds mns yy",
                 "ganttwidthpercent": "70",
                 "ganttPaneDuration": "50",
-                "ganttPaneDurationUnit": "d",
-					
+                "ganttPaneDurationUnit": "d",					
                 "plottooltext": "$processName{br} $label starting date $start{br}$label ending date $end",
                 "theme": "fint"
             }
@@ -248,6 +248,10 @@ class PilotpController extends ActiveController
 						"fontsize": "12",
 						"isbold": "1",
 						"align": "center",
+<<<<<<< HEAD
+						"category": '. $this->prnt2category_week() .
+					'}
+=======
 						"category": [
 							{
 								"start": "4/1/2015",
@@ -356,6 +360,7 @@ class PilotpController extends ActiveController
 							}
 						]
 					}
+>>>>>>> 6dbeaac01eaa847b26c27911679bb984d5c69c24
 				]
 		';
 		return $prn2;
@@ -1176,6 +1181,17 @@ class PilotpController extends ActiveController
          ]);
 		 return Json::encode($ctg->getModels());
 	}
+	
+	/*Author ptr.nov Model Json*/
+	protected function prnt2category_week()
+	{
+		 $query = Cnfweek::find();
+		 $ctg= new ActiveDataProvider([
+             'query' => $query			 
+         ]);
+		 return Json::encode($ctg->getModels());
+	}
+	
 	
 	public function actionIndex()
      {
