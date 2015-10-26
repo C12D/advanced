@@ -3,6 +3,7 @@
 namespace api\modules\chart\controllers;
 
 use yii;
+use kartik\datecontrol\Module;
 use yii\helpers\Json;
 use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
@@ -15,6 +16,7 @@ use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
+use api\modules\chart\models\Cnfweek;
 use api\modules\chart\models\Hrd_persona;
 use api\modules\chart\models\DeptSearch;
 use yii\web\HttpException;
@@ -47,24 +49,23 @@ class PilotpController extends ActiveController
 					'en',
 					'de',
 				],
-			],
+			],			
 			'corsFilter' => [
-            'class' => \yii\filters\Cors::className(),
-            'cors' => [
-                // restrict access to
-                'Origin' => ['http://lukisongroup.int', 'http://lukisongroup.com'],
-                'Access-Control-Request-Method' => ['POST', 'PUT','GET'],
-                // Allow only POST and PUT methods
-                'Access-Control-Request-Headers' => ['X-Wsse'],
-                // Allow only headers 'X-Wsse'
-                'Access-Control-Allow-Credentials' => true,
-                // Allow OPTIONS caching
-                'Access-Control-Max-Age' => 3600,
-                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-                'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
-            ],
-
-        ],
+				'class' => \yii\filters\Cors::className(),
+				'cors' => [
+					// restrict access to
+					'Origin' => ['http://lukisongroup.int', 'http://lukisongroup.int'],
+					'Access-Control-Request-Method' => ['POST', 'PUT','GET'],
+					// Allow only POST and PUT methods
+					'Access-Control-Request-Headers' => ['X-Wsse'],
+					// Allow only headers 'X-Wsse'
+					'Access-Control-Allow-Credentials' => true,
+					// Allow OPTIONS caching
+					'Access-Control-Max-Age' => 3600,
+					// Allow the X-Pagination-Current-Page header to be exposed to the browser.
+					'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
+				]		
+			],
             //'exceptionFilter' => [
             //    'class' => ErrorToExceptionFilter::className()            
 			//],
@@ -89,8 +90,7 @@ class PilotpController extends ActiveController
                 "outputdateformat": "ddds mns yy",
                 "ganttwidthpercent": "70",
                 "ganttPaneDuration": "50",
-                "ganttPaneDurationUnit": "d",
-					
+                "ganttPaneDurationUnit": "d",					
                 "plottooltext": "$processName{br} $label starting date $start{br}$label ending date $end",
                 "theme": "fint"
             }
@@ -248,99 +248,8 @@ class PilotpController extends ActiveController
 						"fontsize": "12",
 						"isbold": "1",
 						"align": "center",
-						"category": [
-							{
-								"start": "4/1/2015",
-								"end": "10/1/2015",
-								"label": "Week 1"
-							},
-							{
-								"start": "11/1/2015",
-								"end": "17/1/2015",
-								"label": "Week 2"
-							},
-							{
-								"start": "18/1/2015",
-								"end": "24/1/2015",
-								"label": "Week 3"
-							},
-							{
-								"start": "25/1/2015",
-								"end": "31/1/2015",
-								"label": "Week 4"
-							},
-							{
-								"start": "1/2/2015",
-								"end": "7/2/2015",
-								"label": "Week 5"
-							},
-							{
-								"start": "1/4/2015",
-								"end": "5/4/2015",
-								"label": "Week 1"
-							},
-							{
-								"start": "6/4/2015",
-								"end": "12/4/2015",
-								"label": "Week 2"
-							},
-							{
-								"start": "13/4/2015",
-								"end": "19/4/2015",
-								"label": "Week 3"
-							},
-							{
-								"start": "20/4/2015",
-								"end": "26/4/2015",
-								"label": "Week 4"
-							},
-							{
-								"start": "27/4/2015",
-								"end": "3/5/2015",
-								"label": "Week 5"
-							},
-							{
-								"start": "4/5/2015",
-								"end": "10/5/2015",
-								"label": "Week 6"
-							},
-							{
-								"start": "11/5/2015",
-								"end": "17/5/2015",
-								"label": "Week 7"
-							},
-							{
-								"start": "18/5/2015",
-								"end": "24/5/2015",
-								"label": "Week 8"
-							},
-							{
-								"start": "25/5/2015",
-								"end": "31/5/2015",
-								"label": "Week 9"
-							},
-							{
-								"start": "1/6/2015",
-								"end": "7/6/2015",
-								"label": "Week 10"
-							},
-							{
-								"start": "8/6/2015",
-								"end": "14/6/2015",
-								"label": "Week 11"
-							},
-							{
-								"start": "15/6/2015",
-								"end": "21/6/2015",
-								"label": "Week 12"
-							},
-							{
-								"start": "22/6/2015",
-								"end": "28/6/2015",
-								"label": "Week 13"
-							}
-						]
-					}
+						"category": '. $this->prnt2category_week() .
+					'}
 				]
 		';
 		return $prn2;
@@ -1161,6 +1070,17 @@ class PilotpController extends ActiveController
          ]);
 		 return Json::encode($ctg->getModels());
 	}
+	
+	/*Author ptr.nov Model Json*/
+	protected function prnt2category_week()
+	{
+		 $query = Cnfweek::find();
+		 $ctg= new ActiveDataProvider([
+             'query' => $query			 
+         ]);
+		 return Json::encode($ctg->getModels());
+	}
+	
 	
 	public function actionIndex()
      {
