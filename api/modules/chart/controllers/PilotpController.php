@@ -272,7 +272,22 @@ class PilotpController extends ActiveController
 							{
 								"start": "1/2/2015",
 								"end": "7/2/2015",
-								"label": "Week 5"
+								"label": "Week 1"
+							},
+							{
+								"start": "8/2/2015",
+								"end": "14/2/2015",
+								"label": "Week 2"
+							},
+							{
+								"start": "15/2/2015",
+								"end": "21/2/2015",
+								"label": "Week 3"
+							},
+							{
+								"start": "22/2/2015",
+								"end": "28/2/2015",
+								"label": "Week 4"
 							},
 							{
 								"start": "1/4/2015",
