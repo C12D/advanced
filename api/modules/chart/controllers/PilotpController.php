@@ -54,7 +54,7 @@ class PilotpController extends ActiveController
 				'class' => \yii\filters\Cors::className(),
 				'cors' => [
 					// restrict access to
-					'Origin' => ['http://lukisongroup.int', 'http://lukisongroup.int'],
+					'Origin' => ['http://lukisongroup.com', 'http://lukisongroup.int'],
 					'Access-Control-Request-Method' => ['POST', 'PUT','GET'],
 					// Allow only POST and PUT methods
 					'Access-Control-Request-Headers' => ['X-Wsse'],

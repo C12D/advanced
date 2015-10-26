@@ -52,7 +52,9 @@ class Cnfweek extends \yii\db\ActiveRecord
 			'start'=>function($model){
 							return Yii::$app->ambilKonvesi->convert($model->start,'date');
 					},			
-			'end',
+			'end'=>function($model){
+							return Yii::$app->ambilKonvesi->convert($model->end,'date');
+					},	
 			'label',
 		];
 	}
