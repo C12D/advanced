@@ -4,16 +4,7 @@ namespace api\modules\chart\models;
 
 use Yii;
 
-/**
- * This is the model class for table "cnfmonth".
- *
- * @property string $id
- * @property string $label
- * @property string $start
- * @property string $end
- * @property integer $bulan
- * @property integer $tahun
- */
+/*HEADER MONTH*/
 class Cnfmonth extends \yii\db\ActiveRecord
 {
     /**

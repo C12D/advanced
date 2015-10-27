@@ -289,7 +289,7 @@ class PilotpController extends ActiveController
             }			 
 		';
 		$prn7x='
-			"legendx": {
+			"legend": {
                
             }			 
 		';

@@ -3,16 +3,7 @@
 namespace api\modules\chart\models;
 use Yii;
 
-/**
- * This is the model class for table "cnfweek".
- *
- * @property string $id
- * @property string $label
- * @property string $start
- * @property string $end
- * @property integer $bulan
- * @property integer $tahun
- */
+/*LABEL WEEK*/
 class Cnfweek extends \yii\db\ActiveRecord
 {
     /**
