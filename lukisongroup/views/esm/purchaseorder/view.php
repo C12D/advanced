@@ -8,6 +8,8 @@ use lukisongroup\models\master\Barangumum;
 use lukisongroup\models\master\Nmperusahaan;
 use lukisongroup\models\esm\po\Purchasedetail;
 use lukisongroup\models\esm\Barang;
+
+use lukisongroup\models\hrd\Employe;
 /* @var $this yii\web\View */
 /* @var $model lukisongroup\models\esm\po\Purchaseorder */
 
@@ -22,6 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="purchaseorder-view" style="margin:0px 20px;">
 <br/><br/>
+
+    <?php echo Html::a('<i class="fa fa-print fa-fw"></i> PDF', ['cetakpdf','kdpo'=>$model->KD_PO], ['target' => '_blank', 'class' => 'btn btn-warning']); ?>
+
 
     <?php 
         $sup = Suplier::find()->where(['KD_SUPPLIER'=>$model->KD_SUPPLIER])->one(); 
@@ -215,10 +220,97 @@ $this->params['breadcrumbs'][] = $this->title;
     <b>Note :</b><br/><?= $model->NOTE; ?>
 
     <br/><br/>
-    <br/><br/>
-    <?php 
-        echo Html::a('<i class="fa fa-print fa-fw"></i> Cetak', ['cetakpdf','kdpo'=>$model->KD_PO], ['target' => '_blank', 'class' => 'btn btn-success']);
-    ?>
+    <br/><br/><br/><br/>
+
+
+<div class="row" style="text-align:center; "> 
+    <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
+
+        <table style="width:100%;">
+            <tr>
+                <td></td>
+                <td>
+                    <?php 
+                        if($model->APPROVE_BY == ''){
+                        //PURCH / DRC
+                        $idEmp = Yii::$app->user->identity->EMP_ID;
+                        $emp = Employe::find()->where(['EMP_ID'=>$idEmp])->one();
+                        if($emp->DEP_ID == 'ACT') { 
+                        if($emp->GF_ID == 3){
+                    ?>
+                    
+                    <?php echo Html::a('<i class="fa fa-check"></i> Konfirmasi', ['confirm','kdpo'=>$model->KD_PO], [ 'class' => 'btn btn-success btn-xs']); ?>
+                    &nbsp;
+                    <!-- button class="btn btn-danger  btn-xs"><i class="fa fa-times"></i> Tolak</button -->
+                    <?php } } } ?>
+                    
+                </td>
+                <td>
+                    <?php 
+                        if($model->APPROVE_DIR == ''){
+                        //PURCH / DRC
+                        $idEmp = Yii::$app->user->identity->EMP_ID;
+                        $emp = Employe::find()->where(['EMP_ID'=>$idEmp])->one();
+
+                        if($model->APPROVE_BY == ''){ } else { 
+                            if($emp->DEP_ID == 'DRC') { 
+                    ?>
+                    
+                    <?php echo Html::a('<i class="fa fa-check"></i> Konfirmasi', ['confirmdir','kdpo'=>$model->KD_PO], [ 'class' => 'btn btn-success btn-xs']); ?>
+                    &nbsp;
+                    <!-- button class="btn btn-danger  btn-xs"><i class="fa fa-times"></i> Tolak</button -->
+                    <?php } } } ?>
+                    
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <?php  $crte = Employe::find()->where(['EMP_ID'=>$model->CREATE_BY])->one(); ?>
+                     <b><u><?php echo $crte->EMP_NM.' '.$crte->EMP_NM_BLK; ?></u></b><br/>
+                     Purchaser
+                </td>
+
+                <td>
+                    <b><u>
+                    <?php 
+                        if($model->APPROVE_BY == ''){
+                            echo "***************";
+                        } else {
+                            $apprv = Employe::find()->where(['EMP_ID'=>$model->APPROVE_BY])->one();
+                            echo $apprv->EMP_NM.' '.$apprv->EMP_NM_BLK;
+                        }
+                    ?></u></b><br/>
+                    F & A
+                </td>
+
+                <td>
+                    <b><u>
+                    <?php 
+                        if($model->APPROVE_DIR == ''){
+                            echo "***************"; 
+                        } else {
+                            $apprv = Employe::find()->where(['EMP_ID'=>$model->APPROVE_DIR])->one();
+                            echo $apprv->EMP_NM.' '.$apprv->EMP_NM_BLK;
+                        }
+                    ?></u></b><br/>
+                    Director
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+
+
+    <div class="col-xs-4 col-sm-2 col-md-2" >
+
+    </div>
+
+
+</div>
+
+<br/><br/>
 </div>
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>

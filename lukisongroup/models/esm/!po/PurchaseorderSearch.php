@@ -6,17 +6,12 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use lukisongroup\models\esm\po\Purchaseorder;
-use lukisongroup\models\hrd\Employe;
 
 /**
  * PurchaseorderSearch represents the model behind the search form about `lukisongroup\models\esm\po\Purchaseorder`.
  */
 class PurchaseorderSearch extends Purchaseorder
 {
-
-    public $pembuat;
-    public $disetujui;
-    public $approved;
     /**
      * @inheritdoc
      */
@@ -24,7 +19,7 @@ class PurchaseorderSearch extends Purchaseorder
     {
         return [
             [['ID', 'STATUS'], 'integer'],
-            [['KD_PO', 'KD_SUPPLIER', 'CREATE_BY', 'CREATE_AT', 'APPROVE_BY', 'APPROVE_AT', 'NOTE','PAJAK','DISC','ETD', 'ETA', 'SHIPPING', 'BILLING', 'DELIVERY_COST', 'APPROVE_DIR', 'TGL_APPROVE', 'pembuat', 'disetujui', 'approved'], 'safe'],
+            [['KD_PO', 'KD_SUPPLIER', 'CREATE_BY', 'CREATE_AT', 'APPROVE_BY', 'APPROVE_AT', 'NOTE','PAJAK','DISC','ETD', 'ETA', 'SHIPPING', 'BILLING', 'DELIVERY_COST'], 'safe'],
         ];
     }
 
@@ -48,49 +43,15 @@ class PurchaseorderSearch extends Purchaseorder
     {
         $query = Purchaseorder::find();
 
-        $query->joinWith(['employe' => function ($q) {
-            $q->where('a0001.EMP_NM LIKE "%' . $this->pembuat . '%"');
-        }]);
-
-        $query->joinWith(['employe' => function ($q) {
-            $q->where('a0001.EMP_NM LIKE "%' . $this->disetujui . '%"');
-        }]);
-
-        $query->joinWith(['employe' => function ($q) {
-            $q->where('a0001.EMP_NM LIKE "%' . $this->approved . '%"');
-        }]);
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-         $dataProvider->setSort([
-            'attributes' => [
-            'KD_PO',
-            'KD_SUPPLIER',
-            
-            'pembuat' => [
-                'asc' => ['a0001.EMP_NM' => SORT_ASC],
-                'desc' => ['a0001.EMP_NM' => SORT_DESC],
-                'label' => 'Pembuat',
-            ],   
+        $this->load($params);
 
-            'disetujui' => [
-                'asc' => ['a0001.EMP_NM' => SORT_ASC],
-                'desc' => ['a0001.EMP_NM' => SORT_DESC],
-                'label' => 'Pembuat',
-            ],  
-
-            'approved' => [
-                'asc' => ['a0001.EMP_NM' => SORT_ASC],
-                'desc' => ['a0001.EMP_NM' => SORT_DESC],
-                'label' => 'Pembuat',
-            ],     
-                 
-            ]
-        ]);
-
-        if (!($this->load($params) && $this->validate())) {
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
             return $dataProvider;
         }
 

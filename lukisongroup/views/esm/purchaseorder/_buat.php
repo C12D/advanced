@@ -20,10 +20,18 @@ use lukisongroup\models\master\Nmperusahaan;
 
 use lukisongroup\models\esm\po\Podetail;
 
+use lukisongroup\models\hrd\Employe;
+
+
+$idEmp = Yii::$app->user->identity->EMP_ID;
+$emp = Employe::find()->where(['EMP_ID'=>$idEmp])->one();
+$kr = $emp->DEP_SUB_ID;
 ?>
 
 <!-- Stack the columns on mobile by making one full-width and the other half-width -->
 <div class="row">
+
+<?php if($quer->STATUS != 102){  if( $kr == 'HR-02'){ ?>
 	<div class="col-xs-12 col-md-3">
     <?php Pjax::begin(['id'=>'pjax-users']); ?>
     <?= GridView::widget([
@@ -84,7 +92,7 @@ use lukisongroup\models\esm\po\Podetail;
 	
 	</div>
 
-
+<?php } } ?>
 	<!-- ?php
 	$form = ActiveForm::begin([
 	    'method' => 'post',
@@ -94,7 +102,7 @@ use lukisongroup\models\esm\po\Podetail;
 	? -->
 <form  id="cpo" method="post" action="../purchaseorder/createpo">
 
-	<div class="col-xs-12 col-md-9">
+	<div class="col-xs-12 <?php if( $kr == 'HR-02'){ echo 'col-md-9'; }else{ echo 'col-md-12'; } ?>">
 	  	<?= Yii::$app->session->getFlash('error'); ?>
 		<?php 
 			$brg = Suplier::find()->where(['KD_SUPPLIER'=>$quer->KD_SUPPLIER])->one(); 		
@@ -171,8 +179,8 @@ use lukisongroup\models\esm\po\Podetail;
 		</thead>
 		
 		<tbody>
-			<?php $a=0; foreach ($podet as $po => $rows) { $a=$a+1; ?>
-			
+			<?php $a=0; foreach ($podet as $po => $rows) { $a=$a+1;  ?>
+
 			<?php if($a == 1){ echo "</form>"; } ?>
 			<tr style="cursor:pointer;">
 
@@ -260,16 +268,20 @@ use lukisongroup\models\esm\po\Podetail;
 							</td>
 
 							<td>
+								<?php if($quer->STATUS != 102){  ?>
 								<a href="delpo?idpo=<?php echo $pode->ID; ?>&kdpo=<?php echo $kdpo; ?>" onclick="return confirm('Anda yakin ingin menghapus file ini?');" ><i class="fa fa-trash"></i></a>
+								<?php } ?>
 							</td>
 						</tr>
 						<?php } ?>
 					</tbody>
         		</table>
 
+        		<?php if($quer->STATUS != 102){  if( $kr == 'HR-02'){ ?>
         		<div style="text-align:right;">
         			<button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('detpo<?php echo $a; ?>').submit();">Ubah Qty</button>
         		</div>
+        		<?php } } ?>
 
 				<?php ActiveForm::end(); ?>
 
@@ -358,9 +370,11 @@ use lukisongroup\models\esm\po\Podetail;
 
 
 	<br/><br/>
+	<?php if($quer->STATUS != 102){ if( $kr == 'HR-02'){ ?>
 	<input type="hidden" name="kdpo" id="kdpo" value="<?php echo $kdpo; ?>" required/>
 	<button type="button" class="btn btn-warning btn-sm" onclick="document.getElementById('cpo').submit();">Buat PO</button>
 	<input type="hidden" name="ttlLop" id="ttlLop" value="<?php echo $a; ?>" required/>
+	<?php } } ?>
 
 <!-- ?php ActiveForm::end(); ? -->
 </form>

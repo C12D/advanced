@@ -13,8 +13,8 @@ AppAssetChart::register($this);
 /* AUTHOR -ptr.nov- GANTT VS API AJAX Request */
 $this->registerJs('FusionCharts.ready(function () {
 		var  jsonData= $.ajax({
-          url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
-		  //url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
+          //url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
+		  url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
 		  type: "GET",
           dataType:"json",
 		  //data:"id_user='. Yii::$app->user->identity->id . '",

@@ -87,7 +87,7 @@ $form = ActiveForm::begin([
 	<!-- input type="hidden" name="_csrf" value="< ?=Yii::$app->request->getCsrfToken()?>" / -->
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		<button type="submit" class="btn btn-primary">Save changes</button>
+		<button type="submit" class="btn btn-primary">Pilih Barang</button>
 	</div>
 
 <?php

@@ -106,7 +106,7 @@ class PurchaseorderController extends Controller
             $model->KD_PO = $kdpo;
             $model->STATUS = '100';
             $model->CREATE_AT = date("Y-m-d H:i:s");
-            $model->CREATE_BY = Yii::$app->user->identity->EMP_ID;
+            $model->CREATE_BY = Yii::$app->user->identity->username;
             $model->save();
         }
         return $this->redirect(['create', 'kdpo' => $model->KD_PO]);
@@ -302,38 +302,6 @@ class PurchaseorderController extends Controller
         exit;
     }
 
-    public function actionConfirm($kdpo)
-    {        
-        $hsl = Purchaseorder::find()->where(['KD_PO'=>$kdpo])->one();
-        if($hsl->APPROVE_BY == ''){
-            $hsl->APPROVE_BY = Yii::$app->user->identity->EMP_ID;
-            $hsl->APPROVE_AT = date('Y-m-d H:i:s');
-            $hsl->STATUS = 102;
-            $hsl->save();
-    
-            return $this->redirect(['view','kd'=>$kdpo]);
-
-        } else {
-            return $this->redirect(['view','kd'=>$kdpo]);
-        }
-    }
-
-
-    public function actionConfirmdir($kdpo)
-    {        
-        $hsl = Purchaseorder::find()->where(['KD_PO'=>$kdpo])->one();
-        if($hsl->APPROVE_DIR == ''){
-            $hsl->APPROVE_DIR = Yii::$app->user->identity->EMP_ID;
-            $hsl->TGL_APPROVE = date('Y-m-d H:i:s');
-            $hsl->STATUS = 1;
-            $hsl->save();
-    
-            return $this->redirect(['view','kd'=>$kdpo]);
-
-        } else {
-            return $this->redirect(['view','kd'=>$kdpo]);
-        }
-    }
 
 
 

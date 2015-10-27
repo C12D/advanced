@@ -6,6 +6,7 @@ use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use kartik\form\ActiveForm;
 use lukisongroup\models\master\Suplier;
+use lukisongroup\models\hrd\Employe;
 
 /* @var $this yii\web\View */
 /* @var $searchModel lukisongroup\models\esm\po\PurchaseorderSearch */
@@ -13,6 +14,12 @@ use lukisongroup\models\master\Suplier;
 
 $this->title = 'Purchaseorder';
 $this->params['breadcrumbs'][] = $this->title;
+
+
+    $idEmp = Yii::$app->user->identity->EMP_ID;
+    $emp = Employe::find()->where(['EMP_ID'=>$idEmp])->one();
+    $kr = $emp->DEP_SUB_ID;
+
 ?>
 
 <div class="purchaseorder-index" style="padding:10px;">
@@ -24,20 +31,22 @@ function submitform()
 }
 </script>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <!-- h1>< ?= Html::encode($this->title) ?></h1 -->
+<?php if( $kr == 'HR-02'){ ?>
+	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus fa-fw"></i> Buat PO</button>
+	<br/><br/>
+<?php } ?>
 
 <?php 
-
 	$gridColumns = [
         ['class' => 'yii\grid\SerialColumn'],
 
         //'ID',
         'KD_PO',
         'KD_SUPPLIER',
-        'CREATE_BY',
-        'CREATE_AT',
+        'pembuat',
+        'disetujui',
+        'approved',
         // 'APPROVE_BY',
         // 'APPROVE_AT',
         // 'STATUS',
@@ -49,7 +58,11 @@ function submitform()
 		'buttons' => [
 			'link' => function ($url,$model) { return Html::a('', ['view','kd'=>$model->KD_PO],['class'=>'glyphicon glyphicon-eye-open', 'title'=>'Detail']);},
 
-			'edit' => function ($url,$model) { return Html::a('', ['create','kdpo'=>$model->KD_PO],['class'=>'glyphicon glyphicon-pencil', 'title'=>'Ubah RO']); },
+			'edit' => function ($url,$model) use ($kr) { 
+				if( $kr == 'HR-02'){ 
+					return Html::a('', ['create','kdpo'=>$model->KD_PO],['class'=>'glyphicon glyphicon-pencil', 'title'=>'Ubah RO']); 
+				}
+			} ,
 
 			],
         ],
@@ -66,7 +79,7 @@ function submitform()
 			'panel' => [
 				'heading'=>'<h3 class="panel-title"></h3>',
 				'type'=>'warning',
-				'before'=> '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus fa-fw"></i> Buat PO</button>',
+				'before'=> '',
 				'showFooter'=>false,
 			],		
 			
@@ -137,3 +150,4 @@ function submitform()
 		
         <?php //= Html::a('Create Purchaseorder', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
