@@ -18,6 +18,10 @@ use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use api\modules\chart\models\Cnfweek; 
 use api\modules\chart\models\Cnfmonth; 
+use api\modules\chart\models\Pilotproject;
+use api\modules\chart\models\Pilotplan;
+use api\modules\chart\models\Pilotactual;
+use api\modules\chart\models\Pilotdelay;
 use api\modules\chart\models\Hrd_persona;
 use api\modules\chart\models\DeptSearch;
 use yii\web\HttpException;
@@ -154,118 +158,7 @@ class PilotpController extends ActiveController
                 "align": "left",
                 "isbold": "1",
                 "bgalpha": "25",
-                "process": [
-                    {
-                        "label": "Piter Test",
-                        "id": "1"
-                    },
-                    {
-                        "label": "Dashboard",
-                        "id": "2",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "HRM",
-                        "id": "3",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Footing to DPC",
-                        "id": "4",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Drainage Services",
-                        "id": "5",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Backfill",
-                        "id": "6",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Ground Floor",
-                        "id": "7"
-                    },
-                    {
-                        "label": "Walls on First Floor",
-                        "id": "8"
-                    },
-                    {
-                        "label": "First Floor Carcass",
-                        "id": "9",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "First Floor Deck",
-                        "id": "10",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Roof Structure",
-                        "id": "11"
-                    },
-                    {
-                        "label": "Roof Covering",
-                        "id": "12"
-                    },
-                    {
-                        "label": "Rainwater Gear",
-                        "id": "13"
-                    },
-                    {
-                        "label": "Windows",
-                        "id": "14"
-                    },
-                    {
-                        "label": "External Doors",
-                        "id": "15"
-                    },
-                    {
-                        "label": "Connect Electricity",
-                        "id": "16"
-                    },
-                    {
-                        "label": "Connect Water Supply",
-                        "id": "17",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Install Air Conditioning",
-                        "id": "18",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Interior Decoration",
-                        "id": "19",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Fencing And signs",
-                        "id": "20"
-                    },
-                    {
-                        "label": "Exterior Decoration",
-                        "id": "21",
-                        "hoverBandColor": "#e44a00",
-                        "hoverBandAlpha": "40"
-                    },
-                    {
-                        "label": "Setup racks",
-                        "id": "22"
-                    }
-                ]
+                "process": '. $this->parent3task().'
             }
 		';
 		return $prn3;
@@ -276,526 +169,7 @@ class PilotpController extends ActiveController
 		$prn4='
 			"tasks": {
 				"showlabels": "1",
-                "task": [
-                    {
-                        "label": "Planned",
-                        "processid": "1",
-                        "start": "9/4/2015",
-                        "end": "12/4/2015",
-                        "id": "1-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "1",
-                        "start": "9/4/2015",
-                        "end": "12/4/2015",
-                        "id": "1",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "2",
-                        "start": "13/4/2015",
-                        "end": "23/4/2015",
-                        "id": "2-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "2",
-                        "start": "13/4/2015",
-                        "end": "25/4/2015",
-                        "id": "2",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "2",
-                        "start": "23/4/2015",
-                        "end": "25/4/2015",
-                        "id": "2-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 2 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "3",
-                        "start": "23/4/2015",
-                        "end": "30/4/2015",
-                        "id": "3-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "3",
-                        "start": "26/4/2015",
-                        "end": "4/5/2015",
-                        "id": "3",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "3",
-                        "start": "3/5/2015",
-                        "end": "4/5/2015",
-                        "id": "3-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 1 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "4",
-                        "start": "3/5/2015",
-                        "end": "10/5/2015",
-                        "id": "4-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "4",
-                        "start": "4/5/2015",
-                        "end": "10/5/2015",
-                        "id": "4",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "5",
-                        "start": "6/5/2015",
-                        "end": "11/5/2015",
-                        "id": "5-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "5",
-                        "start": "6/5/2015",
-                        "end": "10/5/2015",
-                        "id": "5",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "6",
-                        "start": "4/5/2015",
-                        "end": "7/5/2015",
-                        "id": "6-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "6",
-                        "start": "5/5/2015",
-                        "end": "11/5/2015",
-                        "id": "6",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "6",
-                        "start": "7/5/2015",
-                        "end": "11/5/2015",
-                        "id": "6-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 4 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "7",
-                        "start": "11/5/2015",
-                        "end": "14/5/2015",
-                        "id": "7-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "7",
-                        "start": "11/5/2015",
-                        "end": "14/5/2015",
-                        "id": "7",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "8",
-                        "start": "16/5/2015",
-                        "end": "19/5/2015",
-                        "id": "8-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "8",
-                        "start": "16/5/2015",
-                        "end": "19/5/2015",
-                        "id": "8",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "9",
-                        "start": "16/5/2015",
-                        "end": "18/5/2015",
-                        "id": "9-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "9",
-                        "start": "16/5/2015",
-                        "end": "21/5/2015",
-                        "id": "9",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "9",
-                        "start": "18/5/2015",
-                        "end": "21/5/2015",
-                        "id": "9-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 3 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "10",
-                        "start": "20/5/2015",
-                        "end": "23/5/2015",
-                        "id": "10-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "10",
-                        "start": "21/5/2015",
-                        "end": "24/5/2015",
-                        "id": "10",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "10",
-                        "start": "23/5/2015",
-                        "end": "24/5/2015",
-                        "id": "10-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 1 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "11",
-                        "start": "25/5/2015",
-                        "end": "27/5/2015",
-                        "id": "11-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "11",
-                        "start": "25/5/2015",
-                        "end": "27/5/2015",
-                        "id": "11",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "12",
-                        "start": "28/5/2015",
-                        "end": "1/6/2015",
-                        "id": "12-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "12",
-                        "start": "28/5/2015",
-                        "end": "1/6/2015",
-                        "id": "12",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "13",
-                        "start": "4/6/2015",
-                        "end": "6/6/2015",
-                        "id": "13-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "13",
-                        "start": "4/6/2015",
-                        "end": "6/6/2015",
-                        "id": "13",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "14",
-                        "start": "4/6/2015",
-                        "end": "4/6/2015",
-                        "id": "14-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "14",
-                        "start": "4/6/2015",
-                        "end": "4/6/2015",
-                        "id": "14",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "15",
-                        "start": "4/6/2015",
-                        "end": "4/6/2015",
-                        "id": "15-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "15",
-                        "start": "4/6/2015",
-                        "end": "4/6/2015",
-                        "id": "15",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "16",
-                        "start": "2/6/2015",
-                        "end": "7/6/2015",
-                        "id": "16-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "16",
-                        "start": "2/6/2015",
-                        "end": "7/6/2015",
-                        "id": "16",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "17",
-                        "start": "5/6/2015",
-                        "end": "10/6/2015",
-                        "id": "17-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "17",
-                        "start": "5/6/2015",
-                        "end": "17/6/2015",
-                        "id": "17",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "17",
-                        "start": "10/6/2015",
-                        "end": "17/6/2015",
-                        "id": "17-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 7 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "18",
-                        "start": "10/6/2015",
-                        "end": "12/6/2015",
-                        "id": "18-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "18",
-                        "start": "18/6/2015",
-                        "end": "20/6/2015",
-                        "id": "18",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 8 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "19",
-                        "start": "15/6/2015",
-                        "end": "23/6/2015",
-                        "id": "19-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "19",
-                        "start": "16/6/2015",
-                        "end": "23/6/2015",
-                        "id": "19",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "20",
-                        "start": "23/6/2015",
-                        "end": "23/6/2015",
-                        "id": "20-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "20",
-                        "start": "23/6/2015",
-                        "end": "23/6/2015",
-                        "id": "20",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "21",
-                        "start": "18/6/2015",
-                        "end": "21/6/2015",
-                        "id": "21-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "21",
-                        "start": "18/6/2015",
-                        "end": "23/6/2015",
-                        "id": "21",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    },
-                    {
-                        "label": "Delay",
-                        "processid": "21",
-                        "start": "21/6/2015",
-                        "end": "23/6/2015",
-                        "id": "21-2",
-                        "color": "#e44a00",                        
-                        "toppadding": "56%",
-                        "height": "32%",
-                        "tooltext": "Delayed by 2 days."
-                    },
-                    {
-                        "label": "Planned",
-                        "processid": "22",
-                        "start": "24/6/2015",
-                        "end": "28/6/2015",
-                        "id": "22-1",
-                        "color": "#008ee4",
-                        "height": "32%",
-                        "toppadding": "12%"
-                    },
-                    {
-                        "label": "Actual",
-                        "processid": "22",
-                        "start": "25/6/2015",
-                        "end": "28/6/2015",
-                        "id": "22",
-                        "color": "#6baa01",                        
-                        "toppadding": "56%",
-                        "height": "32%"
-                    }
-                ]
+                "task": ' .$this->parent4process_task(). '	
             }
 		';
 		return $prn4;
@@ -936,8 +310,10 @@ class PilotpController extends ActiveController
 			','.$this-> parent4().
 			','.$this-> parent5().			
 			','.$this-> parent6().
-			','.$this-> parent7().			 
+			','.$this-> parent7().			
 		'}';			
+		
+	
 	 // "oklah":'.//$this->getCategsub().'
 	 //$crt_pie1=$this->getCategsub();
 	 //print_r($this->getCategsub());				
@@ -979,6 +355,63 @@ class PilotpController extends ActiveController
 		 return Json::encode($ctg->getModels());
 	}
 	
+	/*Author ptr.nov Model Json*/
+	protected function parent3task()
+	{
+		 $query = Pilotproject::find();
+		 $ctg= new ActiveDataProvider([
+            'query' => $query,
+			'pagination' => [
+					'pageSize' => 200,
+				],				 
+         ]);
+		 return Json::encode($ctg->getModels());
+	}
+	
+	
+	/*Author ptr.nov Model plan/action/delay */
+	protected function parent4process_task()
+	{
+		 $query = Pilotplan::find();
+		 $ctg= new ActiveDataProvider([
+            'query' => $query,
+			'pagination' => [
+					'pageSize' => 200,
+				],				 
+         ]);		 
+		$arr = [];
+		foreach($ctg->getModels() as $t)
+		{			
+			if ($t->PLAN_DATE1<>'' AND $t->PLAN_DATE2<>''){
+				$arr[] = $t;				
+			}
+			
+			if ($t->ACTUAL_DATE1<>'' AND $t->ACTUAL_DATE2<>''){
+				$querySub1 = Pilotactual::find()->Where('ID='.$t->ID);
+					 $sub1= new ActiveDataProvider([
+						'query' => $querySub1,
+						'pagination' => [
+								'pageSize' => 200,
+							], 
+					 ]);
+					 foreach($sub1->getModels() as $su){
+						 	$arr[] = $su;					 
+					 }				
+			}			
+		}		
+		 //return $arr;
+		//print_r($arr[]);
+		 return Json::encode($arr);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public function actionIndex()
      {
@@ -1009,6 +442,7 @@ class PilotpController extends ActiveController
 		return $x1;
 		*/
 		return $this->pilotpHeader();
+		// return $this->parent4process_task();
      }
 	
 	 /*
