@@ -35,18 +35,30 @@ class Pilotdelay extends \yii\db\ActiveRecord
 							return "" .$model->ID .""; //Harus String atau tanda ""
 					},
 			'start'=>function($model){
-							if ($model->PLAN_DATE2<>'' AND $model->ACTUAL_DATE2<>''){
+							if ($model->PLAN_DATE2<>'' AND $model->ACTUAL_DATE1<>''){
 								return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
 							}else{
 								return '';
 							}
 					},			
 			'end'=>function($model){
-				if ($model->PLAN_DATE2<>'' AND $model->ACTUAL_DATE2<>''){
+						if (($model->STATUS)==1){ /*CLOSING*/
+							if ($model->PLAN_DATE1<>'' AND $model->PLAN_DATE2<>''AND $model->ACTUAL_DATE1<>''AND $model->ACTUAL_DATE2<>''){
 								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');
 							}else{
 								return '';
-							}							
+							}
+						}elseif (($model->STATUS)==0){ /* DELAY RUNNING*/
+							if ($model->ACTUAL_DATE1<>''){
+								if ((Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date'))>(Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'))){
+									return Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date');		/*PENAMBAHAN HARI*/						
+								}else{
+									return '';//Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date'); /*CLOSE PLAN PROGRESS -> DELAY*/
+								}							
+							}else{
+								return ''; 
+							}								
+						}
 					},
 			'id'=>function($model){
 							return $model->ID.'-2'; //Harus String atau tanda ""
@@ -61,7 +73,11 @@ class Pilotdelay extends \yii\db\ActiveRecord
 							return '56%';
 					},
 			'tooltext'=>function($model){
-							return  'Delayed by 2 days';
+							if($model->ACTUAL_DATE2<>'' AND $model->PLAN_DATE2<>''){
+								/*Delay message show if dalay run*/
+								return  'Delayed by '.Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'d').' days';	
+								//return 'tgl skarang ' .Yii::$app->ambilKonvesi->tglSekarang();
+							}							
 					}
 		];
 	}

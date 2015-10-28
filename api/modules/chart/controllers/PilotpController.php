@@ -365,8 +365,10 @@ class PilotpController extends ActiveController
 		$arr = [];
 		foreach($ctg->getModels() as $t)
 		{			
+			/*PLAN RUN*/
 			if ($t->PLAN_DATE1<>'' AND $t->PLAN_DATE2<>''){
-				$arr[] = $t;					
+				$arr[] = $t;	
+				/*ACTUAL RUN*/
 				if ($t->ACTUAL_DATE1<>'' AND $t->ACTUAL_DATE2<>''){
 						$querySub1 = Pilotactual::find()->Where('ID='.$t->ID);
 						$sub1= new ActiveDataProvider([
@@ -376,8 +378,8 @@ class PilotpController extends ActiveController
 								], 
 						 ]);
 						 foreach($sub1->getModels() as $su1){
-							$arr[] = $su1;
-							if ($t->ACTUAL_DATE2<>'' AND $su1->ACTUAL_DATE2<>'' AND $su1->ACTUAL_DATE2>$t->PLAN_DATE2){
+							$arr[] = $su1;							
+							if ($t->PLAN_DATE1<>'' AND $su1->PLAN_DATE2<>'' AND $su1->ACTUAL_DATE1){
 								$querySub2 = Pilotdelay::find()->Where('ID='.$t->ID);
 								$sub2= new ActiveDataProvider([
 									'query' => $querySub2,
