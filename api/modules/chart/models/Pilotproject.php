@@ -34,8 +34,14 @@ class Pilotproject extends \yii\db\ActiveRecord
 							return $model->PILOT_NM;
 					},			
 			'id'=>function($model){
-							return $model->ID;
+							return "" .$model->ID ."";  // Harys String atau dengan tanda ""
 					},	
+			'hoverBandColor'=>function($model){
+							return '#e44a00';
+					},
+            'hoverBandAlpha'=>function($model){
+							return '40';
+					}
 		];
 	}
 	

@@ -32,11 +32,8 @@ class Pilotplan extends \yii\db\ActiveRecord
 							return 'Planned';
 					},			
 			'processid'=>function($model){
-							return $model->ID;
-					},
-			'id'=>function($model){
-							return $model->ID.'-1';
-					},
+							return "" .$model->ID .""; //Harus String atau tanda ""
+					},			
 			'start'=>function($model){
 							if ($model->PLAN_DATE1<>'' AND $model->PLAN_DATE2<>''){
 								return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE1,'date');
@@ -50,6 +47,9 @@ class Pilotplan extends \yii\db\ActiveRecord
 							}else{
 								return '';
 							}							
+					},
+			'id'=>function($model){
+							return $model->ID.'-1';
 					},
 			'color'=>function($model){
 							return '#008ee4';

@@ -19,7 +19,6 @@ use yii\helpers\ArrayHelper;
 use api\modules\chart\models\Cnfweek; 
 use api\modules\chart\models\Cnfmonth; 
 use api\modules\chart\models\Pilotproject;
-//use api\modules\chart\models\PilotprojectSearch;
 use api\modules\chart\models\Pilotplan;
 use api\modules\chart\models\Pilotactual;
 use api\modules\chart\models\Pilotdelay;
@@ -238,12 +237,12 @@ class PilotpController extends ActiveController
 			"milestones": {
                 "milestone": [
                     {
-                        "date": "15/01/2015",
+                        "date": "9/01/2015",
                         "taskid": "1",
                         "color": "#f8bd19",
                         "shape": "star",
                         "tooltext": "Completion of Phase 1"
-                    }					                   
+                    },					                   
                 ]
             }
 		';
@@ -389,7 +388,8 @@ class PilotpController extends ActiveController
 									$arr[] = $su2;
 								 }
 							}									
-						 }										 
+						 }
+										 
 				}
 			}			
 		}		
@@ -401,7 +401,7 @@ class PilotpController extends ActiveController
 	public function actionIndex()
      {
 		return $this->pilotpHeader();
-		// return $this->parent4process_task();		
+		// return $this->parent4process_task();
      }
 	
 	 /*

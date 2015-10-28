@@ -32,7 +32,7 @@ class Pilotactual extends \yii\db\ActiveRecord
 							return 'Actual';
 					},			
 			'processid'=>function($model){
-							return $model->ID;
+							return "" .$model->ID .""; //Harus String atau tanda ""
 					},
 			'start'=>function($model){
 							if ($model->ACTUAL_DATE1<>'' AND $model->ACTUAL_DATE2<>''){
@@ -47,6 +47,9 @@ class Pilotactual extends \yii\db\ActiveRecord
 							}else{
 								return '';
 							}							
+					},
+			'id'=>function($model){
+							return "" .$model->ID .""; //Harus String atau tanda ""
 					},
 			'color'=>function($model){
 							return '#6baa01';

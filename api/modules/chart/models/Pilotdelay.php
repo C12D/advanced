@@ -29,26 +29,40 @@ class Pilotdelay extends \yii\db\ActiveRecord
 	{
 		return [
 			'label'=>function($model){
-							return $model->PILOT_NM;
+							return 'Delay';
 					},			
+			'processid'=>function($model){
+							return "" .$model->ID .""; //Harus String atau tanda ""
+					},
+			'start'=>function($model){
+							if ($model->PLAN_DATE2<>'' AND $model->ACTUAL_DATE2<>''){
+								return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
+							}else{
+								return '';
+							}
+					},			
+			'end'=>function($model){
+				if ($model->PLAN_DATE2<>'' AND $model->ACTUAL_DATE2<>''){
+								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');
+							}else{
+								return '';
+							}							
+					},
 			'id'=>function($model){
-							return $model->ID;
+							return $model->ID.'-2'; //Harus String atau tanda ""
 					},
-			'plan_date1'=>function($model){
-							return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE1,'date');
-					},			
-			'plan_date2'=>function($model){
-							return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
-					},	
-			'actual_date1'=>function($model){
-							return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE1,'date');
-					},			
-			'actual_date2'=>function($model){
-							return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');
+			'color'=>function($model){
+							return '#e44a00';
 					},
-			'status'=>function($model){
-							return $model->STATUS;
+            'height'=>function($model){
+							return '32%';
+					}, 
+            'toppadding'=>function($model){
+							return '56%';
 					},
+			'tooltext'=>function($model){
+							return  'Delayed by 2 days';
+					}
 		];
 	}
 	public function attributeLabels()
