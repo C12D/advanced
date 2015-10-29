@@ -34,29 +34,45 @@ class Pilotdelay extends \yii\db\ActiveRecord
 			'processid'=>function($model){
 							return "" .$model->ID .""; //Harus String atau tanda ""
 					},
-			'start'=>function($model){
-							if ($model->PLAN_DATE2<>'' AND $model->ACTUAL_DATE1<>''){
+			'start'=>function($model){ /*RUN START  DELAY*/
+						if (($model->STATUS)==1){ /*CLOSING*/
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
+								if((Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date')) > (Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'))){
+									return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
+								}else{
+									return '';
+								}
+							}else{
 								return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
+							}
+						}elseif(($model->STATUS)==0){ /*RUN*/
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2==0 ){
+								if((Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date')) > (Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'))){
+									return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
+								}else{
+									return '';
+								}								
 							}else{
 								return '';
 							}
+						}
 					},			
 			'end'=>function($model){
 						if (($model->STATUS)==1){ /*CLOSING*/
-							if ($model->PLAN_DATE1<>'' AND $model->PLAN_DATE2<>''AND $model->ACTUAL_DATE1<>''AND $model->ACTUAL_DATE2<>''){
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
 								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');
 							}else{
-								return '';
+								return ''; /*HIDE KARENA CLOSE NO DATE*/
 							}
 						}elseif (($model->STATUS)==0){ /* DELAY RUNNING*/
-							if ($model->ACTUAL_DATE1<>''){
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2==0){
 								if ((Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date'))>(Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'))){
 									return Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date');		/*PENAMBAHAN HARI*/						
 								}else{
-									return '';//Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date'); /*CLOSE PLAN PROGRESS -> DELAY*/
+									return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');
 								}							
 							}else{
-								return ''; 
+								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');; 
 							}								
 						}
 					},
@@ -67,17 +83,36 @@ class Pilotdelay extends \yii\db\ActiveRecord
 							return '#e44a00';
 					},
             'height'=>function($model){
-							return '32%';
+							return '10';
 					}, 
             'toppadding'=>function($model){
-							return '56%';
+							return '30';
 					},
 			'tooltext'=>function($model){
-							if($model->ACTUAL_DATE2<>'' AND $model->PLAN_DATE2<>''){
-								/*Delay message show if dalay run*/
-								return  'Delayed by '.Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'d').' days';	
-								//return 'tgl skarang ' .Yii::$app->ambilKonvesi->tglSekarang();
-							}							
+							if (($model->STATUS)==1){ /*CLOSING*/
+								if($model->PLAN_DATE1<>0  AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
+									/*Delay message show if dalay run*/
+									return  'Delayed by '.Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'d').' days, ' .
+										Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'m').' month, ' .
+										Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'y').' year.';	
+									//return 'tgl skarang ' .Yii::$app->ambilKonvesi->tglSekarang();
+								}elseif($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0){
+									return  'Delayed by '.Yii::$app->ambilKonvesi->Tgldiff(date('d-m-Y'),$model->PLAN_DATE2,'d').' days, '.
+										Yii::$app->ambilKonvesi->Tgldiff(date('d-m-Y'),$model->PLAN_DATE2,'m').' month, ' .
+										Yii::$app->ambilKonvesi->Tgldiff(date('d-m-Y'),$model->PLAN_DATE2,'y').' year.';	;	
+								}		
+							}elseif (($model->STATUS)==0){ /*RUN*/
+								if($model->PLAN_DATE1<>0  AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
+									/*Delay message show if dalay run*/
+									return  'Delayed by '.Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'d').' days, ' .
+										Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'m').' month, ' .
+										Yii::$app->ambilKonvesi->Tgldiff($model->ACTUAL_DATE2,$model->PLAN_DATE2,'y').' year.';	
+								}elseif($model->PLAN_DATE1<>0  AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0){
+									return  'Delayed by '.Yii::$app->ambilKonvesi->Tgldiff(date('d-m-Y'),$model->PLAN_DATE2,'d').' days, '.
+										Yii::$app->ambilKonvesi->Tgldiff(date('d-m-Y'),$model->PLAN_DATE2,'m').' month, ' .
+										Yii::$app->ambilKonvesi->Tgldiff(date('d-m-Y'),$model->PLAN_DATE2,'y').' year.';	;		
+								}	
+							}
 					}
 		];
 	}

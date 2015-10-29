@@ -55,10 +55,10 @@ class Pilotplan extends \yii\db\ActiveRecord
 							return '#008ee4';
 					},
             'height'=>function($model){
-							return '32%';
+							return '10';
 					}, 
             'toppadding'=>function($model){
-							return '12%';
+							return '12';
 					}
 		];
 	}

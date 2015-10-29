@@ -35,26 +35,47 @@ class Pilotactual extends \yii\db\ActiveRecord
 							return "" .$model->ID .""; //Harus String atau tanda ""
 					},
 			'start'=>function($model){
-							if ($model->ACTUAL_DATE1<>'' AND $model->ACTUAL_DATE2<>''){
+						if (($model->STATUS)==1){ /*CLOSING*/
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
+								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE1,'date');
+							}elseif ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2==0){
 								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE1,'date');
 							}else{
-								return ''; /*Validasi Json Error*/
+								return '';
 							}
+						}elseif(($model->STATUS)==0){ /*RUN*/
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
+								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE1,'date');
+							}elseif ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2==0){
+								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE1,'date');
+							}else{
+								return '';
+							}							
+						}
+							
 					},			
 			'end'=>function($model){
 						if (($model->STATUS)==1){ /*CLOSING*/
-							if ($model->ACTUAL_DATE1<>'' AND $model->ACTUAL_DATE2<>''){
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
 								return Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date');
+							}elseif($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2==0){
+								return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'); 
 							}else{
-								return ''; 
+								return '';
 							}		
 						}elseif (($model->STATUS)==0){ /* ACTUAL RUNNING PROGRASS*/
-							if ($model->ACTUAL_DATE1<>''){
+							if ($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2==0){
 								if ((Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date'))<(Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'))){
-									return Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date');		/*PENAMBAHAN HARI*/						
+									return Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date');		/*PENAMBAHAN HARI*/	
 								}else{
-									return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'); /*CLOSE PLAN PROGRESS -> DELAY*/
-								}
+									return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
+								}								
+							}elseif($model->PLAN_DATE1<>0 AND $model->PLAN_DATE2<>0 AND $model->ACTUAL_DATE1<>0 AND $model->ACTUAL_DATE2<>0){
+								if ((Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date'))<(Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date'))){
+									return Yii::$app->ambilKonvesi->convert(date('d-m-Y'),'date');		/*PENAMBAHAN HARI*/	
+								}else{
+									return Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date');
+								}									
 							}else{
 								return ''; 
 							}							
@@ -67,10 +88,10 @@ class Pilotactual extends \yii\db\ActiveRecord
 							return '#6baa01';
 					},
             'height'=>function($model){
-							return '32%';
+							return '10';
 					}, 
             'toppadding'=>function($model){
-							return '56%';
+							return '30';
 					}
 		];
 	}
