@@ -97,18 +97,13 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 							'heading' => 'Task Manager',
 							'postBody' => Html::listGroup([
 									[
-										'content' => 'Pilot Project',
-										'url' => '/widget/pilotproject',
-										'badge' => '2'
-									],									
-									[
-										'content' => 'Head Jobs ',
-										'url' => '/widget/headjob',
+										'content' => 'Jobsdesk ',
+										'url' => '/widget/jobsdsk',
 										'badge' => '14'
 									],
 									[
-										'content' => 'Jobsdesk ',
-										'url' => '/widget/jobsdsk',
+										'content' => 'Head Jobs ',
+										'url' => '/widget/headjob',
 										'badge' => '14'
 									],
 									[
@@ -120,8 +115,12 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 										'content' => 'Arsip File',
 										'url' => '/widget/arsip',
 										'badge' => '2'
-									]
-									
+									],
+									[
+										'content' => 'Pilot Project',
+										'url' => '/widget/pilotproject',
+										'badge' => '2'
+									],
 
 								]),
 						],
@@ -142,7 +141,7 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 									],
 									[
 										'content' => 'Request Order',
-										'url' => '/esm/requestorder',
+										'url' => 'esm/requestorder',
 										'badge' => '14'
 									],	
 									[
@@ -152,7 +151,7 @@ $EmpDashboard=$this->render('login_index/_dashboard', [
 									],											
 									[
 										'content' => 'Purchase Order',
-										'url' => '/esm/purchaseorder',
+										'url' => '/widget/po',
 										'badge' => '2'
 									],
 									[
