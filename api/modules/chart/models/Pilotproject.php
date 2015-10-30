@@ -41,7 +41,10 @@ class Pilotproject extends \yii\db\ActiveRecord
 					},
             'hoverBandAlpha'=>function($model){
 							return '40';
-					}
+					},
+			'height'=>function($model){
+							return '40';
+					}, 
 		];
 	}
 	

@@ -23,6 +23,7 @@ use api\modules\chart\models\Pilotproject;
 use api\modules\chart\models\Pilotplan;
 use api\modules\chart\models\Pilotactual;
 use api\modules\chart\models\Pilotdelay;
+use api\modules\chart\models\Pilotmilestone;
 use yii\web\HttpException;
 //use yii\data\ActiveDataProvider;
 
@@ -236,19 +237,9 @@ class PilotpController extends ActiveController
 	protected function parent6(){
 		$prn6='
 			"milestones": {
-                "milestone": [
-                    {
-                        "date": "15/01/2015",
-                        "taskid": "1",
-                        "color": "#f8bd19",
-                        "shape": "star",
-                        "tooltext": "Completion of Phase 1"
-                    }					                   
-                ]
-            }
+                "milestone": '. $this->parent6milestone().
+			'}
 		';
-		// "color": "#008ee4", //BINTANG BIRU
-        // "color": "#f8bd19", //BINTANG KUNING
 		return $prn6;
 	}
 	
@@ -341,7 +332,9 @@ class PilotpController extends ActiveController
 	/*Author ptr.nov Model Json*/
 	protected function parent3task()
 	{
-		 $query = Pilotproject::find();
+		 $request = Yii::$app->request;
+		 $userid = $request->get('id_user');
+		 $query = Pilotproject::find()->Where('CREATED_BY='.$userid);
 		 $ctg= new ActiveDataProvider([
             'query' => $query,
 			'pagination' => [
@@ -355,7 +348,9 @@ class PilotpController extends ActiveController
 	/*Author ptr.nov Model plan/action/delay */
 	protected function parent4process_task()
 	{
-		 $query = Pilotplan::find();
+		 $request = Yii::$app->request;
+		 $userid = $request->get('id_user');	
+		 $query = Pilotplan::find()->Where('CREATED_BY='.$userid);
 		 $ctg= new ActiveDataProvider([
             'query' => $query,
 			'pagination' => [
@@ -379,7 +374,6 @@ class PilotpController extends ActiveController
 						 ]);
 						 foreach($sub1->getModels() as $su1){
 							$arr[] = $su1;							
-							if ($t->PLAN_DATE1<>'' AND $su1->PLAN_DATE2<>'' AND $su1->ACTUAL_DATE1){
 								$querySub2 = Pilotdelay::find()->Where('ID='.$t->ID);
 								$sub2= new ActiveDataProvider([
 									'query' => $querySub2,
@@ -387,10 +381,10 @@ class PilotpController extends ActiveController
 											'pageSize' => 200,
 										], 
 								 ]);
-								 foreach($sub2->getModels() as $su2){
-									$arr[] = $su2;
-								 }
-							}									
+								 /*RUN DELAY*/
+								 foreach($sub2->getModels() as $su2){									
+										 $arr[] = $su2;								
+								 }															
 						 }										 
 				}
 			}			
@@ -399,10 +393,42 @@ class PilotpController extends ActiveController
 		 return Json::encode($arr);
 	}
 	
+	/*Author ptr.nov Model BINTANG Completion */
+	protected function parent6milestone(){
+		$request = Yii::$app->request;
+		$userid = $request->get('id_user');	
+		$queryStr = Pilotplan::find()->Where('CREATED_BY='.$userid);
+		 $ctgstart= new ActiveDataProvider([
+            'query' => $queryStr,
+			'pagination' => [
+					'pageSize' => 200,
+				],				 
+         ]);		 
+		$arrStr = [];
+		foreach($ctgstart->getModels() as $st)
+		{		
+			if (($st->STATUS)==1 AND ((Yii::$app->ambilKonvesi->convert($st->ACTUAL_DATE2,'date'))<=(Yii::$app->ambilKonvesi->convert($st->PLAN_DATE2,'date')))){ /*CLOSE PROGRESS */
+				$querySub1 = Pilotmilestone::find()->Where('ID='.$st->ID);
+				$sub1start= new ActiveDataProvider([
+					'query' => $querySub1,
+					'pagination' => [
+							'pageSize' => 200,
+						], 
+				 ]);
+				 foreach($sub1start->getModels() as $str1){
+					 $arrStr[] = $str1;
+				 }				
+			}
+		}
+		
+		return Json::encode($arrStr);
+	}
+	
 	/*INDEX RENDER ALL LOCAL FUNCTION*/	
 	public function actionIndex()
      {
 		return $this->pilotpHeader();
+		//return $this->parent6milestone();
 		// return $this->parent4process_task();		
      }
 	
