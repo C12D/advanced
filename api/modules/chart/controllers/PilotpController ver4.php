@@ -7,8 +7,7 @@ use kartik\datecontrol\Module;
 use yii\helpers\Json;
 use yii\rest\ActiveController;
 use yii\data\ActiveDataProvider;
-//use common\models\User;
-use lukisongroup\models\system\user\UserloginSearch;
+use common\models\User;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\filters\auth\HttpBasicAuth;
@@ -30,10 +29,7 @@ use yii\web\HttpException;
 
 /* AUTHOT -ptr.nov- chart-pilot */
 class PilotpController extends ActiveController
-{	
-	
-	
-	
+{
     public $modelClass = 'api\modules\chart\models\Cnfweek';
 	//public $serializer = [
 	//	'class' => 'yii\rest\Serializer',
@@ -87,34 +83,6 @@ class PilotpController extends ActiveController
 		 //unset($actions['update'], $actions['create'], $actions['delete'], $actions['view']);
 		 return $actions;
 	 }
-	/*getUser ID from POST*/
-	protected function gt_userid(){
-		$request = Yii::$app->request;		
-		return $request->get('id_user');		
-	}
-	
-	protected function gt_deptid(){
-		$UserloginSearch = new UserloginSearch();	
-		$ModelUser = UserloginSearch::findUserAttr($this->gt_userid())->one();
-		if (count($ModelUser)<>0){ /*RECORD TIDAK ADA*/
-			$deptid=$ModelUser->emp->DEP_ID;			
-			return $deptid;
-		} else{
-			return 0;
-		}
-	}
-	
-	protected function gt_opt(){
-		$request = Yii::$app->request;
-		if ($request->get('pilih')==0){
-			return 'DEP_ID="'. $this->gt_deptid() .'"';
-		}elseif($request->get('pilih')==1){
-			return 'CREATED_BY='. $this->gt_userid();
-		}
-		//return $request->get('pilih');		
-	}
-	
-	
 	
 	/*HRADER CHART*/
 	protected function parent1(){
@@ -273,9 +241,13 @@ class PilotpController extends ActiveController
 			'}
 		';
 		return $prn6;
-	}	
-		
+	}
+	
+	
+	
 	protected function parent7(){
+		$request = Yii::$app->request;
+		$userid = $request->get('id_user');	
 		$prn7='
 			"legend": {
                 "item": [
@@ -294,14 +266,22 @@ class PilotpController extends ActiveController
                 ]
             }			 
 		';
-		
-		return $prn7;
-		
+		$prn7x='
+			"legend": {
+               
+            }			 
+		';
+		if($userid <> 0){
+			return $prn7;
+		} else{
+			return $prn7x;
+		}
 	}
 	
 	/*COMBINASI FUNCTION BUILD JSON */
 	protected function pilotpHeader() 
 	{
+		
 		$json_pilot='{'
 			.$this-> parent1().
 			','.$this-> parent2().		
@@ -352,112 +332,93 @@ class PilotpController extends ActiveController
 	/*Author ptr.nov Model Json*/
 	protected function parent3task()
 	{
-		 //$request = Yii::$app->request;
-		 //$userid = $request->get('id_user');
-		 //$deptid = $request->get('id_dept');	
-		 $query = Pilotproject::find()->Where($this->gt_opt());
-		 if (count($query)<>0){ /*RECORD TIDAK ADA*/	
-			 $ctg= new ActiveDataProvider([
-				'query' => $query,
-				'pagination' => [
-						'pageSize' => 200,
-					],				 
-			 ]);
-			  return Json::encode($ctg->getModels());
-		 }else{
-			$taskKosong='[{
-				"label": "No Data",
-                "id": "1"
-			}]';
-			return $taskKosong;
-		 }		
+		 $request = Yii::$app->request;
+		 $userid = $request->get('id_user');
+		 $query = Pilotproject::find()->Where('CREATED_BY='.$userid);
+		 $ctg= new ActiveDataProvider([
+            'query' => $query,
+			'pagination' => [
+					'pageSize' => 200,
+				],				 
+         ]);
+		 return Json::encode($ctg->getModels());
 	}
 	
 	
 	/*Author ptr.nov Model plan/action/delay */
 	protected function parent4process_task()
 	{
-		// $request = Yii::$app->request;
-		 //$userid = $request->get('id_user');
-		// $deptid = $request->get('id_dept');		 
-		 $query = Pilotplan::find()->Where($this->gt_opt());
-		 if (count($query)<>0){ /*RECORD TIDAK ADA*/	
-			 $ctg= new ActiveDataProvider([
-				'query' => $query,
-				'pagination' => [
-						'pageSize' => 200,
-					],				 
-			 ]);		 
-			$arr = [];
-			foreach($ctg->getModels() as $t)
-			{			
-				/*PLAN RUN*/
-				if ($t->PLAN_DATE1<>'' AND $t->PLAN_DATE2<>''){
-					$arr[] = $t;	
-					/*ACTUAL RUN*/
-					if ($t->ACTUAL_DATE1<>'' AND $t->ACTUAL_DATE2<>''){
-							$querySub1 = Pilotactual::find()->Where('ID='.$t->ID);
-							$sub1= new ActiveDataProvider([
-								'query' => $querySub1,
-								'pagination' => [
-										'pageSize' => 200,
-									], 
-							 ]);
-							 foreach($sub1->getModels() as $su1){
-								$arr[] = $su1;							
-									$querySub2 = Pilotdelay::find()->Where('ID='.$t->ID);
-									$sub2= new ActiveDataProvider([
-										'query' => $querySub2,
-										'pagination' => [
-												'pageSize' => 200,
-											], 
-									 ]);
-									 /*RUN DELAY*/
-									 foreach($sub2->getModels() as $su2){									
-											 $arr[] = $su2;								
-									 }															
-							 }										 
-					}
-				}			
-			}	
-		 }else{
-			 $arr = [];
-		 }
+		 $request = Yii::$app->request;
+		 $userid = $request->get('id_user');	
+		 $query = Pilotplan::find()->Where('CREATED_BY='.$userid);
+		 $ctg= new ActiveDataProvider([
+            'query' => $query,
+			'pagination' => [
+					'pageSize' => 200,
+				],				 
+         ]);		 
+		$arr = [];
+		foreach($ctg->getModels() as $t)
+		{			
+			/*PLAN RUN*/
+			if ($t->PLAN_DATE1<>'' AND $t->PLAN_DATE2<>''){
+				$arr[] = $t;	
+				/*ACTUAL RUN*/
+				if ($t->ACTUAL_DATE1<>'' AND $t->ACTUAL_DATE2<>''){
+						$querySub1 = Pilotactual::find()->Where('ID='.$t->ID);
+						$sub1= new ActiveDataProvider([
+							'query' => $querySub1,
+							'pagination' => [
+									'pageSize' => 200,
+								], 
+						 ]);
+						 foreach($sub1->getModels() as $su1){
+							$arr[] = $su1;							
+								$querySub2 = Pilotdelay::find()->Where('ID='.$t->ID);
+								$sub2= new ActiveDataProvider([
+									'query' => $querySub2,
+									'pagination' => [
+											'pageSize' => 200,
+										], 
+								 ]);
+								 /*RUN DELAY*/
+								 foreach($sub2->getModels() as $su2){									
+										 $arr[] = $su2;								
+								 }															
+						 }										 
+				}
+			}			
+		}		
 		 //return $arr;		
 		 return Json::encode($arr);
 	}
 	
 	/*Author ptr.nov Model BINTANG Completion */
 	protected function parent6milestone(){
-		//$request = Yii::$app->request;
-		//$userid = $request->get('id_user');
-		//$deptid = $request->get('id_dept');		
-		$queryStr = Pilotplan::find()->Where($this->gt_opt());
-		if (count($queryStr)<>0){ /*RECORD TIDAK ADA*/		 
-			 $ctgstart= new ActiveDataProvider([
-				'query' => $queryStr,
-				'pagination' => [
-						'pageSize' => 200,
-					],				 
-			 ]);		 
-			$arrStr = [];
-			foreach($ctgstart->getModels() as $st)
-			{		
-				if (($st->STATUS)==1 AND ((Yii::$app->ambilKonvesi->convert($st->ACTUAL_DATE2,'date'))<=(Yii::$app->ambilKonvesi->convert($st->PLAN_DATE2,'date')))){ /*CLOSE PROGRESS */
-					$querySub1 = Pilotmilestone::find()->Where('ID='.$st->ID);
-					$sub1start= new ActiveDataProvider([
-						'query' => $querySub1,
-						'pagination' => [
-								'pageSize' => 200,
-							], 
-					 ]);
-					 foreach($sub1start->getModels() as $str1){
-						 $arrStr[] = $str1;
-					 }				
-				}
+		$request = Yii::$app->request;
+		$userid = $request->get('id_user');	
+		$queryStr = Pilotplan::find()->Where('CREATED_BY='.$userid);
+		 $ctgstart= new ActiveDataProvider([
+            'query' => $queryStr,
+			'pagination' => [
+					'pageSize' => 200,
+				],				 
+         ]);		 
+		$arrStr = [];
+		foreach($ctgstart->getModels() as $st)
+		{		
+			if (($st->STATUS)==1 AND ((Yii::$app->ambilKonvesi->convert($st->ACTUAL_DATE2,'date'))<=(Yii::$app->ambilKonvesi->convert($st->PLAN_DATE2,'date')))){ /*CLOSE PROGRESS */
+				$querySub1 = Pilotmilestone::find()->Where('ID='.$st->ID);
+				$sub1start= new ActiveDataProvider([
+					'query' => $querySub1,
+					'pagination' => [
+							'pageSize' => 200,
+						], 
+				 ]);
+				 foreach($sub1start->getModels() as $str1){
+					 $arrStr[] = $str1;
+				 }				
 			}
-		}else{
-			$arrStr = [];
 		}
 		
 		return Json::encode($arrStr);
@@ -466,9 +427,7 @@ class PilotpController extends ActiveController
 	/*INDEX RENDER ALL LOCAL FUNCTION*/	
 	public function actionIndex()
      {
-		
 		return $this->pilotpHeader();
-		// echo $this->gt_deptid();
 		//return $this->parent6milestone();
 		// return $this->parent4process_task();		
      }

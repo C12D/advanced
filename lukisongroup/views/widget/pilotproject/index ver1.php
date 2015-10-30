@@ -12,56 +12,29 @@ AppAssetChart::register($this);
 
 /* AUTHOR -ptr.nov- GANTT VS API AJAX Request */
 $this->registerJs('FusionCharts.ready(function () {
-		var  jsonData1= $.ajax({
+		var  jsonData= $.ajax({
           //url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
 		  url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
 		  type: "GET",
           dataType:"json",
-		  data:"id_user='. Yii::$app->user->identity->id.'&pilih=0", //0=Dept
-          //data:"id_user='. Yii::$app->user->identity->id . '&pilih=1", //1=User
-          //data:"id_user=1",
+		  //data:"id_user='. Yii::$app->user->identity->id . '",
+          data:"id_user=0",
           async: false
           }).responseText;		  
-		  var myData1 = jsonData1;
+		  var myData = jsonData;
 		  
-		var chart1 = new FusionCharts({
+		var chart = new FusionCharts({
 			type: "gantt",
-			renderAt: "chart1-container",
+			renderAt: "chart-container",
 			width: "100%",
 			height: "600",
 			dataFormat: "json",
-			dataSource: myData1
+			dataSource: myData
 		})
-		
 		.render();
 	});
 ',$this::POS_READY);
-
-$this->registerJs('FusionCharts.ready(function () {
-		var  jsonData2= $.ajax({
-          //url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
-		  url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
-		  type: "GET",
-          dataType:"json",
-		  data:"id_user='. Yii::$app->user->identity->id.'&pilih=1", //0=Dept
-          //data:"id_user='. Yii::$app->user->identity->id . '&pilih=1", //1=User
-          //data:"id_user=1",
-          async: false
-          }).responseText;		  
-		  var myData2 = jsonData2;
-		  
-		var chart2 = new FusionCharts({
-			type: "gantt",
-			renderAt: "chart2-container",
-			width: "100%",
-			height: "600",
-			dataFormat: "json",
-			dataSource: myData2
-		})
-		
-		.render();
-	});
-',$this::POS_READY);	
+	
 	/* AUTHOR -ptr.nov- GRIDVIEW PILOT*/
 	$gv_pilot= GridView::widget([
 		'id'=>'gv-pilot',
@@ -183,34 +156,23 @@ $this->registerJs('FusionCharts.ready(function () {
 	
 	
 	/* AUTHOR -ptr.nov- Render ID GANTT PILOT PROJECT*/
-	$dsp1='
+	$dsp='
 	<div class="row">
-	<div class="col-sm-12" id="chart1-container">FusionCharts will render here</div>
+	<div class="col-sm-12" id="chart-container">FusionCharts will render here</div>
 	
 	</div>
 	';
 	
-	$dsp2='
-	<div class="row">
-	<div class="col-sm-12" id="chart2-container">FusionCharts will render here</div>
-	
-	</div>
-	';
 	
 	/* AUTHOR -ptr.nov- ITEM TABs */
 	$items=[
 		[
-			'label'=>'<i class="glyphicon glyphicon-home"></i> Department Pilot Schedule','content'=>$dsp1,
+			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Schedule Data','content'=>$gv_pilot,
 			//'active'=>true,
 
-		],	
+		],		
 		[
-			'label'=>'<i class="glyphicon glyphicon-home"></i> Employe Pilot Schedule','content'=>$dsp2,
-			//'active'=>true,
-
-		],			
-		[
-			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Data Schedule','content'=>$gv_pilot,
+			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Schedule Preview','content'=>$dsp,
 		],		
 	];
 
