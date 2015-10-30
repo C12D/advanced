@@ -17,8 +17,8 @@ $this->registerJs('FusionCharts.ready(function () {
 		  url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
 		  type: "GET",
           dataType:"json",
-		  //data:"id_user='. Yii::$app->user->identity->id . '",
-          data:"id_user=0",
+		  data:"id_user='. Yii::$app->user->identity->id . '",
+          //data:"id_user=0",
           async: false
           }).responseText;		  
 		  var myData = jsonData;
@@ -167,12 +167,12 @@ $this->registerJs('FusionCharts.ready(function () {
 	/* AUTHOR -ptr.nov- ITEM TABs */
 	$items=[
 		[
-			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Schedule Data','content'=>$gv_pilot,
+			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Schedule Data','content'=>$dsp,
 			//'active'=>true,
 
 		],		
 		[
-			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Schedule Preview','content'=>$dsp,
+			'label'=>'<i class="glyphicon glyphicon-home"></i> Pilot Schedule Preview','content'=>$gv_pilot,
 		],		
 	];
 
