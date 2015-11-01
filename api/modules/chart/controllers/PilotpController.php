@@ -28,18 +28,28 @@ use api\modules\chart\models\Pilotmilestone;
 use yii\web\HttpException;
 //use yii\data\ActiveDataProvider;
 
-/* AUTHOT -ptr.nov- chart-pilot */
+/**
+  * Controller Pilotproject Class  
+  *
+  * @author ptrnov  <piter@lukison.com>
+  * @since 1.1
+  * @link https://github.com/C12D/advanced/blob/master/api/modules/chart/controllers/PilotpController.php
+  * @see https://github.com/C12D/advanced/blob/master/api/modules/chart/controllers/PilotpController.php
+ */
 class PilotpController extends ActiveController
 {	
-	
-	
-	
+	/**
+	  * Source Database declaration 
+	 */
     public $modelClass = 'api\modules\chart\models\Cnfweek';
 	//public $serializer = [
 	//	'class' => 'yii\rest\Serializer',
 	//	'collectionEnvelope' => 'Personalia',
 	//];
-	  
+	
+	/**
+     * @inheritdoc
+     */
     public function behaviors()    {
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
@@ -79,7 +89,9 @@ class PilotpController extends ActiveController
 		
     }
 	
-	/*ACTION DIRECT MODEL*/
+	/**
+     * @inheritdoc
+     */
 	public function actions()
 	 {
 		 $actions = parent::actions();
@@ -87,7 +99,10 @@ class PilotpController extends ActiveController
 		 //unset($actions['update'], $actions['create'], $actions['delete'], $actions['view']);
 		 return $actions;
 	 }
-	/*getUser ID from POST*/
+	/**
+     * Get Request id_user 
+	 * @type GET
+     */
 	protected function gt_userid(){
 		$request = Yii::$app->request;		
 		return $request->get('id_user');		
@@ -115,8 +130,11 @@ class PilotpController extends ActiveController
 	}
 	
 	
-	
-	/*HRADER CHART*/
+	 
+	/**
+     * parent1, Header Chart Json Object, foreach object pertama
+	 * @type GET
+     */
 	protected function parent1(){
 		$prn1='
 			"chart": {
@@ -134,7 +152,10 @@ class PilotpController extends ActiveController
 		return $prn1;
 	}
 	
-	/*HEADER MONTH WEEK*/
+	/**
+     * parent2, Json Object Bulan/month, foreach object pertama categories, dengan sub category foreach Minggu/Week
+	 * @type GET
+     */
 	protected function parent2(){
 		$prn2='
 			"categories": [					
@@ -158,7 +179,10 @@ class PilotpController extends ActiveController
 		return $prn2;
 	}
 	
-	/*HEADER TASK */
+	/**
+     * parent3, Json Object Task, foreach subobject  process
+	 * @type GET
+     */
 	protected function parent3(){
 		$prn3='
 			"processes": {
@@ -463,7 +487,12 @@ class PilotpController extends ActiveController
 		return Json::encode($arrStr);
 	}
 	
-	/*INDEX RENDER ALL LOCAL FUNCTION*/	
+	/**
+	  * getUrl: http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa&id_user=1&pilih=1
+	  * id_user=1 [user id login]
+	  * pilih=1 [0=department;1=user aktif]
+	  * @link http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa&id_user=1&pilih=1
+	*/
 	public function actionIndex()
      {
 		

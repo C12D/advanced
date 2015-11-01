@@ -5,7 +5,7 @@ namespace api\modules\master\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use api\modules\master\\Kategori;
+use api\modules\master\Kategori;
 
 /**
  * KategoriSearch represents the model behind the search form about `app\models\master\Kategori`.
