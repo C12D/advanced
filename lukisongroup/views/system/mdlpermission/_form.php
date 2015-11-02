@@ -18,29 +18,33 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'STATUS')->textInput() ?>
 
-    <?= $form->field($model, 'CREATE')->textInput() ?>
+    <?= $form->field($model, 'BTN_CREATE')->textInput() ?>
 
-    <?= $form->field($model, 'EDIT')->textInput() ?>
+    <?= $form->field($model, 'BTN_EDIT')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL1')->textInput() ?>
+    <?= $form->field($model, 'BTN_DELETE')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL2')->textInput() ?>
+    <?= $form->field($model, 'BTN_VIEW')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL3')->textInput() ?>
+    <?= $form->field($model, 'BTN_PROCESS1')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL4')->textInput() ?>
+    <?= $form->field($model, 'BTN_PROCESS2')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL5')->textInput() ?>
+    <?= $form->field($model, 'BTN_PROCESS3')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL6')->textInput() ?>
+    <?= $form->field($model, 'BTN_PROCESS4')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL7')->textInput() ?>
+    <?= $form->field($model, 'BTN_PROCESS5')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL8')->textInput() ?>
+    <?= $form->field($model, 'BTN_SIGN1')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL9')->textInput() ?>
+    <?= $form->field($model, 'BTN_SIGN2')->textInput() ?>
 
-    <?= $form->field($model, 'TOMBOL10')->textInput() ?>
+    <?= $form->field($model, 'BTN_SIGN3')->textInput() ?>
+	
+	<?= $form->field($model, 'BTN_SIGN4')->textInput() ?>
+ 	
+    <?= $form->field($model, 'BTN_SIGN5')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

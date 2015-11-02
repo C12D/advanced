@@ -17,8 +17,10 @@ class MdlpermissionSearch extends Mdlpermission
      */
     public function rules()
     {
-        return [
-            [['ID', 'USER_ID', 'MODUL_ID', 'STATUS'], 'integer'],// 'CREATE', 'EDIT', 'TOMBOL1', 'TOMBOL2', 'TOMBOL3', 'TOMBOL4', 'TOMBOL5', 'TOMBOL6', 'TOMBOL7', 'TOMBOL8', 'TOMBOL9', 'TOMBOL10'], 'integer'],
+         return [
+            [['ID','USER_ID', 'MODUL_ID', 'STATUS', 'BTN_CREATE', 'BTN_EDIT', 'BTN_DELETE', 'BTN_VIEW', 'BTN_PROCESS1', 'BTN_PROCESS2', 'BTN_PROCESS3', 'BTN_PROCESS4', 'BTN_PROCESS5', 'BTN_SIGN1', 'BTN_SIGN2', 'BTN_SIGN3','BTN_SIGN4','BTN_SIGN5'], 'integer'],
+			[['CREATED_BY','UPDATED_BY'],'string'],
+			[['UPDATED_TIME'],'safe'],
         ];
     }
 
@@ -59,18 +61,22 @@ class MdlpermissionSearch extends Mdlpermission
             'USER_ID' => $this->USER_ID,
             'MODUL_ID' => $this->MODUL_ID,
             'STATUS' => $this->STATUS,
-            'CREATE' => $this->CREATE,
-            'EDIT' => $this->EDIT,
-            'TOMBOL1' => $this->TOMBOL1,
-            'TOMBOL2' => $this->TOMBOL2,
-            'TOMBOL3' => $this->TOMBOL3,
-            'TOMBOL4' => $this->TOMBOL4,
-            'TOMBOL5' => $this->TOMBOL5,
-            'TOMBOL6' => $this->TOMBOL6,
-            'TOMBOL7' => $this->TOMBOL7,
-            'TOMBOL8' => $this->TOMBOL8,
-            'TOMBOL9' => $this->TOMBOL9,
-            'TOMBOL10' => $this->TOMBOL10,
+            'BTN_CREATE' => $this->BTN_CREATE,
+            'BTN_EDIT' => $this->BTN_EDIT,
+            'BTN_DELETE' => $this->BTN_DELETE,
+            'BTN_VIEW' => $this->BTN_VIEW,
+            'BTN_PROCESS1' => $this->BTN_PROCESS1,
+            'BTN_PROCESS2' => $this->BTN_PROCESS2,
+            'BTN_PROCESS3' => $this->BTN_PROCESS3,
+            'BTN_PROCESS4' => $this->BTN_PROCESS4,
+            'BTN_PROCESS5' => $this->BTN_PROCESS5,
+            'BTN_SIGN1' => $this->BTN_SIGN1,
+            'BTN_SIGN2' => $this->BTN_SIGN2,
+            'BTN_SIGN3' => $this->BTN_SIGN3,
+            'BTN_SIGN5' => $this->BTN_SIGN5,
+            'CREATED_BY' => $this->CREATED_BY,
+            'UPDATED_BY' => $this->UPDATED_BY,
+            'UPDATED_TIME' => $this->UPDATED_TIME,
         ]);
 
         return $dataProvider;

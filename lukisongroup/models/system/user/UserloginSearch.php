@@ -12,12 +12,15 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-/**
- * Author -ptr.nov- Employe Search
- */
+/** 
+  * Option user, employe, modul, permission
+  * @author ptrnov  <piter@lukison.com>
+  * @since 1.1
+*/
 class UserloginSearch extends Userlogin
 {
 	public $emp;
+	//public $mdlakses;
 	/*	[1] FILTER */
     public function rules()
     {
@@ -60,15 +63,38 @@ class UserloginSearch extends Userlogin
 	public function attributes()
 	{
 		/*Author -ptr.nov- add related fields to searchable attributes */
-		return array_merge(parent::attributes(), ['emp.EMP_IMG','emp.EMP_NM','emp.EMP_NM_BLK']);
+		return array_merge(parent::attributes(), ['emp.EMP_IMG','emp.EMP_NM','emp.EMP_NM_BLK','Mdlpermission.ID']);
 	}
 	
+	/** 
+	  * findUserAttr User and Employe
+	  * @author ptrnov  <piter@lukison.com>
+	  * @since 1.1
+	*/
 	public function findUserAttr($id)
     {
 		$model = Userlogin::find()->select('*')
 				->joinWith('emp',true,'LEFT JOIN')
 				->Where(['dbm001.user.id' => $id]);
 				//->one();
+		if ($model !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+	
+	/** 
+	  * findUserAttr User and Employe and Modul Permission
+	  * @author ptrnov  <piter@lukison.com>	
+	  * @since 1.1
+	*/
+	public function findModulAcess($id,$modul_id)
+    {
+		$model = Userlogin::find()->select('*')
+					->joinWith('emp',true,'LEFT JOIN')
+					->joinWith('mdlpermission',true,'LEFT JOIN')
+					->Where('dbm001.user.id='. $id .' AND modul_permission.MODUL_ID=' .$modul_id);				
 		if ($model !== null) {
             return $model;
         } else {

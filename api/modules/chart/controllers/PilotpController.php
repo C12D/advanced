@@ -368,7 +368,10 @@ class PilotpController extends ActiveController
 	{
 		 $query = Cnfweek::find();
 		 $ctg= new ActiveDataProvider([
-             'query' => $query			 
+            'query' => $query,
+			'pagination' => [
+					'pageSize' => 200,
+			],			 
          ]);
 		 return Json::encode($ctg->getModels());
 	}
