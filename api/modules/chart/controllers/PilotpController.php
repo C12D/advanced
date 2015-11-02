@@ -129,7 +129,7 @@ class PilotpController extends ActiveController
 		if ($request->get('pilih')==0){
 			return 'DEP_ID="'. $this->gt_deptid() .'"';
 		}elseif($request->get('pilih')==1){
-			return 'CREATED_BY='. $this->gt_userid() .' OR DESTINATION_TO='. $this->gt_userid();
+			return '(DEP_ID="'. $this->gt_deptid() .'" AND CREATED_BY='. $this->gt_userid() .') OR (DESTINATION_TO='. $this->gt_userid().')';
 		}
 		//return $request->get('pilih');		
 	}
