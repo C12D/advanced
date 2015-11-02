@@ -46,7 +46,7 @@ class Pilotmilestone extends \yii\db\ActiveRecord
 						if (($model->STATUS)==1){
 							if ((Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date'))<(Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date')))
 							{
-								return '#f8bd19';
+								return '#FFDE17';
 							}elseif ((Yii::$app->ambilKonvesi->convert($model->ACTUAL_DATE2,'date'))==(Yii::$app->ambilKonvesi->convert($model->PLAN_DATE2,'date')))
 							{
 								return '#008ee4';

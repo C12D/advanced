@@ -85,10 +85,10 @@ class Pilotactual extends \yii\db\ActiveRecord
 							return "" .$model->ID .""; //Harus String atau tanda ""
 					},
 			'color'=>function($model){
-							return '#6baa01';
+							return '#4DFF4D';
 					},
             'height'=>function($model){
-							return '10';
+							return '15';
 					}, 
             'toppadding'=>function($model){
 							return '30';
