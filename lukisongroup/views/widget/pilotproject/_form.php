@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'DEP_ID')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'USER_CREATED')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'CREATED_BY')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

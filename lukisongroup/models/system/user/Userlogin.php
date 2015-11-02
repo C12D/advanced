@@ -2,6 +2,7 @@
 
 namespace lukisongroup\models\system\user;
 use lukisongroup\models\hrd\Employe;
+use lukisongroup\models\system\erpmodul\Mdlpermission;
 use kartik\builder\Form;
 use Yii;
 
@@ -49,7 +50,11 @@ class Userlogin extends \yii\db\ActiveRecord
 	{
 		return $this->hasOne(Employe::className(), ['EMP_ID' => 'EMP_ID']);
 	}
-
+	
+	public function getMdlpermission()
+	{
+		return $this->hasMany(Mdlpermission::className(), ['USER_ID' => 'id']);
+	}
 	
      
 }

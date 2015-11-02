@@ -33,11 +33,13 @@ class PilotprojectController extends Controller
     public function actionIndex()
     {
         $searchModel = new PilotprojectSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProviderDept = $searchModel->searchDept(Yii::$app->request->queryParams);
+		$dataProviderEmp = $searchModel->searchEmp(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProviderDept' => $dataProviderDept,
+			'dataProviderEmp' => $dataProviderEmp,
         ]);
     }
 
@@ -46,13 +48,29 @@ class PilotprojectController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionView($ID,$PILOT_ID)
+    //public function actionView($ID,$PILOT_ID)
+    //{
+    //    return $this->render('view', [
+    //        'model' => $this->findModel($ID,$PILOT_ID),
+    //    ]);
+    //}
+    public function actionView($id,$PILOT_ID)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($ID,$PILOT_ID),
-        ]);
+		$model = $this->findModel($id,$PILOT_ID);
+		if ($model->load(Yii::$app->request->post())){
+			$model->UPDATED_BY=Yii::$app->user->identity->username;
+			if($model->validate()){
+				if($model->save()){					
+					return $this->redirect(['index']);					
+				} 
+			}
+		}else {
+            return $this->renderAjax('_view', [
+            //return $this->render('_view', [
+                'model' => $model,
+            ]);
+        }
     }
-
     /**
      * Creates a new Pilotproject model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -60,6 +78,7 @@ class PilotprojectController extends Controller
      */
     public function actionCreate()
     {
+		/*
         $model = new Pilotproject();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -69,6 +88,23 @@ class PilotprojectController extends Controller
                 'model' => $model,
             ]);
         }
+		*/
+		$model = new Pilotproject();
+		
+		if ($model->load(Yii::$app->request->post())){		
+				$model->CREATED_BY=Yii::$app->user->identity->username;		
+				$model->UPDATED_TIME=date('Y-m-d h:i:s'); 				
+				$model->save();
+				if($model->save()){
+					 //return $this->redirect(['view', 'id' => $model->ID]);	
+					 return $this->redirect('index');
+				} 
+		}else {
+            //return $this->render('_form', [ 
+			return $this->renderAjax('_form', [
+                'model' => $model,
+            ]);
+        }	
     }
 
     /**
