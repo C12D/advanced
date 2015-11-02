@@ -25,8 +25,8 @@ AppAssetChart::register($this);
 	 */
 	$this->registerJs('FusionCharts.ready(function () {
 			var  jsonData1= $.ajax({
-			  //url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
-			  url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
+			  url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
+			  //url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
 			  type: "GET",
 			  dataType:"json",
 			  data:"id_user='. Yii::$app->user->identity->id.'&pilih=0", /*[0=Dept,1=user]*/
@@ -60,8 +60,8 @@ AppAssetChart::register($this);
 	 */
 	$this->registerJs('FusionCharts.ready(function () {
 			var  jsonData2= $.ajax({
-			  //url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
-			  url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
+			  url: "http://api.lukisongroup.int/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
+			  //url: "http://api.lukisongroup.com/chart/pilotps?access-token=azLSTAYr7Y7TLsEAML-LsVq9cAXLyAWa",
 			  type: "GET",
 			  dataType:"json",
 			  data:"id_user='. Yii::$app->user->identity->id.'&pilih=1", /*[0=Dept,1=user]*/
@@ -73,7 +73,7 @@ AppAssetChart::register($this);
 				type: "gantt",
 				renderAt: "chart2-container",
 				width: "100%",
-				height: "600",
+				height: "830",
 				dataFormat: "json",
 				dataSource: myData2
 			})

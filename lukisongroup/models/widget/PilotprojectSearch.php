@@ -11,6 +11,7 @@ use lukisongroup\models\widget\Pilotproject;
 class PilotprojectSearch extends Pilotproject
 {
     
+	
     public function rules()
     {
         return [
@@ -34,7 +35,8 @@ class PilotprojectSearch extends Pilotproject
 	*/
     public function searchDept($params)
     {
-        $query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND DEP_ID="'.$this->gtDeptid() .'"');
+		$profile=Yii::$app->getUserOpt->Profile_user();
+        $query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND DEP_ID="'.$profile->emp->DEP_ID .'"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -81,12 +83,14 @@ class PilotprojectSearch extends Pilotproject
     public function searchEmp($params)
     {
 		/*COMPONENT USER OPTION */
-		$profile=Yii::$app->getUserOpt->Profile_user();
+		 $profile=Yii::$app->getUserOpt->Profile_user();
 		
         //$query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND CREATED_BY='. Yii::$app->user->identity->id .' AND DEP_ID="'.$this->gtDeptid() .'"');
 		//$query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND CREATED_BY='. Yii::$app->user->identity->id .' AND DEP_ID="'.$this->getOptUser()->emp->DEP_ID .'"');
 		//$query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND CREATED_BY='. Yii::$app->user->identity->id .' AND DEP_ID="'.Yii::$app->getUserOpt->Profile_user()->emp->DEP_ID .'"');
-		$query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND CREATED_BY='. Yii::$app->user->identity->id .' AND DEP_ID="'.$profile->emp->DEP_ID .'"');
+		$query = Pilotproject::find()
+				->andWhere('sc0001.STATUS<>3 AND DEP_ID="'.$profile->emp->DEP_ID .'" AND CREATED_BY='. Yii::$app->user->identity->id)
+				->orWhere('sc0001.STATUS<>3 AND DEP_ID="'.$profile->emp->DEP_ID .'" AND DESTINATION_TO='.$profile->id);
 		
 
         $dataProvider = new ActiveDataProvider([
@@ -131,16 +135,16 @@ class PilotprojectSearch extends Pilotproject
 	  * @author ptrnov  <piter@lukison.com>
 	  * @since 1.1
 	*/
-	protected function gtDeptid(){
-		$UserloginSearch = new UserloginSearch();	
-		$ModelUser = UserloginSearch::findUserAttr(Yii::$app->user->identity->id)->one();
-		if (count($ModelUser)<>0){ /*RECORD TIDAK ADA*/
-			$deptid=$ModelUser->emp->DEP_ID;			
-			return $deptid;
-		} else{
-			return 0;
-		}
-	}
+	//protected function gtDeptid(){
+	//	$UserloginSearch = new UserloginSearch();	
+	//	$ModelUser = UserloginSearch::findUserAttr(Yii::$app->user->identity->id)->one();
+	//	if (count($ModelUser)<>0){ /*RECORD TIDAK ADA*/
+	//		$deptid=$ModelUser->emp->DEP_ID;			
+	//		return $deptid;
+	//	} else{
+	//		return 0;
+	//	}
+	//}
 	
 	/**
 	  * GetDEP_ID from UserID UserloginSearch()
