@@ -38,7 +38,7 @@ AppAssetChart::register($this);
 				type: "gantt",
 				renderAt: "chart1-container",
 				width: "100%",
-				height: "600",
+				height: "830",
 				dataFormat: "json",
 				dataSource: myData1
 			})
