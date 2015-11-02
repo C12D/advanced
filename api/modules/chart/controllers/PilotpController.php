@@ -73,7 +73,7 @@ class PilotpController extends ActiveController
 				'class' => \yii\filters\Cors::className(),
 				'cors' => [
 					// restrict access to
-					'Origin' => ['http://lukisongroup.com', 'http://lukisongroup.int'],
+					'Origin' => ['http://lukisongroup.com','http://www.lukisongroup.com', 'http://lukisongroup.int'],
 					'Access-Control-Request-Method' => ['POST', 'PUT','GET'],
 					// Allow only POST and PUT methods
 					'Access-Control-Request-Headers' => ['X-Wsse'],
@@ -129,7 +129,7 @@ class PilotpController extends ActiveController
 		if ($request->get('pilih')==0){
 			return 'DEP_ID="'. $this->gt_deptid() .'"';
 		}elseif($request->get('pilih')==1){
-			return '(DEP_ID="'. $this->gt_deptid() .'" AND CREATED_BY='. $this->gt_userid() .') OR (DESTINATION_TO='. $this->gt_userid().')';
+			return 'CREATED_BY='. $this->gt_userid() .' OR DESTINATION_TO='. $this->gt_userid() ;
 		}
 		//return $request->get('pilih');		
 	}

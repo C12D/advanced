@@ -1,7 +1,9 @@
 <?php
 /**
- *For Classes:
- *{@link 'https://github.com/C12D/advanced/blob/master/api/modules/chart/models/Dept.php' Dept}.
+ * NOTE: Nama Class harus diawali Hurup Besar
+ * Server Linux 	: hurup besar/kecil bermasalah -case sensitif-
+ * Server Windows 	: hurup besar/kecil tidak bermasalah
+ * Author: -ptr.nov-
 */
 
 namespace api\modules\notify\models;
@@ -14,9 +16,7 @@ use Yii;
  */
 class Dept extends \yii\db\ActiveRecord
 {
-	/**
-	  * Source Database declaration 
-	 */
+	/* [1] SOURCE DB */
     public static function getDb()
     {
         /* Author -ptr.nov- :UMUM */

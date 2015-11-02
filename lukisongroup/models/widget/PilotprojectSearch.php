@@ -83,7 +83,7 @@ class PilotprojectSearch extends Pilotproject
     public function searchEmp($params)
     {
 		/*COMPONENT USER OPTION */
-		 $profile=Yii::$app->getUserOpt->Profile_user();
+		$profile=Yii::$app->getUserOpt->Profile_user();
 		
         //$query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND CREATED_BY='. Yii::$app->user->identity->id .' AND DEP_ID="'.$this->gtDeptid() .'"');
 		//$query = Pilotproject::find()->Where('sc0001.STATUS<>3 AND CREATED_BY='. Yii::$app->user->identity->id .' AND DEP_ID="'.$this->getOptUser()->emp->DEP_ID .'"');

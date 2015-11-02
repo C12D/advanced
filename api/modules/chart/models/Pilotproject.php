@@ -1,34 +1,19 @@
 <?php
-/**
- *Pilotproject
- *@link https://github.com/C12D/advanced/blob/master/api/modules/chart/models/Pilotproject.php
- *@copyright Copyright (c) 2005/2016 lukisongroup
- *@since 1.1
-*/
-
 namespace api\modules\chart\models;
 use Yii;
 
-/**
- * Model Pilotproject Class  Author: -ptr.nov-
- */
+/*LABEL TASK*/
 class Pilotproject extends \yii\db\ActiveRecord
 {
-	/**
-	  * Nama database yang di tuju 
-	 */
-	public static function getDb()
-    {
-        return Yii::$app->get('db_widget');
-    }
-	
-	/**
-	  * Nama Table yang di tuju 
-	 */
     public static function tableName()
     {
         return 'sc0001';
-    }  
+    }
+  
+    public static function getDb()
+    {
+        return Yii::$app->get('db_widget');
+    }
 
     public function rules()
     {
@@ -42,48 +27,27 @@ class Pilotproject extends \yii\db\ActiveRecord
         ];
     }
 	
-	/**
-	  * Nama Fields Alias yang mengunakan nilai tertentu 
-	 */
 	public function fields()
 	{
 		return [
-			/**
-			  * Field Alias label dari Filed value PILOT_NM
-			 */
 			'label'=>function($model){
 							return $model->PILOT_NM;
-					},
-			/**
-			  * ID harus String dengan tanda ""
-			 */	
+					},			
 			'id'=>function($model){
 							return "" .$model->ID ."";  // Harys String atau dengan tanda ""
 					},	
-			/**
-			  * Alias Filed hoverBandColor static untuk nilai warna #e44a00
-			 */	
 			'hoverBandColor'=>function($model){
 							return '#e44a00';
 					},
-			/**
-			  * Alias Filed hoverBandAlpha static untuk ukuran 40
-			 */		
             'hoverBandAlpha'=>function($model){
 							return '40';
 					},
-			/**
-			  * Alias Filed height static untuk nilai task
-			 */
 			'height'=>function($model){
-							return '40';
-					}, 
+							return '44';
+					}
 		];
 	}
 	
-	/**
-	  * setting label unruk Atribute Fields 
-	 */
     public function attributeLabels()
     {
         return [
