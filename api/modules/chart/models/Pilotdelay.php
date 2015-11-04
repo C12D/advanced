@@ -86,7 +86,7 @@ class Pilotdelay extends \yii\db\ActiveRecord
 							return '10';
 					}, 
             'toppadding'=>function($model){
-							return '30';
+							return '24';
 					},
 			'tooltext'=>function($model){
 							if (($model->STATUS)==1){ /*CLOSING*/

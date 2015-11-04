@@ -23,7 +23,12 @@ use kartik\widgets\DepDrop;
 //use kartik\sidenav\SideNav;
 
 
-$form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL,'options'=>['enctype'=>'multipart/form-data']]);
+$form = ActiveForm::begin([		
+		'type'=>ActiveForm::TYPE_VERTICAL,
+		'options'=>['enctype'=>'multipart/form-data'],
+		'id'=>'emp-form1-create',
+		'enableClientValidation' => true,
+	]);
 
 //$form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);
 //$form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]);

@@ -88,10 +88,10 @@ class Pilotactual extends \yii\db\ActiveRecord
 							return '#4DFF4D';
 					},
             'height'=>function($model){
-							return '15';
+							return '12';
 					}, 
             'toppadding'=>function($model){
-							return '30';
+							return '24';
 					}
 		];
 	}
